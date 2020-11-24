@@ -21,7 +21,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx", "mock/index.js", "mock/index.js"
   ],
   "exclude": [
     "node_modules"

@@ -9,6 +9,7 @@
     "format": "prettier ./pages/**tsx ./components/**.tsx ./lib/*.ts --write"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.3.0",
     "antd": "^4.8.5",
     "axios": "^0.21.0",
     "next": "10.0.3",
@@ -17,10 +18,11 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.12.7",
     "@types/node": "^14.14.9",
     "@types/react": "^17.0.0",
     "@types/styled-components": "^5.1.4",
-    "mirage": "0.0.7",
+    "miragejs": "^0.1.41",
     "prettier": "^2.2.0",
     "typescript": "^4.1.2"
   }
