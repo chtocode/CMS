@@ -1,4 +1,5 @@
 import { Model, Response, Server } from 'miragejs';
+const students = require('./student.json');
 
 export default function makeServer({ environment = 'test' } = {}) {
   let server = new Server({
@@ -6,6 +7,7 @@ export default function makeServer({ environment = 'test' } = {}) {
 
     models: {
       user: Model,
+      student: Model,
     },
 
     seeds(server) {
@@ -24,9 +26,16 @@ export default function makeServer({ environment = 'test' } = {}) {
         password: '123456',
         loginType: 'manager',
       });
+      students.forEach((student) => server.create('student', student));
     },
 
     routes() {
+      this.passthrough((request) => {
+        if (request.url === '/_next/static/development/_devPagesManifest.json') {
+          return true;
+        }
+      });
+
       this.namespace = 'api';
 
       this.post('/login', (schema, request) => {
@@ -46,6 +55,10 @@ export default function makeServer({ environment = 'test' } = {}) {
         } else {
           return new Response(400, {}, { msg: 'Check user or email' });
         }
+      });
+
+      this.get('/students', (schema, _) => {
+        return schema.students.all();
       });
     },
   });

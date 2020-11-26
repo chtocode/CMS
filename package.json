@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "format": "prettier ./pages/**tsx ./components/**.tsx ./lib/*.ts --write"
+    "format": "prettier ./pages/**tsx ./components/**.tsx ./lib/**/*.ts --write"
   },
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
