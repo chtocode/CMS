@@ -86,8 +86,12 @@ export default function Dashboard() {
   ];
 
   useEffect(() => {
-    apiService.getStudents().then((data) => {
-      setData(data);
+    apiService.getStudents().then((res) => {
+      const {
+        data: { students = [] },
+      } = res;
+
+      setData(students);
       setLoading(false);
     });
   }, []);

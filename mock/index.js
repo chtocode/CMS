@@ -1,5 +1,7 @@
 import { Model, Response, Server } from 'miragejs';
+
 const students = require('./student.json');
+const users = require('./user.json');
 
 export default function makeServer({ environment = 'test' } = {}) {
   let server = new Server({
@@ -11,21 +13,7 @@ export default function makeServer({ environment = 'test' } = {}) {
     },
 
     seeds(server) {
-      server.create('user', {
-        email: 'student@admin.com',
-        password: '123456',
-        loginType: 'student',
-      });
-      server.create('user', {
-        email: 'teacher@admin.com',
-        password: '123456',
-        loginType: 'teacher',
-      });
-      server.create('user', {
-        email: 'manager@admin.com',
-        password: '123456',
-        loginType: 'manager',
-      });
+      users.forEach((user) => server.create('user', user));
       students.forEach((student) => server.create('student', student));
     },
 
@@ -38,27 +26,39 @@ export default function makeServer({ environment = 'test' } = {}) {
 
       this.namespace = 'api';
 
-      this.post('/login', (schema, request) => {
-        const req = JSON.parse(request.requestBody);
+      this.get('/login', (schema, request) => {
+        const req = request.queryParams;
         const user = schema.users.where({
           email: req.email,
           password: req.password,
-          loginType: req.loginType,
+          type: req.loginType,
         });
 
         if (!!user.length) {
           return new Response(
             200,
             {},
-            { token: Math.random().toString(32).split('.')[1], loginType: req.loginType }
+            {
+              data: { token: Math.random().toString(32).split('.')[1], loginType: req.loginType },
+              code: 200,
+              msg: 'login success',
+            }
           );
         } else {
-          return new Response(400, {}, { msg: 'Check user or email' });
+          return new Response(403, {}, { msg: 'Check user or email', code: 400 });
         }
       });
 
       this.get('/students', (schema, _) => {
-        return schema.students.all();
+        return new Response(
+          200,
+          {},
+          { data: { students: schema.students.all().models }, msg: 'success', code: 200 }
+        );
+      });
+
+      this.post('/logout', (schema, _) => {
+        return new Response(200, {}, { data: true, msg: 'success', code: 200 });
       });
     },
   });

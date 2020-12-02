@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Col, Form, Input, message, Radio, Row, Typography } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Radio, Row, Typography } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
@@ -25,14 +25,12 @@ export default function Login() {
   const [form] = Form.useForm();
   const router = useRouter();
   const login = async (loginRequest: LoginFormValues) => {
-    const res = await apiService.login(loginRequest);
+    const { data } = await apiService.login(loginRequest);
 
-    if (!!res) {
-      localStorage.setItem('token', res.token);
-      localStorage.setItem('loginType', res.loginType);
+    if (!!data) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('loginType', data.loginType);
       router.push('dashboard');
-    } else {
-      message.error('Login failed! Please check you email and password!');
     }
   };
 

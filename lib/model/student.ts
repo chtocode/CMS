@@ -1,3 +1,5 @@
+import { RequestWithPaginator, ResponseWithPaginator } from './api';
+
 export interface Student {
   id: number;
   name: string;
@@ -8,4 +10,13 @@ export interface Student {
   address: string;
   ctime: string;
   email: string;
+}
+export interface StudentsRequest {
+  query?: string;
+  paginator?: RequestWithPaginator;
+}
+
+export interface StudentsResponse {
+  students: Student[];
+  paginator?: ResponseWithPaginator;
 }

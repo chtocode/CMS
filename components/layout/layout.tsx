@@ -9,6 +9,7 @@ import { Layout, Menu } from 'antd';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import apiService from '../../lib/services/api-service';
 
 const { Header, Content, Sider } = Layout;
 
@@ -57,10 +58,14 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
   const [collapsed, toggleCollapse] = useState(false);
   const router = useRouter();
 
-  const onLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('loginType');
-    router.push('/login');
+  const onLogout = async () => {
+    const { data: isLogout } = await apiService.logout({ token: localStorage.getItem('token') });
+
+    if (isLogout) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('loginType');
+      router.push('/login');
+    }
   };
 
   return (
@@ -72,7 +77,7 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
       >
         {<Logo>CMS</Logo>}
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<UserOutlined />} style={{marginTop: 0}}>
+          <Menu.Item key="1" icon={<UserOutlined />} style={{ marginTop: 0 }}>
             学员列表
           </Menu.Item>
 
