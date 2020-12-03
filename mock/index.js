@@ -49,12 +49,23 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
-      this.get('/students', (schema, _) => {
-        return new Response(
-          200,
-          {},
-          { data: { students: schema.students.all().models }, msg: 'success', code: 200 }
-        );
+      this.get('/students', (schema, req) => {
+        const { query } = req.queryParams;
+        const limit = +req.queryParams.limit;
+        const page = +req.queryParams.page;
+        const all = schema.students.all();
+        let students = all.filter((item) => !query || item.name.includes(query)).models;
+        const total = !query ? all.length : students.length;
+        let data = { total, students };
+
+        if (limit && page) {
+          const start = limit * (page - 1);
+
+          students = students.slice(start, start + limit);
+          data = { ...data, paginator: { limit, page, total }, students };
+        }
+
+        return new Response(200, {}, { data, msg: 'success', code: 200 });
       });
 
       this.post('/logout', (schema, _) => {

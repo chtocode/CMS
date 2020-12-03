@@ -1,7 +1,8 @@
 import { Input, Popconfirm, Space, Table } from 'antd';
-import { ColumnType } from 'antd/lib/table';
+import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
+import { debounce, omitBy } from 'lodash';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Layout from '../../components/layout/layout';
 import { Student } from '../../lib/model';
@@ -16,11 +17,12 @@ const Search = styled(Input.Search)`
 export default function Dashboard() {
   const [data, setData] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<Partial<TablePaginationConfig>>({
     current: 1,
     pageSize: 10,
     showSizeChanger: true,
   });
+  const [total, setTotal] = useState(0);
   const columns: ColumnType<Student>[] = [
     {
       title: 'ID',
@@ -84,28 +86,46 @@ export default function Dashboard() {
       ),
     },
   ];
+  const [query, setQuery] = useState<string>('');
+  const debouncedQuery = useCallback(
+    debounce((nextValue) => setQuery(nextValue), 1000),
+    []
+  );
 
   useEffect(() => {
-    apiService.getStudents().then((res) => {
+    const req = omitBy(
+      { limit: pagination.pageSize, page: pagination.current, query },
+      (item) => item === ''
+    );
+
+    apiService.getStudents(req).then((res) => {
       const {
-        data: { students = [] },
-      } = res;
+        students,
+        total,
+      } = res.data;
 
       setData(students);
+      setTotal(total);
       setLoading(false);
     });
-  }, []);
+  }, [query, pagination]);
 
   return (
     <Layout>
-      <Search placeholder="通过名称搜索" onSearch={() => {}} />
+      <Search
+        placeholder="通过名称搜索"
+        onSearch={(value) => setQuery(value)}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          debouncedQuery(event.target.value);
+        }}
+      />
 
       <Table
         rowKey="id"
         dataSource={data}
-        onChange={() => {}}
+        onChange={setPagination}
         loading={loading}
-        pagination={pagination}
+        pagination={{ ...pagination, total }}
         columns={columns}
       ></Table>
     </Layout>

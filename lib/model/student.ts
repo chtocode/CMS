@@ -1,4 +1,4 @@
-import { RequestWithPaginator, ResponseWithPaginator } from './api';
+import { Paginator, ResponseWithPaginator } from './api';
 
 export interface Student {
   id: number;
@@ -11,12 +11,13 @@ export interface Student {
   ctime: string;
   email: string;
 }
-export interface StudentsRequest {
+
+export interface StudentsRequest extends Partial<Paginator> {
   query?: string;
-  paginator?: RequestWithPaginator;
 }
 
 export interface StudentsResponse {
   students: Student[];
+  total: number;
   paginator?: ResponseWithPaginator;
 }

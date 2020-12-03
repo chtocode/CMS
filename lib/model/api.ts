@@ -9,7 +9,7 @@ export interface QueryParams {
 }
 
 export interface Paginator {
-  page: number;
+  page: number; // start: 1;
   limit: number;
 }
 
