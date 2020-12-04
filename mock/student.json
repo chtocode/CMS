@@ -2,144 +2,131 @@
 	{
 		"id" : 1,
 		"name" : "admin",
-		"type_id" : 2,
-		"course_id_deleted" : 1,
-		"update_date" : "2020-06-30 15:09:04",
-		"password" : "123456",
-		"address" : "新西兰",
+		"typeId" : 2,
+		"area" : "新西兰",
 		"ctime" : "2020-06-19 15:29:58",
-		"email" : "student@admin.com"
+		"email" : "student@admin.com",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": [10, 11, 12, 21]
 	},
 	{
 		"id" : 53,
 		"name" : "铁憨憨",
-		"type_id" : 2,
-		"course_id_deleted" : 1,
-		"update_date" : "2020-06-30 15:01:37",
-		"password" : "123456",
-		"address" : "澳洲",
+		"typeId" : 2,
+		"area" : "澳洲",
 		"ctime" : "2020-06-19 15:29:58",
-		"email" : "tiehaha@admin.com"
+		"email" : "tiehaha@admin.com",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": [24, 40, 42]
 	},
 	{
 		"id" : 56,
 		"name" : "green",
-		"type_id" : 2,
-		"course_id_deleted" : 1,
-		"update_date" : "2020-03-18 02:10:19",
-		"password" : "123456",
-		"address" : "加拿大",
+		"typeId" : 2,
+		"area" : "加拿大",
 		"ctime" : "2020-06-19 15:29:58",
-		"email" : "green@green.com"
+		"email" : "green@green.com",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": [49, 50]
 	},
 	{
 		"id" : 62,
 		"name" : "zaaa",
-		"type_id" : 2,
-		"course_id_deleted" : 31,
-		"update_date" : "2020-03-20 21:38:44",
-		"password" : "123456",
-		"address" : "国内",
+		"typeId" : 2,
+		"area" : "国内",
 		"ctime" : "2020-06-19 15:29:58",
-		"email" : "zaaa@admin.com"
+		"email" : "zaaa@admin.com",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 73,
 		"name" : "admin1",
-		"type_id" : 2,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-06-28 16:06:41",
-		"password" : "123456",
-		"address" : "dsd",
+		"typeId" : 2,
+		"area" : "dsd",
 		"ctime" : "2020-06-28 16:06:41",
-		"email" : "admin1@admin.com"
+		"email" : "admin1@admin.com",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 76,
 		"name" : "abcde",
-		"type_id" : 1,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-07-05 13:29:41",
-		"password" : "123456",
-		"address" : "ds",
+		"typeId" : 1,
+		"area" : "ds",
 		"ctime" : "2020-07-05 13:29:41",
-		"email" : "323@sd"
+		"email" : "323@sd",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 78,
 		"name" : "admin14454",
-		"type_id" : 1,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-07-05 13:43:22",
-		"password" : "123456",
-		"address" : "3",
+		"typeId" : 1,
+		"area" : "3",
 		"ctime" : "2020-07-05 13:43:22",
-		"email" : "3@gmail.com"
+		"email" : "3@gmail.com",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 79,
 		"name" : "2",
-		"type_id" : 1,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-07-14 18:49:16",
-		"password" : "123456",
-		"address" : "12",
+		"typeId" : 1,
+		"area" : "12",
 		"ctime" : "2020-07-06 20:03:22",
-		"email" : "12@d"
+		"email" : "12@d",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 80,
 		"name" : "fdf",
-		"type_id" : 2,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-07-06 20:04:23",
-		"password" : "123456",
-		"address" : "dwd",
+		"typeId" : 2,
+		"area" : "dwd",
 		"ctime" : "2020-07-06 20:04:23",
-		"email" : "323@323fd"
+		"email" : "323@323fd",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 81,
 		"name" : "haha",
-		"type_id" : 1,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-07-07 19:09:53",
-		"password" : "123456",
-		"address" : "1",
+		"typeId" : 1,
+		"area" : "1",
 		"ctime" : "2020-07-07 19:09:53",
-		"email" : "12@sds"
+		"email" : "12@sds",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 82,
 		"name" : "dsd",
-		"type_id" : 1,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-07-08 19:42:11",
-		"password" : "123456",
-		"address" : "sd",
+		"typeId" : 1,
+		"area" : "sd",
 		"ctime" : "2020-07-08 19:42:11",
-		"email" : "sd@sdsd"
+		"email" : "sd@sdsd",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 83,
 		"name" : "323",
-		"type_id" : 2,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-07-14 18:47:54",
-		"password" : "123456",
-		"address" : "23",
+		"typeId" : 2,
+		"area" : "23",
 		"ctime" : "2020-07-14 18:47:54",
-		"email" : "323@232"
+		"email" : "323@232",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	},
 	{
 		"id" : 84,
 		"name" : "Tramp",
-		"type_id" : 1,
-		"course_id_deleted" : 0,
-		"update_date" : "2020-07-23 19:53:06",
-		"password" : "123456",
-		"address" : "Sydney",
+		"typeId" : 1,
+		"area" : "Sydney",
 		"ctime" : "2020-07-23 19:53:06",
-		"email" : "2@sad.com"
+		"email" : "2@sad.com",
+		"updateAt": "2020-12-01 13:22: 03",
+		"studentCourseIds": []
 	}
 ]

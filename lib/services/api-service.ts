@@ -1,8 +1,18 @@
 import { message } from 'antd';
 import axios, { AxiosError } from 'axios';
-import { LogoutRequest, LogoutResponse, StudentsRequest, StudentsResponse } from '../model';
-import { IResponse, QueryParams } from '../model/api';
+import {
+  AddStudentRequest,
+  AddStudentResponse,
+  LogoutRequest,
+  LogoutResponse,
+  StudentsRequest,
+  StudentsResponse,
+  UpdateStudentRequest,
+  UpdateStudentResponse
+} from '../model';
+import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import { LoginRequest, LoginResponse } from '../model/login';
+import { routPath, subPath } from './path';
 
 const axiosInstance = axios.create({
   withCredentials: true,
@@ -13,7 +23,7 @@ const axiosInstance = axios.create({
 type IPath = string[] | string;
 
 class BaseApiService {
-  async get<T>(path: IPath, params?: QueryParams): Promise<T> {
+  protected async get<T>(path: IPath, params?: QueryParams): Promise<T> {
     path = this.getPath(path);
     path = !!params
       ? `${path}?${Object.entries(params)
@@ -27,9 +37,16 @@ class BaseApiService {
       .catch((err) => this.errorHandler(err));
   }
 
-  async post<T>(path: IPath, params: object): Promise<T> {
+  protected async post<T>(path: IPath, params: object): Promise<T> {
     return axiosInstance
       .post(this.getPath(path), params)
+      .then((res) => res.data)
+      .catch(this.errorHandler);
+  }
+
+  protected async delete<T>(path: IPath, params: object): Promise<T> {
+    return axiosInstance
+      .delete(this.getPath(path), { params })
       .then((res) => res.data)
       .catch(this.errorHandler);
   }
@@ -76,22 +93,40 @@ class BaseApiService {
 }
 
 class ApiService extends BaseApiService {
-
   /**
-   * !FIXME: 加密码用户信息 
+   * !FIXME: 加密码用户信息
    */
   login(req: LoginRequest): Promise<IResponse<LoginResponse>> {
-    return this.get<IResponse<LoginResponse>>('login', (req as unknown) as QueryParams).then(
+    return this.get<IResponse<LoginResponse>>(routPath.login, (req as unknown) as QueryParams).then(
       this.showMessage()
     );
   }
 
   logout(req: LogoutRequest): Promise<IResponse<LogoutResponse>> {
-    return this.post<IResponse<LogoutResponse>>('logout', req).then(this.showMessage());
+    return this.post<IResponse<LogoutResponse>>(routPath.logout, req).then(this.showMessage());
   }
 
   getStudents(req?: StudentsRequest): Promise<IResponse<StudentsResponse>> {
-    return this.get<IResponse<StudentsResponse>>('students', req as unknown as QueryParams);
+    return this.get<IResponse<StudentsResponse>>(
+      routPath.students,
+      (req as unknown) as QueryParams
+    );
+  }
+
+  addStudent(req: AddStudentRequest): Promise<IResponse<AddStudentResponse>> {
+    return this.post([routPath.students, subPath.add], req).then(this.showMessage(true));
+  }
+
+  updateStudent(req: UpdateStudentRequest): Promise<IResponse<UpdateStudentResponse>> {
+    return this.post([routPath.students, subPath.update], req).then(this.showMessage(true));
+  }
+
+  deleteStudent(req: DeleteRequest): Promise<IResponse<DeleteResponse>> {
+    return this.delete([routPath.students, subPath.delete], req).then(this.showMessage(true));
+  }
+
+  getStudent(): Promise<any> {
+    return this.get([routPath.students, subPath.detail]);
   }
 }
 

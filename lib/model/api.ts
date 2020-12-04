@@ -18,3 +18,9 @@ export type RequestWithPaginator = Paginator;
 export interface ResponseWithPaginator extends Paginator {
   total: number;
 }
+
+export interface DeleteRequest {
+  id: number;
+}
+
+export type DeleteResponse = boolean;
