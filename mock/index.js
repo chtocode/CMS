@@ -57,13 +57,27 @@ export default function makeServer({ environment = 'test' } = {}) {
             200,
             {},
             {
-              data: { token: Math.random().toString(32).split('.')[1], loginType: req.loginType },
+              data: {
+                token: Math.random().toString(32).split('.')[1] + '~' + loginType,
+                loginType: req.loginType,
+              },
               code: 200,
               msg: 'login success',
             }
           );
         } else {
           return new Response(403, {}, { msg: 'Check user or email', code: 400 });
+        }
+      });
+
+      this.get('/userType', (schema, req) => {
+        const query = req.queryParams;
+        const type = query.split('~')[1];
+
+        if (!!type) {
+          return new Response(200, {}, { data: type, msg: 'success', code: 200 });
+        } else {
+          return new Response(400, {}, { msg: 'Token is not exist', code: 400 });
         }
       });
 

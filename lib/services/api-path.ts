@@ -1,7 +1,8 @@
-export const routPath = {
+export const rootPath = {
   login: 'login',
   logout: 'logout',
   students: 'students',
+  userType: 'userType',
 };
 
 export const subPath = {

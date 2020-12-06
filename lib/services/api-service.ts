@@ -12,7 +12,7 @@ import {
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import { LoginRequest, LoginResponse } from '../model/login';
-import { routPath, subPath } from './path';
+import { rootPath, subPath } from './api-path';
 
 const axiosInstance = axios.create({
   withCredentials: true,
@@ -97,36 +97,43 @@ class ApiService extends BaseApiService {
    * !FIXME: 加密码用户信息
    */
   login(req: LoginRequest): Promise<IResponse<LoginResponse>> {
-    return this.get<IResponse<LoginResponse>>(routPath.login, (req as unknown) as QueryParams).then(
+    return this.get<IResponse<LoginResponse>>(rootPath.login, (req as unknown) as QueryParams).then(
       this.showMessage()
     );
   }
 
+  /**
+   * ? unused get user type by token
+   */
+  getUserType(token: string): Promise<IResponse<string>> {
+    return this.get<IResponse<string>>(rootPath.userType, { token }).then(this.showMessage());
+  }
+
   logout(req: LogoutRequest): Promise<IResponse<LogoutResponse>> {
-    return this.post<IResponse<LogoutResponse>>(routPath.logout, req).then(this.showMessage());
+    return this.post<IResponse<LogoutResponse>>(rootPath.logout, req).then(this.showMessage());
   }
 
   getStudents(req?: StudentsRequest): Promise<IResponse<StudentsResponse>> {
     return this.get<IResponse<StudentsResponse>>(
-      routPath.students,
+      rootPath.students,
       (req as unknown) as QueryParams
     );
   }
 
   addStudent(req: AddStudentRequest): Promise<IResponse<AddStudentResponse>> {
-    return this.post([routPath.students, subPath.add], req).then(this.showMessage(true));
+    return this.post([rootPath.students, subPath.add], req).then(this.showMessage(true));
   }
 
   updateStudent(req: UpdateStudentRequest): Promise<IResponse<UpdateStudentResponse>> {
-    return this.post([routPath.students, subPath.update], req).then(this.showMessage(true));
+    return this.post([rootPath.students, subPath.update], req).then(this.showMessage(true));
   }
 
   deleteStudent(req: DeleteRequest): Promise<IResponse<DeleteResponse>> {
-    return this.delete([routPath.students, subPath.delete], req).then(this.showMessage(true));
+    return this.delete([rootPath.students, subPath.delete], req).then(this.showMessage(true));
   }
 
   getStudent(): Promise<any> {
-    return this.get([routPath.students, subPath.detail]);
+    return this.get([rootPath.students, subPath.detail]);
   }
 }
 

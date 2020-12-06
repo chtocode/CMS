@@ -1,15 +1,15 @@
-import {
-  LogoutOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  SelectOutlined,
-  UserOutlined
-} from '@ant-design/icons';
+import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { routes, SideNav } from '../../lib/constant/routes';
 import apiService from '../../lib/services/api-service';
+import storage from '../../lib/services/storage';
+import { generateKey, getActiveKey } from '../../lib/util';
+import AppBreadcrumb from '../breadcrumb';
+import { useUserType } from '../custom-hooks/login-state';
 
 const { Header, Content, Sider } = Layout;
 
@@ -53,20 +53,65 @@ const StyledContent = styled(Content)`
   min-height: auto;
 `;
 
+const getMenuConfig = (
+  data: SideNav[]
+): { defaultSelectedKeys: string[]; defaultOpenKeys: string[] } => {
+  const key = getActiveKey(data);
+  const defaultSelectedKeys = [key.split('/').pop()];
+  const defaultOpenKeys = key.split('/').slice(0, -1);
+
+  return { defaultSelectedKeys, defaultOpenKeys };
+};
+
+function renderMenuItems(data: SideNav[], parent = ''): JSX.Element[] {
+  const userType = useUserType();
+
+  return data.map((item, index) => {
+    const key = generateKey(item, index);
+
+    if (item.subNav && !!item.subNav.length) {
+      return (
+        <Menu.SubMenu key={key} title={item.label} icon={item.icon}>
+          {renderMenuItems(item.subNav, item.path.join('/'))}
+        </Menu.SubMenu>
+      );
+    } else {
+      return (
+        <Menu.Item key={key} title={item.label} icon={item.icon}>
+          {!!item.path.length || item.label.toLocaleLowerCase() === 'overview' ? (
+            <Link
+              href={['/dashboard', userType, parent, ...item.path]
+                .filter((item) => !!item)
+                .join('/')}
+              replace
+            >
+              {item.label}
+            </Link>
+          ) : (
+            item.label
+          )}
+        </Menu.Item>
+      );
+    }
+  });
+}
+
 export default function AppLayout(props: React.PropsWithChildren<any>) {
   const { children } = props;
   const [collapsed, toggleCollapse] = useState(false);
   const router = useRouter();
-
+  const userType = useUserType();
+  const sideNave = routes.get(userType);
   const onLogout = async () => {
-    const { data: isLogout } = await apiService.logout({ token: localStorage.getItem('token') });
+    const { data: isLogout } = await apiService.logout({ token: storage.token });
 
     if (isLogout) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('loginType');
+      storage.deleteUserInfo();
       router.push('/login');
     }
   };
+  const menuItems = renderMenuItems(sideNave);
+  const { defaultOpenKeys, defaultSelectedKeys } = getMenuConfig(sideNave);
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -76,14 +121,13 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
         onCollapse={(isCollapsed) => toggleCollapse(isCollapsed)}
       >
         {<Logo>CMS</Logo>}
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<UserOutlined />} style={{ marginTop: 0 }}>
-            学员列表
-          </Menu.Item>
-
-          <Menu.Item key="2" icon={<SelectOutlined />}>
-            选择学员
-          </Menu.Item>
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultOpenKeys={defaultOpenKeys}
+          defaultSelectedKeys={defaultSelectedKeys}
+        >
+          {menuItems}
         </Menu>
       </Sider>
 
@@ -97,6 +141,8 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
             <LogoutOutlined onClick={onLogout} />
           </HeaderIcon>
         </StyledLayoutHeader>
+
+        <AppBreadcrumb />
 
         <StyledContent>{children}</StyledContent>
       </Layout>

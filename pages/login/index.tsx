@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Role } from '../../lib/constant';
 import { LoginFormValues } from '../../lib/model/login';
 import apiService from '../../lib/services/api-service';
+import storage from '../../lib/services/storage';
 
 const { Title } = Typography;
 
@@ -28,8 +29,7 @@ export default function Login() {
     const { data } = await apiService.login(loginRequest);
 
     if (!!data) {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('loginType', data.loginType);
+      storage.setUserInfo(data);
       router.push('dashboard');
     }
   };
