@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "admin",
+    "typeId": 2,
+    "area": "New Zealand",
+    "address": "Rosemont Avenue Melbourne,Florida",
+    "phone": 13899990000,
+    "ctime": "2020-06-19 15:29:58",
+    "email": "student@admin.com",
+    "updateAt": "2020-12-01 13:22: 03",
+    "gender": 1,
+    "education": "PHD",
+    "age": 20,
+    "interest": ["php", "c#", "java", "javaScript", "html", "css", "c"],
+    "studentCourseIds": [10, 11, 12, 21],
+    "avatar": "http://v.bootstrapmb.com/2020/11/cbgse9169/images/profile/profile.png",
+    "memberStartAt": "2020-12-01 00:00:00",
+    "memberEndAt": "2020-12-31 00:00:00",
+    "description": "A wonderful serenity has taken possession of my entire soul,like these sweet mornings of spring which I enjoy with my whole heart. I am alone,and feel the charm of existence was created for the bliss of souls like mine.I am so happy,my dear friend,so absorbed in the exquisite sense of mere tranquil existence,that I neglect my talents"
+  },
+  {
+    "id": 2,
+    "name": "铁憨憨",
+    "typeId": 2,
+    "area": "澳洲",
+    "ctime": "2020-06-19 15:29:58",
+    "email": "tiehaha@admin.com",
+    "updateAt": "2020-12-01 13:22: 03",
+    "studentCourseIds": [24, 40, 42],
+    "address": "Rosemont Avenue Melbourne,Florida",
+    "phone": 13899990000,
+    "gender": 1,
+    "education": "PHD",
+    "age": 20,
+    "interest": ["php", "c#", "java", "javaScript", "html", "css", "c"],
+    "avatar": "http://v.bootstrapmb.com/2020/11/cbgse9169/images/profile/profile.png",
+    "memberStartAt": "2020-12-01 00:00:00",
+    "memberEndAt": "2020-12-31 00:00:00",
+    "description": "A wonderful serenity has taken possession of my entire soul,like these sweet mornings of spring which I enjoy with my whole heart. I am alone,and feel the charm of existence was created for the bliss of souls like mine.I am so happy,my dear friend,so absorbed in the exquisite sense of mere tranquil existence,that I neglect my talents"
+  }
+]

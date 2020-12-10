@@ -9,8 +9,10 @@ import styled from 'styled-components';
 import ModalForm from '../../../../components/common/modal-form';
 import Layout from '../../../../components/layout/layout';
 import AddStudentForm from '../../../../components/students/add-student';
-import { Student, StudentCourse } from '../../../../lib/model';
+import { Student } from '../../../../lib/model';
+import { CourseShort } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
+
 
 const Search = styled(Input.Search)`
   width: 30%;
@@ -72,7 +74,7 @@ export default function Dashboard() {
       title: 'Selected Curriculum',
       dataIndex: 'courses',
       width: '25%',
-      render: (courses: StudentCourse[]) => courses?.map((item) => item.name).join(','),
+      render: (courses: CourseShort[]) => courses?.map((item) => item.name).join(','),
     },
     {
       title: 'Student Type',

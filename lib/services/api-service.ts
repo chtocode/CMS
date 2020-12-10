@@ -5,6 +5,7 @@ import {
   AddStudentResponse,
   LogoutRequest,
   LogoutResponse,
+  StudentResponse,
   StudentsRequest,
   StudentsResponse,
   UpdateStudentRequest,
@@ -132,8 +133,8 @@ class ApiService extends BaseApiService {
     return this.delete([rootPath.students, subPath.delete], req).then(this.showMessage(true));
   }
 
-  getStudent(): Promise<any> {
-    return this.get([rootPath.students, subPath.detail]);
+  getStudent(id: number): Promise<IResponse<StudentResponse>> {
+    return this.get(rootPath.student, { id }).then(this.showMessage());
   }
 }
 

@@ -1,11 +1,7 @@
 import { Paginator, ResponseWithPaginator } from './api';
+import { Course, CourseShort } from './course';
 
-export interface StudentCourse {
-  id: number;
-  name: string;
-}
-
-export interface Student {
+export interface Student<T = CourseShort> {
   id: number;
   name: string;
   typeId: number;
@@ -14,7 +10,7 @@ export interface Student {
   area: string;
   ctime: string;
   email: string;
-  courses: StudentCourse[];
+  courses: T[];
 }
 
 export interface StudentsRequest extends Partial<Paginator> {
@@ -41,3 +37,21 @@ export interface UpdateStudentRequest extends AddStudentRequest {
 }
 
 export type UpdateStudentResponse = Student;
+
+export interface StudentRequest {
+  id: number;
+}
+
+export type StudentResponse = StudentProfile;
+export interface StudentProfile extends Student<Course> {
+  address: string;
+  phone: number;
+  gender: number;
+  education: string;
+  age: number;
+  interest: string[];
+  avatar: string;
+  memberStartAt: string;
+  memberEndAt: string;
+  description: string;
+}
