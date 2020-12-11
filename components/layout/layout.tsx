@@ -131,7 +131,7 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
         </Menu>
       </Sider>
 
-      <Layout>
+      <Layout id="contentLayout">
         <StyledLayoutHeader>
           <HeaderIcon onClick={() => toggleCollapse(!collapsed)}>
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}

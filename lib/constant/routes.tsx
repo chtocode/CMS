@@ -1,10 +1,13 @@
 import {
   AlibabaOutlined,
+  CaretUpOutlined,
+
   FileOutlined,
   PlayCircleOutlined,
   SelectOutlined,
   TeamOutlined,
   UpOutlined,
+  UserAddOutlined,
   UserOutlined,
   YoutubeOutlined
 } from '@ant-design/icons';
@@ -20,6 +23,8 @@ export enum RoutePath {
   students = 'students',
   selectStudents = 'selectStudents',
   courses = 'courses',
+  add = 'add',
+  edit = 'edit',
 }
 
 export interface SideNav {
@@ -47,9 +52,13 @@ const students: SideNav = {
 };
 
 const courses: SideNav = {
-  path: [RoutePath.courses],
+  path: [],
   label: 'Courses',
   icon: <FileOutlined />,
+  subNav: [
+    { path: [RoutePath.courses], label: 'All Courses', icon: <CaretUpOutlined /> },
+    { path: [RoutePath.add], label: 'Add', icon: <UserAddOutlined /> },
+  ],
 };
 
 const teachers: SideNav = {

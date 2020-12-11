@@ -12,8 +12,9 @@ import {
   UpdateStudentResponse
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
+import { CourseRequest, CourseResponse } from '../model/course';
 import { LoginRequest, LoginResponse } from '../model/login';
-import { rootPath, subPath } from './api-path';
+import { RootPath, SubPath } from './api-path';
 
 const axiosInstance = axios.create({
   withCredentials: true,
@@ -98,7 +99,7 @@ class ApiService extends BaseApiService {
    * !FIXME: 加密码用户信息
    */
   login(req: LoginRequest): Promise<IResponse<LoginResponse>> {
-    return this.get<IResponse<LoginResponse>>(rootPath.login, (req as unknown) as QueryParams).then(
+    return this.get<IResponse<LoginResponse>>(RootPath.login, (req as unknown) as QueryParams).then(
       this.showMessage()
     );
   }
@@ -107,34 +108,38 @@ class ApiService extends BaseApiService {
    * ? unused get user type by token
    */
   getUserType(token: string): Promise<IResponse<string>> {
-    return this.get<IResponse<string>>(rootPath.userType, { token }).then(this.showMessage());
+    return this.get<IResponse<string>>(RootPath.userType, { token }).then(this.showMessage());
   }
 
   logout(req: LogoutRequest): Promise<IResponse<LogoutResponse>> {
-    return this.post<IResponse<LogoutResponse>>(rootPath.logout, req).then(this.showMessage());
+    return this.post<IResponse<LogoutResponse>>(RootPath.logout, req).then(this.showMessage());
   }
 
   getStudents(req?: StudentsRequest): Promise<IResponse<StudentsResponse>> {
     return this.get<IResponse<StudentsResponse>>(
-      rootPath.students,
+      RootPath.students,
       (req as unknown) as QueryParams
     );
   }
 
   addStudent(req: AddStudentRequest): Promise<IResponse<AddStudentResponse>> {
-    return this.post([rootPath.students, subPath.add], req).then(this.showMessage(true));
+    return this.post([RootPath.students, SubPath.add], req).then(this.showMessage(true));
   }
 
   updateStudent(req: UpdateStudentRequest): Promise<IResponse<UpdateStudentResponse>> {
-    return this.post([rootPath.students, subPath.update], req).then(this.showMessage(true));
+    return this.post([RootPath.students, SubPath.update], req).then(this.showMessage(true));
   }
 
   deleteStudent(req: DeleteRequest): Promise<IResponse<DeleteResponse>> {
-    return this.delete([rootPath.students, subPath.delete], req).then(this.showMessage(true));
+    return this.delete([RootPath.students, SubPath.delete], req).then(this.showMessage(true));
   }
 
   getStudent(id: number): Promise<IResponse<StudentResponse>> {
-    return this.get(rootPath.student, { id }).then(this.showMessage());
+    return this.get(RootPath.student, { id }).then(this.showMessage());
+  }
+
+  getCourses(req: CourseRequest): Promise<IResponse<CourseResponse>> {
+    return this.get(RootPath.courses, { ...req }).then(this.showMessage());
   }
 }
 

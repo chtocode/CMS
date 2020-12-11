@@ -1,13 +1,14 @@
-export const rootPath = {
-  login: 'login',
-  logout: 'logout',
-  students: 'students',
-  student: 'student',
-  userType: 'userType',
-};
+export enum RootPath {
+  login = 'login',
+  logout = 'logout',
+  students = 'students',
+  student = 'student',
+  userType = 'userType',
+  courses = 'courses',
+}
 
-export const subPath = {
-  add: 'add',
-  update: 'update',
-  delete: 'delete'
-};
+export enum SubPath {
+  add = 'add',
+  update = 'update',
+  delete = 'delete',
+}

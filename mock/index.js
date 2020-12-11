@@ -8,6 +8,7 @@ const studentCourses = require('./student_course.json');
 const studentTypes = require('./student_type.json');
 const courseTypes = require('./course_type.json');
 const studentProfile = require('./student-profile.json');
+const teachers = require('./teacher.json');
 
 export default function makeServer({ environment = 'test' } = {}) {
   let server = new Server({
@@ -23,6 +24,7 @@ export default function makeServer({ environment = 'test' } = {}) {
       courseType: Model,
       course: Model.extend({
         type: belongsTo('courseType'),
+        teacher: belongsTo(),
       }),
       studentCourse: Model.extend({
         course: belongsTo(),
@@ -31,16 +33,18 @@ export default function makeServer({ environment = 'test' } = {}) {
         studentCourses: hasMany(),
         type: belongsTo('studentType'),
       }),
+      teacher: Model,
     },
 
     seeds(server) {
       users.forEach((user) => server.create('user', user));
+      teachers.forEach((teacher) => server.create('teacher', teacher));
       courseTypes.forEach((type) => server.create('courseType', type));
       courses.forEach((course) => server.create('course', course));
       studentCourses.forEach((course) => server.create('studentCourse', course));
       studentTypes.forEach((type) => server.create('studentType', type));
       students.forEach((student) => server.create('student', student));
-      studentProfile.forEach(student => server.create('studentProfile', student));
+      studentProfile.forEach((student) => server.create('studentProfile', student));
     },
 
     routes() {
@@ -66,7 +70,7 @@ export default function makeServer({ environment = 'test' } = {}) {
             {},
             {
               data: {
-                token: Math.random().toString(32).split('.')[1] + '~' + loginType,
+                token: Math.random().toString(32).split('.')[1] + '~' + req.loginType,
                 loginType: req.loginType,
               },
               code: 200,
@@ -181,7 +185,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         let courses = [];
 
         if (studentCourses.length) {
-          courses = studentCourses.models.map(item => { 
+          courses = studentCourses.models.map((item) => {
             item.attrs.name = item.course.name;
             item.attrs.type = item.course.type.name;
             return item;
@@ -195,6 +199,24 @@ export default function makeServer({ environment = 'test' } = {}) {
           return new Response(200, {}, { msg: 'success', code: 200, data: student });
         } else {
           return new Response(400, {}, { msg: `can\'t find student by id ${id} `, code: 400 });
+        }
+      });
+
+      this.get('/courses', (schema, req) => {
+        const { page, limit } = req.queryParams;
+        let courses = schema.courses.all().models;
+        const total = courses.length;
+
+        courses = courses.slice(page - 1, page * limit);
+
+        courses.forEach((item) => {
+          item.attrs.teacher = item.teacher.name;
+        });
+
+        if (courses) {
+          return new Response(200, {}, { msg: 'success', code: 200, data: { total, courses } });
+        } else {
+          return new Response(500, {}, { msg: 'server error', code: 500 });
         }
       });
     },
