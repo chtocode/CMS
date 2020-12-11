@@ -12,7 +12,7 @@ import {
   UpdateStudentResponse
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
-import { CourseRequest, CourseResponse } from '../model/course';
+import { CourseDetailResponse, CourseRequest, CourseResponse } from '../model/course';
 import { LoginRequest, LoginResponse } from '../model/login';
 import { RootPath, SubPath } from './api-path';
 
@@ -140,6 +140,10 @@ class ApiService extends BaseApiService {
 
   getCourses(req: CourseRequest): Promise<IResponse<CourseResponse>> {
     return this.get(RootPath.courses, { ...req }).then(this.showMessage());
+  }
+
+  getCourse(id: number): Promise<IResponse<CourseDetailResponse>> {
+    return this.get(RootPath.course, { id }).then(this.showMessage());
   }
 }
 

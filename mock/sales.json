@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "batches": 4,
+    "price": 99,
+    "earnings": 400,
+    "paidAmount": 4,
+    "studentAmount": 99,
+    "paidIds": [1, 2, 3, 4]
+  },
+  {
+    "id": 2,
+    "batches": 4,
+    "price": 99,
+    "earnings": 400,
+    "paidAmount": 4,
+    "studentAmount": 99,
+    "paidIds": [1, 2, 3, 4]
+  },
+  {
+    "id": 3,
+    "batches": 4,
+    "price": 99,
+    "earnings": 400,
+    "paidAmount": 4,
+    "studentAmount": 99,
+    "paidIds": [1, 2, 3, 4]
+  }
+]

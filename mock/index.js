@@ -9,6 +9,8 @@ const studentTypes = require('./student_type.json');
 const courseTypes = require('./course_type.json');
 const studentProfile = require('./student-profile.json');
 const teachers = require('./teacher.json');
+const sales = require('./sales.json');
+const process = require('./process.json');
 
 export default function makeServer({ environment = 'test' } = {}) {
   let server = new Server({
@@ -25,6 +27,8 @@ export default function makeServer({ environment = 'test' } = {}) {
       course: Model.extend({
         type: belongsTo('courseType'),
         teacher: belongsTo(),
+        sales: belongsTo(),
+        process: belongsTo(),
       }),
       studentCourse: Model.extend({
         course: belongsTo(),
@@ -34,12 +38,16 @@ export default function makeServer({ environment = 'test' } = {}) {
         type: belongsTo('studentType'),
       }),
       teacher: Model,
+      sales: Model,
+      process: Model,
     },
 
     seeds(server) {
       users.forEach((user) => server.create('user', user));
       teachers.forEach((teacher) => server.create('teacher', teacher));
       courseTypes.forEach((type) => server.create('courseType', type));
+      sales.forEach((sale) => server.create('sale', sale));
+      process.forEach(process => server.create('process', process));
       courses.forEach((course) => server.create('course', course));
       studentCourses.forEach((course) => server.create('studentCourse', course));
       studentTypes.forEach((type) => server.create('studentType', type));
@@ -217,6 +225,22 @@ export default function makeServer({ environment = 'test' } = {}) {
           return new Response(200, {}, { msg: 'success', code: 200, data: { total, courses } });
         } else {
           return new Response(500, {}, { msg: 'server error', code: 500 });
+        }
+      });
+
+      this.get('/course', (schema, req) => { 
+        const id = req.queryParams.id;
+        const course = schema.courses.findBy({ id });
+
+        course.attrs.teacher = course.teacher.name;
+        course.attrs.sales = course.sales;
+        course.attrs.typeName = course.type.name;
+        course.attrs.process = course.process;
+
+        if(!!course) {
+          return new Response(200, {}, { msg: 'success', code: 200, data: course });
+        } else {
+          return new Response(400, {}, { msg: `can\'t find course by id ${id} `, code: 400 });
         }
       });
     },

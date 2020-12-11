@@ -5,6 +5,7 @@ export enum RootPath {
   student = 'student',
   userType = 'userType',
   courses = 'courses',
+  course = 'course',
 }
 
 export enum SubPath {
