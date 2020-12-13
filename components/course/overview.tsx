@@ -1,10 +1,10 @@
 import { HeartFilled, UserOutlined } from '@ant-design/icons';
 import { Card, Col, Row } from 'antd';
 import { CardProps } from 'antd/lib/card';
-import { Gutter } from 'antd/lib/grid/row';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
+import { gutter } from '../../lib/constant';
 import { DurationUnit } from '../../lib/constant/duration';
 import { Course } from '../../lib/model/course';
 
@@ -30,7 +30,6 @@ const getDuration = (data: Course): string => {
 export default function CourseOverview(
   props: React.PropsWithChildren<Course> & { cardProps?: CardProps }
 ) {
-  const gutter: [Gutter, Gutter] = [6, 16];
 
   return (
     <Card cover={<img src={props.cover} />} {...props.cardProps}>

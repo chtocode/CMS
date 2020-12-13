@@ -7,6 +7,22 @@
         "ssr": true,
         "displayName": true
       }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": false
+      }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "@ant-design/icons",
+        "libraryDirectory": "lib/icons",
+        "camel2DashComponentName": false
+      },
+      "@ant-design/icons"
     ]
   ]
 }

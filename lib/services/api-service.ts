@@ -8,11 +8,24 @@ import {
   StudentResponse,
   StudentsRequest,
   StudentsResponse,
+  Teacher,
+  TeachersRequest,
+  TeachersResponse,
   UpdateStudentRequest,
-  UpdateStudentResponse
+  UpdateStudentResponse,
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
-import { CourseDetailResponse, CourseRequest, CourseResponse } from '../model/course';
+import {
+  AddCourseRequest,
+  AddCourseResponse,
+  CourseDetailResponse,
+  CourseRequest,
+  CourseResponse,
+  CourseType,
+  ProcessRequest,
+  UpdateCourseRequest,
+  UpdateCourseResponse,
+} from '../model/course';
 import { LoginRequest, LoginResponse } from '../model/login';
 import { RootPath, SubPath } from './api-path';
 
@@ -134,7 +147,7 @@ class ApiService extends BaseApiService {
     return this.delete([RootPath.students, SubPath.delete], req).then(this.showMessage(true));
   }
 
-  getStudent(id: number): Promise<IResponse<StudentResponse>> {
+  getStudentById(id: number): Promise<IResponse<StudentResponse>> {
     return this.get(RootPath.student, { id }).then(this.showMessage());
   }
 
@@ -142,8 +155,39 @@ class ApiService extends BaseApiService {
     return this.get(RootPath.courses, { ...req }).then(this.showMessage());
   }
 
-  getCourse(id: number): Promise<IResponse<CourseDetailResponse>> {
+  getCourseById(id: number): Promise<IResponse<CourseDetailResponse>> {
     return this.get(RootPath.course, { id }).then(this.showMessage());
+  }
+
+  addCourse(req: AddCourseRequest): Promise<IResponse<AddCourseResponse>> {
+    return this.post([RootPath.courses, SubPath.add], req).then(this.showMessage(true));
+  }
+
+  updateProcess(req: ProcessRequest): Promise<IResponse<boolean>> {
+    return this.post([RootPath.courses, SubPath.process], req).then(this.showMessage(true));
+  }
+
+  updateCourse(req: UpdateCourseRequest): Promise<IResponse<UpdateCourseResponse>> {
+    return this.post([RootPath.course, SubPath.update], req).then(this.showMessage(true));
+  }
+
+  createCourseCode(): Promise<IResponse<string>> {
+    return this.get([RootPath.course, SubPath.code]).then(this.showMessage());
+  }
+
+  getCourseTypes(): Promise<IResponse<CourseType[]>> {
+    return this.get([RootPath.course, SubPath.type]).then(this.showMessage());
+  }
+
+  getTeachers(req?: TeachersRequest): Promise<IResponse<TeachersResponse>> {
+    return this.get<IResponse<TeachersResponse>>(
+      RootPath.teachers,
+      (req as unknown) as QueryParams
+    ).then(this.showMessage());
+  }
+
+  getTeacherById(id: number): Promise<IResponse<Teacher>> {
+    return this.get(RootPath.teachers, { id }).then(this.showMessage());
   }
 }
 

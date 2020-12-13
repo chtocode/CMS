@@ -47,7 +47,7 @@ export default function makeServer({ environment = 'test' } = {}) {
       teachers.forEach((teacher) => server.create('teacher', teacher));
       courseTypes.forEach((type) => server.create('courseType', type));
       sales.forEach((sale) => server.create('sale', sale));
-      process.forEach(process => server.create('process', process));
+      process.forEach((process) => server.create('process', process));
       courses.forEach((course) => server.create('course', course));
       studentCourses.forEach((course) => server.create('studentCourse', course));
       studentTypes.forEach((type) => server.create('studentType', type));
@@ -57,7 +57,10 @@ export default function makeServer({ environment = 'test' } = {}) {
 
     routes() {
       this.passthrough((request) => {
-        if (request.url === '/_next/static/development/_devPagesManifest.json') {
+        if (
+          request.url === '/_next/static/development/_devPagesManifest.json' ||
+          request.url.includes('mocky.io') // 忽略上传图片的路径
+        ) {
           return true;
         }
       });
@@ -149,7 +152,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         });
 
         data.attrs.typeName = data.type.name;
-
+ 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
 
@@ -215,7 +218,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         let courses = schema.courses.all().models;
         const total = courses.length;
 
-        courses = courses.slice(page - 1, page * limit);
+        courses = courses.slice((page - 1) * limit, page * limit);
 
         courses.forEach((item) => {
           item.attrs.teacher = item.teacher.name;
@@ -228,7 +231,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
-      this.get('/course', (schema, req) => { 
+      this.get('/course', (schema, req) => {
         const id = req.queryParams.id;
         const course = schema.courses.findBy({ id });
 
@@ -237,11 +240,138 @@ export default function makeServer({ environment = 'test' } = {}) {
         course.attrs.typeName = course.type.name;
         course.attrs.process = course.process;
 
-        if(!!course) {
+        if (!!course) {
           return new Response(200, {}, { msg: 'success', code: 200, data: course });
         } else {
           return new Response(400, {}, { msg: `can\'t find course by id ${id} `, code: 400 });
         }
+      });
+
+      this.get('/course/code', (schema, req) => {
+        const data = Math.random().toString(32).split('.')[1];
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.get('/course/type', (schema, req) => {
+        const data = schema.courseTypes.all().models;
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.post('/courses/add', (schema, req) => {
+        const body = JSON.parse(req.requestBody);
+        const {
+          name,
+          uid,
+          cover,
+          detail,
+          duration,
+          maxStudents,
+          price,
+          startTime,
+          type,
+          durationUnit,
+          teacherId,
+        } = body;
+        const process = schema.processes.create({
+          status: 0,
+          current: 0,
+          classTime: null,
+          chapters: null,
+        });
+        const sales = schema.sales.create({
+          batches: 0,
+          price,
+          earnings: 0,
+          paidAmount: 0,
+          studentAmount: 0,
+          paidIds: [],
+        });
+        const data = schema.db.courses.insert({
+          name,
+          uid,
+          detail,
+          startTime,
+          price,
+          maxStudents,
+          sales,
+          process,
+          star: 0,
+          status: 0,
+          duration,
+          durationUnit,
+          cover,
+          teacherId,
+          typeId: type,
+          ctime: format(new Date(), 'yyyy-MM-dd hh:mm:ss'),
+        });
+
+        data.typeName = schema.courseTypes.findBy({ id: type }).name;
+        data.processId = +process.id;
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.post('/courses/process', (schema, req) => {
+        const body = JSON.parse(req.requestBody);
+        const { processId, courseId } = body;
+        let target;
+
+        if (!!processId || !!courseId) {
+          if (processId) {
+            target = schema.processes.findBy({ id: processId });
+          } else {
+            target = schema.courses.findBy({ id: courseId }).process;
+          }
+          const { classTime, chapters } = body;
+
+          target.update({
+            current: 0,
+            status: 0,
+            chapters: chapters.map((item, index) => ({ ...item, id: index })),
+            classTime,
+          });
+
+          return new Response(200, {}, { msg: 'success', code: 200, data: true });
+        } else {
+          return new Response(
+            400,
+            {},
+            {
+              msg: `can\'t find process by course ${courseId} or processId ${processId} `,
+              code: 400,
+            }
+          );
+        }
+      });
+
+      this.get('/teachers', (schema, req) => {
+        const { query } = req.queryParams;
+        const limit = +req.queryParams.limit;
+        const page = +req.queryParams.page;
+        const all = schema.teachers.all();
+        let teachers = all.filter(
+          (item) => !query || item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+        ).models;
+        const total = !query ? all.length : teachers.length;
+        let data = { total, teachers };
+
+        if (limit && page) {
+          const start = limit * (page - 1);
+
+          teachers = teachers.slice(start, start + limit);
+          data = { ...data, paginator: { limit, page, total } };
+        }
+
+        return new Response(200, {}, { data: { ...data, teachers }, msg: 'success', code: 200 });
+      });
+
+      this.get('/teacher', (schema, req) => {
+        const id = req.queryParams.id;
+        const data = schema.teachers.findBy({ id });
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
       });
     },
   });

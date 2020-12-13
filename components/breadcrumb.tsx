@@ -35,7 +35,7 @@ export default function AppBreadcrumb() {
                   name,
                   'subNav'
                 )(sideNav);
-                
+
                 return (
                   <Breadcrumb.Item key={index}>
                     {index === sub.length - 1 || !target.path.length ? (

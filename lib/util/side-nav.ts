@@ -11,7 +11,7 @@ export const generateKey = (data: SideNav, index: number): string => {
 };
 
 /**
- *  通过key获取当前sideNav的名称，也就是label 
+ *  通过key获取当前sideNav的名称，也就是label
  */
 export const getSideNavNameByKey = (key: string): string[] => {
   return key.split('/').map((item) => item.split('_')[0]);
@@ -52,14 +52,14 @@ const generateFactory = (fn: (data: SideNav, index: number) => string) =>
 /**
  * 判断当前路径是否指向一个详情页
  */
-const isDetailPath = (path: string): boolean => { 
+const isDetailPath = (path: string): boolean => {
   const paths = path.split('/');
   const length = paths.length;
-  const last = paths[length -1];
+  const last = paths[length - 1];
   const reg = /\[.*\]/;
 
   return reg.test(last);
-}
+};
 
 /**
  * 忽略详情路径上的参数路径
@@ -68,7 +68,7 @@ const omitDetailPath = (path: string): string => {
   const isDetail = isDetailPath(path);
 
   return isDetail ? path.slice(0, path.lastIndexOf('/')) : path;
-}
+};
 
 /**
  * 根据路由信息找出生成当前side nav 的 key，path 信息
@@ -93,7 +93,7 @@ const memoizedGetKeyPathInfo = memoize(getKeyPathInfo, (data) =>
 );
 
 /**
- * 获取当前活动的sideNav 
+ * 获取当前活动的sideNav
  */
 export const getActiveKey = (data: SideNav[]) => {
   const router = useRouter();
@@ -108,7 +108,7 @@ export const getActiveKey = (data: SideNav[]) => {
  * 根据路径获取sideNav名称
  */
 export const getSideNavNameByPath = (data: SideNav[], path: string): string[] => {
-  if(isDetailPath(path)) {
+  if (isDetailPath(path)) {
     return ['Detail'];
   }
 

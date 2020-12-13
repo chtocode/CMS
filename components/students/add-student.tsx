@@ -1,12 +1,9 @@
 import { Button, Form, Input, Select } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
+import { validateMessages } from '../../lib/constant';
 import { Student } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
-
-const validateMessages = {
-  required: '${name} is required',
-};
 
 const ModalFormSubmit = styled(Form.Item)`
   position: absolute;
@@ -45,7 +42,7 @@ export default function AddStudentForm(props: AddStudentFormProps): JSX.Element 
         response.then((response) => {
           const { data } = response;
 
-          if (onFinish) {
+          if (onFinish && data) {
             onFinish(data);
           }
         });

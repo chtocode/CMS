@@ -78,20 +78,23 @@ export default function Page(props: { id: number }) {
   useEffect(() => {
     (async () => {
       const id = +router.query.id || props.id;
-      const { data } = await apiService.getCourse(id);
-      const sales = data.sales;
-      const info = [
-        { label: 'Price', value: sales.price },
-        { label: 'Batches', value: sales.batches },
-        { label: 'Students', value: sales.studentAmount },
-        { label: 'Earings', value: sales.earnings },
-      ];
+      const { data } = await apiService.getCourseById(id);
+      
+      if (data) {
+        const sales = data.sales;
+        const info = [
+          { label: 'Price', value: sales.price },
+          { label: 'Batches', value: sales.batches },
+          { label: 'Students', value: sales.studentAmount },
+          { label: 'Earings', value: sales.earnings },
+        ];
 
-      setInfo(info);
-      setActiveChapterIndex(
-        data.process.chapters.findIndex((item) => item.id === data.process.current)
-      );
-      setData(data);
+        setInfo(info);
+        setActiveChapterIndex(
+          data.process.chapters.findIndex((item) => item.id === data.process.current)
+        );
+        setData(data);
+      }
     })();
   }, []);
 

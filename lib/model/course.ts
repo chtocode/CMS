@@ -12,7 +12,7 @@ type CourseStatus = 0 | 1 | 2;
 export interface Course {
   id: number;
   name: string;
-  uid: string;
+  uid: string; //code
   detail: string;
   startTime: string;
   price: number;
@@ -25,6 +25,7 @@ export interface Course {
   teacher: number;
   typeName: string;
   ctime: string;
+  processId: number;
 }
 
 export type CourseRequest = Paginator;
@@ -64,3 +65,36 @@ export interface CourseDetail extends Course {
 }
 
 export type CourseDetailResponse = CourseDetail;
+
+export interface CourseType {
+  id: number;
+  name: string;
+}
+
+export type AddCourseRequest = Pick<
+  Course,
+  | 'cover'
+  | 'detail'
+  | 'duration'
+  | 'durationUnit'
+  | 'maxStudents'
+  | 'name'
+  | 'price'
+  | 'startTime'
+  | 'uid'
+> & { type: number; teacherId: number };
+
+export type AddCourseResponse = Course;
+
+export interface UpdateCourseRequest {
+  id: number;
+}
+
+export type UpdateCourseResponse = Course;
+
+export interface ProcessRequest {
+  processId?: number;
+  courseId?: number;
+  chapters: Omit<Chapter, 'id'>[];
+  classTime: string[];
+}

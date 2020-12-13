@@ -25,6 +25,7 @@ export enum RoutePath {
   courses = 'courses',
   add = 'add',
   edit = 'edit',
+  addCourse = 'add-course',
 }
 
 export interface SideNav {
@@ -57,7 +58,7 @@ const courses: SideNav = {
   icon: <FileOutlined />,
   subNav: [
     { path: [RoutePath.courses], label: 'All Courses', icon: <CaretUpOutlined /> },
-    { path: [RoutePath.add], label: 'Add', icon: <UserAddOutlined /> },
+    { path: [RoutePath.addCourse], label: 'Add Course', icon: <UserAddOutlined /> },
   ],
 };
 

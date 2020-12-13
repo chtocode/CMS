@@ -68,7 +68,7 @@ export default function Page(props: { id: number }) {
   useEffect(() => {
     (async () => {
       const id = +router.query.id || props.id;
-      const { data } = await apiService.getStudent(id);
+      const { data } = await apiService.getStudentById(id);
       const info = [
         { label: 'Name', value: data.name },
         { label: 'Age', value: data.age },

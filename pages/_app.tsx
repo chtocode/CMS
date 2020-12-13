@@ -1,7 +1,6 @@
-import 'antd/dist/antd.css';
 import Head from 'next/head';
-import makeServer from '../mock/index';
-import '../styles/globals.css';
+import makeServer from '../mock';
+import '../styles/globals.less';
 
 if (process.env.NODE_ENV === 'development') {
   makeServer({ environment: 'development' });
