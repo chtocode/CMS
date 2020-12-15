@@ -12,7 +12,7 @@ import {
   TeachersRequest,
   TeachersResponse,
   UpdateStudentRequest,
-  UpdateStudentResponse
+  UpdateStudentResponse,
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import {
@@ -22,11 +22,10 @@ import {
   CourseRequest,
   CourseResponse,
   CourseType,
-
-  Schedule, ScheduleRequest,
-
+  Schedule,
+  ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse
+  UpdateCourseResponse,
 } from '../model/course';
 import { LoginRequest, LoginResponse } from '../model/login';
 import { RootPath, SubPath } from './api-path';

@@ -1,21 +1,19 @@
 import {
-  AlibabaOutlined,
-  CaretUpOutlined,
-
+  DashboardOutlined,
+  DeploymentUnitOutlined,
   EditOutlined,
-
-  FileOutlined,
-  PlayCircleOutlined,
+  FileAddOutlined,
+  ProjectOutlined,
+  ReadOutlined,
   SelectOutlined,
+  SolutionOutlined,
   TeamOutlined,
-  UpOutlined,
-  UserAddOutlined,
-  UserOutlined,
-  YoutubeOutlined
+  UpOutlined
 } from '@ant-design/icons';
 import React from 'react';
 import { Role } from '../model';
 import { Role as Roles } from './role';
+
 /**
  * router path
  */
@@ -41,9 +39,9 @@ export interface SideNav {
 const students: SideNav = {
   path: [],
   label: 'Students',
-  icon: <YoutubeOutlined />,
+  icon: <SolutionOutlined />,
   subNav: [
-    { path: [RoutePath.students], label: 'Student List', icon: <UserOutlined /> },
+    { path: [RoutePath.students], label: 'Student List', icon: <TeamOutlined /> },
     {
       path: [RoutePath.selectStudents],
       label: 'Select Students',
@@ -56,10 +54,10 @@ const students: SideNav = {
 const courses: SideNav = {
   path: [],
   label: 'Courses',
-  icon: <FileOutlined />,
+  icon: <ReadOutlined />,
   subNav: [
-    { path: [RoutePath.courses], label: 'All Courses', icon: <CaretUpOutlined /> },
-    { path: [RoutePath.addCourse], label: 'Add Course', icon: <UserAddOutlined /> },
+    { path: [RoutePath.courses], label: 'All Courses', icon: <ProjectOutlined /> },
+    { path: [RoutePath.addCourse], label: 'Add Course', icon: <FileAddOutlined /> },
     { path: [RoutePath.editCourse], label: 'Edit Course', icon: <EditOutlined /> },
   ],
 };
@@ -67,7 +65,7 @@ const courses: SideNav = {
 const teachers: SideNav = {
   path: [],
   label: 'Teachers',
-  icon: <AlibabaOutlined />,
+  icon: <DeploymentUnitOutlined />,
   subNav: [
     {
       path: [RoutePath.teachers],
@@ -81,7 +79,7 @@ const teachers: SideNav = {
 const overview: SideNav = {
   path: [],
   label: 'Overview',
-  icon: <PlayCircleOutlined />,
+  icon: <DashboardOutlined />,
 };
 
 export const routes: Map<Role, SideNav[]> = new Map([
