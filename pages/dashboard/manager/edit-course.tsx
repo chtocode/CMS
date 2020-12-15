@@ -82,7 +82,7 @@ export default function Page() {
         </Tabs.TabPane>
 
         <Tabs.TabPane key="chapter" tab="Course Schedule">
-          <UpdateChapterForm courseId={course?.id} processId={course?.processId} isAdd={false} />
+          <UpdateChapterForm courseId={course?.id} scheduleId={course?.scheduleId} isAdd={false} />
         </Tabs.TabPane>
       </Tabs>
     </AppLayout>

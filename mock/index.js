@@ -10,7 +10,7 @@ const courseTypes = require('./course_type.json');
 const studentProfile = require('./student-profile.json');
 const teachers = require('./teacher.json');
 const sales = require('./sales.json');
-const process = require('./process.json');
+const schedule = require('./schedule.json');
 
 export default function makeServer({ environment = 'test' } = {}) {
   let server = new Server({
@@ -28,7 +28,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         type: belongsTo('courseType'),
         teacher: belongsTo(),
         sales: belongsTo(),
-        process: belongsTo(),
+        schedule: belongsTo(),
       }),
       studentCourse: Model.extend({
         course: belongsTo(),
@@ -39,7 +39,7 @@ export default function makeServer({ environment = 'test' } = {}) {
       }),
       teacher: Model,
       sales: Model,
-      process: Model,
+      schedule: Model,
     },
 
     seeds(server) {
@@ -47,7 +47,7 @@ export default function makeServer({ environment = 'test' } = {}) {
       teachers.forEach((teacher) => server.create('teacher', teacher));
       courseTypes.forEach((type) => server.create('courseType', type));
       sales.forEach((sale) => server.create('sale', sale));
-      process.forEach((process) => server.create('process', process));
+      schedule.forEach((schedule) => server.create('schedule', schedule));
       courses.forEach((course) => server.create('course', course));
       studentCourses.forEach((course) => server.create('studentCourse', course));
       studentTypes.forEach((type) => server.create('studentType', type));
@@ -257,7 +257,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         course.attrs.teacher = course.teacher.name;
         course.attrs.sales = course.sales;
         course.attrs.typeName = course.type.name;
-        course.attrs.process = course.process;
+        course.attrs.schedule = course.schedule;
 
         if (!!course) {
           return new Response(200, {}, { msg: 'success', code: 200, data: course });
@@ -293,7 +293,7 @@ export default function makeServer({ environment = 'test' } = {}) {
           durationUnit,
           teacherId,
         } = body;
-        const process = schema.processes.create({
+        const schedule = schema.schedules.create({
           status: 0,
           current: 0,
           classTime: null,
@@ -315,7 +315,7 @@ export default function makeServer({ environment = 'test' } = {}) {
           price,
           maxStudents,
           sales,
-          process,
+          schedule,
           star: 0,
           status: 0,
           duration,
@@ -327,7 +327,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         });
 
         data.typeName = schema.courseTypes.findBy({ id: typeId }).name;
-        data.processId = +process.id;
+        data.scheduleId = +schedule.id;
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
@@ -349,23 +349,23 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
-      this.get('/courses/process', (schema, req) => { 
+      this.get('/courses/schedule', (schema, req) => { 
         const id = req.queryParams.id;
-        const data = schema.processes.findBy({ id });
+        const data = schema.schedules.findBy({ id });
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
 
-      this.post('/courses/process', (schema, req) => {
+      this.post('/courses/schedule', (schema, req) => {
         const body = JSON.parse(req.requestBody);
-        const { processId, courseId } = body;
+        const { scheduleId, courseId } = body;
         let target;
 
-        if (!!processId || !!courseId) {
-          if (processId) {
-            target = schema.processes.findBy({ id: processId });
+        if (!!scheduleId || !!courseId) {
+          if (scheduleId) {
+            target = schema.schedules.findBy({ id: scheduleId });
           } else {
-            target = schema.courses.findBy({ id: courseId }).process;
+            target = schema.courses.findBy({ id: courseId }).schedule;
           }
           const { classTime, chapters } = body;
 
@@ -382,7 +382,7 @@ export default function makeServer({ environment = 'test' } = {}) {
             400,
             {},
             {
-              msg: `can\'t find process by course ${courseId} or processId ${processId} `,
+              msg: `can\'t find schedule by course ${courseId} or schedule ${scheduleId} `,
               code: 400,
             }
           );

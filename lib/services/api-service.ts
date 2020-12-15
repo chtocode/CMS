@@ -22,8 +22,9 @@ import {
   CourseRequest,
   CourseResponse,
   CourseType,
-  Process,
-  ProcessRequest,
+
+  Schedule, ScheduleRequest,
+
   UpdateCourseRequest,
   UpdateCourseResponse
 } from '../model/course';
@@ -164,16 +165,16 @@ class ApiService extends BaseApiService {
     return this.post([RootPath.courses, SubPath.add], req).then(this.showMessage(true));
   }
 
-  updateProcess(req: ProcessRequest): Promise<IResponse<boolean>> {
-    return this.post([RootPath.courses, SubPath.process], req).then(this.showMessage(true));
+  updateSchedule(req: ScheduleRequest): Promise<IResponse<boolean>> {
+    return this.post([RootPath.courses, SubPath.schedule], req).then(this.showMessage(true));
   }
 
   updateCourse(req: UpdateCourseRequest): Promise<IResponse<UpdateCourseResponse>> {
     return this.post([RootPath.courses, SubPath.update], req).then(this.showMessage(true));
   }
 
-  getProcessById(id: number): Promise<IResponse<Process>> {
-    return this.get<IResponse<Process>>([RootPath.courses, SubPath.process], { id }).then(
+  getScheduleById(id: number): Promise<IResponse<Schedule>> {
+    return this.get<IResponse<Schedule>>([RootPath.courses, SubPath.schedule], { id }).then(
       this.showMessage()
     );
   }

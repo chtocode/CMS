@@ -7,13 +7,13 @@ import { FormListFieldData } from 'antd/lib/form/FormList';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { gutter, validateMessages, weekDays } from '../../lib/constant';
-import { ProcessRequest } from '../../lib/model';
+import { ScheduleRequest } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
 import TimePicker from '../common/time-picker';
 
 export interface AddChapterFormProps {
   courseId?: number;
-  processId?: number;
+  scheduleId?: number;
   onSuccess?: (res: boolean) => void;
   isAdd?: boolean;
 }
@@ -36,7 +36,7 @@ type ChapterFormValue = {
 export default function UpdateChapterForm({
   courseId,
   onSuccess,
-  processId,
+  scheduleId,
   isAdd = true,
 }: AddChapterFormProps) {
   const [form] = useForm<ChapterFormValue>();
@@ -57,16 +57,16 @@ export default function UpdateChapterForm({
     setSelectedWeekdays(result);
   };
   const onFinish = (values: ChapterFormValue) => {
-    if (!courseId && !processId) {
+    if (!courseId && !scheduleId) {
       message.error('You must select a course to update!');
       return;
     }
 
     const { classTime: origin, chapters } = values;
     const classTime = origin.map(({ weekday, time }) => `${weekday} ${format(time, 'hh:mm:ss')}`);
-    const req: ProcessRequest = { chapters, classTime, processId, courseId };
+    const req: ScheduleRequest = { chapters, classTime, scheduleId, courseId };
 
-    apiService.updateProcess(req).then((res) => {
+    apiService.updateSchedule(req).then((res) => {
       const { data } = res;
 
       if (!!onSuccess && data) {
@@ -81,11 +81,11 @@ export default function UpdateChapterForm({
 
   useEffect(() => {
     (async () => {
-      if (!processId || isAdd) {
+      if (!scheduleId || isAdd) {
         return;
       }
 
-      const { data } = await apiService.getProcessById(processId);
+      const { data } = await apiService.getScheduleById(scheduleId);
 
       if (!!data) {
         const classTimes = data.classTime.map((item) => {
@@ -98,12 +98,12 @@ export default function UpdateChapterForm({
         setSelectedWeekdays(classTimes.map((item) => item.weekday));
       }
     })();
-  }, [processId]);
+  }, [scheduleId]);
 
   return (
     <Form
       form={form}
-      name="process"
+      name="schedule"
       onFinish={onFinish}
       autoComplete="off"
       validateMessages={validateMessages}

@@ -15,5 +15,5 @@ export enum SubPath {
   delete = 'delete',
   code = 'code',
   type = 'type',
-  process = 'process',
+  schedule = 'schedule',
 }

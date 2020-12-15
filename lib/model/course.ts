@@ -27,7 +27,7 @@ export interface Course {
   typeName: string;
   typeId: number;
   ctime: string;
-  processId: number;
+  scheduleId: number;
 }
 
 export interface CourseRequest extends Paginator {
@@ -51,7 +51,7 @@ interface Sales {
   paidIds: number[];
 }
 
-export interface Process {
+export interface Schedule {
   id: number;
   status: number;
   current: number;
@@ -67,7 +67,7 @@ export interface Chapter {
 
 export interface CourseDetail extends Course {
   sales: Sales;
-  process: Process;
+  schedule: Schedule;
 }
 
 export type CourseDetailResponse = CourseDetail;
@@ -98,8 +98,8 @@ export interface UpdateCourseRequest {
 
 export type UpdateCourseResponse = Course;
 
-export interface ProcessRequest {
-  processId?: number;
+export interface ScheduleRequest {
+  scheduleId?: number;
   courseId?: number;
   chapters: Omit<Chapter, 'id'>[];
   classTime: string[];

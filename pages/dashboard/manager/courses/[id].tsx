@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import WeekCalendar from '../../../../components/common/week-calendar';
 import CourseOverview from '../../../../components/course/overview';
 import Layout from '../../../../components/layout/layout';
-import { CourseDetail, Process } from '../../../../lib/model/course';
+import { CourseDetail, Schedule } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
 
 const H2 = styled.h2`
@@ -57,7 +57,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-const getChapterExtra = (source: Process, index: number) => {
+const getChapterExtra = (source: Schedule, index: number) => {
   const activeIndex = source.chapters.findIndex((item) => item.id === source.current);
 
   if (index === activeIndex) {
@@ -91,7 +91,7 @@ export default function Page(props: { id: number }) {
 
         setInfo(info);
         setActiveChapterIndex(
-          data.process.chapters.findIndex((item) => item.id === data.process.current)
+          data.schedule.chapters.findIndex((item) => item.id === data.schedule.current)
         );
         setData(data);
       }
@@ -129,7 +129,7 @@ export default function Page(props: { id: number }) {
             </Badge>
             <Row>
               <Steps size="small" current={activeChapterIndex}>
-                {data?.process.chapters.map((item) => (
+                {data?.schedule.chapters.map((item) => (
                   <Steps.Step title={item.name} key={item.id}></Steps.Step>
                 ))}
               </Steps>
@@ -139,7 +139,7 @@ export default function Page(props: { id: number }) {
             <Row>{data?.uid}</Row>
 
             <H3>Class Time</H3>
-            <WeekCalendar data={data?.process.classTime} />
+            <WeekCalendar data={data?.schedule.classTime} />
 
             <H3>Category</H3>
             <Row>
@@ -159,13 +159,13 @@ export default function Page(props: { id: number }) {
             )}
 
             <H3>Chapter</H3>
-            {data?.process && (
-              <Collapse defaultActiveKey={data.process.current}>
-                {data.process.chapters.map((item, index) => (
+            {data?.schedule && (
+              <Collapse defaultActiveKey={data.schedule.current}>
+                {data.schedule.chapters.map((item, index) => (
                   <Collapse.Panel
                     header={item.name}
                     key={item.id}
-                    extra={getChapterExtra(data.process, index)}
+                    extra={getChapterExtra(data.schedule, index)}
                   >
                     <p>{item.content}</p>
                   </Collapse.Panel>

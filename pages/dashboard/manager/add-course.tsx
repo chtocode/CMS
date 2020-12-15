@@ -13,7 +13,7 @@ export default function Page() {
   const [step, setStep] = useState(0);
   const [availableNavigate, setAvailableNavigate] = useState<number[]>([0]);
   const [courseId, setCourseId] = useState(null);
-  const [processId, setProcessId] = useState(null);
+  const [scheduleId, setScheduleId] = useState(null);
   const router = useRouter();
   const userType = useUserType();
   const moveToNex = () => {
@@ -24,11 +24,11 @@ export default function Page() {
     <AddCourseForm
       onSuccess={(course: Course) => {
         setCourseId(course.id);
-        setProcessId(course.processId);
+        setScheduleId(course.scheduleId);
         moveToNex();
       }}
     />,
-    <UpdateChapterForm courseId={courseId} processId={processId} onSuccess={moveToNex} />,
+    <UpdateChapterForm courseId={courseId} scheduleId={scheduleId} onSuccess={moveToNex} />,
     <Result
       status="success"
       title="Successfully Create Course!"
