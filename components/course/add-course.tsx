@@ -1,33 +1,22 @@
 import { CloseCircleOutlined, InboxOutlined, KeyOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Col,
-  DatePicker,
-  Input,
-  InputNumber,
-  Modal,
-  Row,
-  Select,
-  Spin,
-  Upload
-} from 'antd';
+import { Button, Col, Input, InputNumber, message, Modal, Row, Select, Spin, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import Form from 'antd/lib/form';
 import { useForm } from 'antd/lib/form/Form';
 import TextArea from 'antd/lib/input/TextArea';
 import { UploadFile } from 'antd/lib/upload/interface';
-import { getTime } from 'date-fns';
-import { omit } from 'lodash';
-import { Moment } from 'moment';
+import { format, getTime } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { DurationUnit, gutter, validateMessages } from '../../lib/constant';
-import { AddCourseRequest, Course, CourseDetail, CourseType, Teacher } from '../../lib/model';
+import { AddCourseRequest, Course, CourseType, Teacher } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
 import { getBase64 } from '../../lib/util';
+import DatePicker from '../common/date-picker';
+import NumberWithUnit, { NumberWithUnitValue } from '../common/number-with-unit';
 
 export interface AddCourseFormProps {
-  data?: CourseDetail;
+  course?: Course;
   onSuccess?: (course: Course) => void;
 }
 
@@ -84,6 +73,17 @@ const UploadItem = styled(Form.Item)`
   }
 `;
 
+const StyledGroup = styled(Input.Group)`
+  display: flex;
+  > :first-child {
+    flex: 1;
+  }
+  .ant-input-number {
+    width: 100%;
+    border-right: none;
+  }
+`;
+
 const UploadInner = styled.div`
   display: flex;
   flex-direction: column;
@@ -110,22 +110,29 @@ const DeleteIcon = styled(CloseCircleOutlined)`
   opacity: 0.5;
 `;
 
-export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
+const validateDuration = (_, value: NumberWithUnitValue) => {
+  if (value?.number > 0) {
+    return Promise.resolve();
+  }
+
+  return Promise.reject('Duration must be greater than 0!');
+};
+
+export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps) {
   const [form] = useForm();
   const [isGenCodeDisplay, setIsGenCodeDisplay] = useState(true);
   const [courseTypes, setCourseTypes] = useState<CourseType[]>([]);
   const [fileList, setFileList] = useState([]);
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [durationUnit, setDurationUnit] = useState<number>(1);
   const [isTeacherSearching, setIsTeacherSearching] = useState<boolean>(false);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [isAdd, setIsAdd] = useState(!data);
+  const [isAdd, setIsAdd] = useState(course === undefined);
   const [preview, setPreview] = useState<{ previewImage: string; previewTitle: string }>(null);
   const getCode = () => {
     apiService.createCourseCode().then((res) => {
-      const { data: code } = res;
+      const { data: uid } = res;
 
-      form.setFieldsValue({ code });
+      form.setFieldsValue({ uid });
       setIsGenCodeDisplay(false);
     });
   };
@@ -138,6 +145,33 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
       previewImage: file.url || file.preview,
       previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
     });
+  };
+  const onFinish = async (values: any) => {
+    if (!isAdd && !course) {
+      message.error('You must select a course to update!');
+      return;
+    }
+    
+    const req: AddCourseRequest = {
+      ...values,
+      duration: +values.duration.number,
+      typeId: +values.typeId,
+      startTime: format(values.startTime, 'yyy-MM-dd'),
+      teacherId: +values.teacherId || +course.teacherId,
+      durationUnit: +values.duration.unit,
+    };
+    const response = isAdd
+      ? apiService.addCourse(req)
+      : apiService.updateCourse({ ...req, id: course.id });
+    const { data } = await response;
+
+    if (!!data && !course) {
+      setIsAdd(false);
+    }
+
+    if (!!onSuccess && !!data) {
+      onSuccess(data);
+    }
   };
 
   useEffect(() => {
@@ -152,6 +186,26 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
     });
   }, []);
 
+  useEffect(() => {
+    if (!!course) {
+      /**
+       * ?typeId：string 否则显示的是设置在select上的value，而不是内容
+       * ?teacherId, 这里设置成teacherName 是为了显示，在发送请求时如果没有修改需要使用teacherId
+       */
+      const values = {
+        ...course,
+        typeId: String(course.typeId),
+        teacherId: course.teacherName,
+        startTime: new Date(course.startTime),
+        duration: { number: course.duration, unit: course.durationUnit },
+      };
+
+      form.setFieldsValue(values);
+
+      setFileList([{ name: 'Cover Image', url: course.cover }]);
+    }
+  }, [course]);
+
   return (
     <>
       <Form
@@ -160,34 +214,7 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
         form={form}
         layout="vertical"
         validateMessages={validateMessages}
-        onFinish={(values) => {
-          const req = omit(
-            {
-              ...values,
-              duration: +values.duration,
-              type: +values.type,
-              startTime: values.startTime.format('YYYY-MM-DD'),
-              teacherId: +values.teacher.value,
-              uid: values.code,
-              durationUnit,
-            },
-            ['code', 'teacher']
-          ) as AddCourseRequest; // correct types etc.
-          const response = isAdd
-            ? apiService.addCourse(req)
-            : apiService.updateCourse({ ...req, id: data.id });
-
-          response.then((res) => {
-            const { data } = res;
-
-            setIsAdd(false);
-
-            if (!!onSuccess && !!data) {
-              onSuccess(data);
-            }
-          });
-        }}
-        initialValues={{}}
+        onFinish={onFinish}
       >
         <Row gutter={gutter}>
           <Col span={8}>
@@ -208,12 +235,11 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
               <Col span={8}>
                 <Form.Item
                   label="Teacher"
-                  name="teacher"
+                  name="teacherId"
                   rules={[{ required: true }]}
                   style={{ marginLeft: 5 }}
                 >
                   <Select
-                    labelInValue
                     placeholder="Select teacher"
                     notFoundContent={isTeacherSearching ? <Spin size="small" /> : null}
                     filterOption={false}
@@ -241,7 +267,7 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
               </Col>
 
               <Col span={8}>
-                <Form.Item label="Type" name="type" rules={[{ required: true }]}>
+                <Form.Item label="Type" name="typeId" rules={[{ required: true }]}>
                   <Select>
                     {courseTypes.map((type) => (
                       <Select.Option value={type.id} key={type.id}>
@@ -253,7 +279,7 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
               </Col>
 
               <Col span={8}>
-                <Form.Item label="Course Code" name="code" rules={[{ required: true }]}>
+                <Form.Item label="Course Code" name="uid" rules={[{ required: true }]}>
                   <Input
                     type="text"
                     placeholder="course code"
@@ -273,7 +299,7 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
             <Form.Item label="Start Date" name="startTime">
               <DatePicker
                 style={{ width: '100%' }}
-                disabledDate={(current: Moment) => {
+                disabledDate={(current: Date) => {
                   const today = getTime(new Date());
                   const date = current.valueOf();
 
@@ -298,31 +324,13 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
             <Form.Item
               label="Duration"
               name="duration"
-              rules={[{ required: true }, { min: 1, message: 'Duration must be greater than 1' }]}
+              rules={[{ required: true }, { validator: validateDuration }]}
             >
-              <Input
-                type="number"
-                min={1}
-                addonAfter={
-                  <Select
-                    defaultValue={DurationUnit.month}
-                    onSelect={(durationUnit) => {
-                      setDurationUnit(durationUnit);
-                    }}
-                  >
-                    {[
-                      DurationUnit.year,
-                      DurationUnit.month,
-                      DurationUnit.day,
-                      DurationUnit.week,
-                      DurationUnit.hour,
-                    ].map((item) => (
-                      <Select.Option value={item} key={DurationUnit[item]}>
-                        {DurationUnit[item]}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                }
+              <NumberWithUnit
+                options={new Array(5)
+                  .fill('')
+                  .map((_, index) => ({ unit: index + 1, label: DurationUnit[index + 1] }))}
+                defaultUnit={DurationUnit.month}
               />
             </Form.Item>
           </Col>
@@ -359,7 +367,7 @@ export default function AddCourseForm({ data, onSuccess }: AddCourseFormProps) {
 
                       form.setFieldsValue({ cover: url });
                     } else {
-                      form.setFieldsValue({ cover: '' });
+                      form.setFieldsValue({ cover: course?.cover || '' });
                     }
 
                     setIsUploading(status === 'uploading');

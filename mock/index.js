@@ -59,7 +59,8 @@ export default function makeServer({ environment = 'test' } = {}) {
       this.passthrough((request) => {
         if (
           request.url === '/_next/static/development/_devPagesManifest.json' ||
-          request.url.includes('mocky.io') // 忽略上传图片的路径
+          request.url.includes('mocky.io') || // 忽略上传图片的路径
+          request.url.includes('dashboard')
         ) {
           return true;
         }
@@ -152,7 +153,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         });
 
         data.attrs.typeName = data.type.name;
- 
+
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
 
@@ -214,14 +215,32 @@ export default function makeServer({ environment = 'test' } = {}) {
       });
 
       this.get('/courses', (schema, req) => {
-        const { page, limit } = req.queryParams;
+        const { page, limit, ...others } = req.queryParams;
+        const conditions = Object.entries(others).filter(([key, value]) => !!value);
         let courses = schema.courses.all().models;
         const total = courses.length;
 
-        courses = courses.slice((page - 1) * limit, page * limit);
+        if (page && limit) {
+          courses = courses.slice((page - 1) * limit, page * limit);
+        }
+
+        if (conditions.length) {
+          courses = courses.filter((item) =>
+            conditions.every(([key, value]) => {
+              if (key === 'name') {
+                return item.name.includes(value);
+              } else if (key === 'type') {
+                return item.type.name === value;
+              } else {
+                return item[key] === value;
+              }
+            })
+          );
+        }
 
         courses.forEach((item) => {
-          item.attrs.teacher = item.teacher.name;
+          item.attrs.teacherName = item.teacher.name;
+          item.attrs.typeName = item.type.name;
         });
 
         if (courses) {
@@ -270,7 +289,7 @@ export default function makeServer({ environment = 'test' } = {}) {
           maxStudents,
           price,
           startTime,
-          type,
+          typeId,
           durationUnit,
           teacherId,
         } = body;
@@ -303,12 +322,36 @@ export default function makeServer({ environment = 'test' } = {}) {
           durationUnit,
           cover,
           teacherId,
-          typeId: type,
+          typeId,
           ctime: format(new Date(), 'yyyy-MM-dd hh:mm:ss'),
         });
 
-        data.typeName = schema.courseTypes.findBy({ id: type }).name;
+        data.typeName = schema.courseTypes.findBy({ id: typeId }).name;
         data.processId = +process.id;
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.post('/courses/update', (schema, req) => {
+        const { id, ...others} = JSON.parse(req.requestBody);
+        const target = schema.courses.findBy({ id });
+
+        if (target) {
+          const data = target.update({
+            ...others
+          });
+
+          data.attrs.typeName = data.type.name;
+
+          return new Response(200, {}, { msg: 'success', code: 200, data });
+        } else {
+          return new Response(400, {}, { msg: `can\'t find course by id ${id} `, code: 400 });
+        }
+      });
+
+      this.get('/courses/process', (schema, req) => { 
+        const id = req.queryParams.id;
+        const data = schema.processes.findBy({ id });
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });

@@ -22,13 +22,19 @@ export interface Course {
   duration: number;
   durationUnit: DurationUnit;
   cover: string;
-  teacher: number;
+  teacherName: string;
+  teacherId: number;
   typeName: string;
+  typeId: number;
   ctime: string;
   processId: number;
 }
 
-export type CourseRequest = Paginator;
+export interface CourseRequest extends Paginator {
+  code?: string;
+  name?: string;
+  type?: number;
+}
 
 export interface CourseResponse {
   total: number;

@@ -2,6 +2,8 @@ import {
   AlibabaOutlined,
   CaretUpOutlined,
 
+  EditOutlined,
+
   FileOutlined,
   PlayCircleOutlined,
   SelectOutlined,
@@ -23,9 +25,8 @@ export enum RoutePath {
   students = 'students',
   selectStudents = 'selectStudents',
   courses = 'courses',
-  add = 'add',
-  edit = 'edit',
   addCourse = 'add-course',
+  editCourse = 'edit-course',
 }
 
 export interface SideNav {
@@ -59,6 +60,7 @@ const courses: SideNav = {
   subNav: [
     { path: [RoutePath.courses], label: 'All Courses', icon: <CaretUpOutlined /> },
     { path: [RoutePath.addCourse], label: 'Add Course', icon: <UserAddOutlined /> },
+    { path: [RoutePath.editCourse], label: 'Edit Course', icon: <EditOutlined /> },
   ],
 };
 

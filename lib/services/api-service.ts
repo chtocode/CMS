@@ -12,7 +12,7 @@ import {
   TeachersRequest,
   TeachersResponse,
   UpdateStudentRequest,
-  UpdateStudentResponse,
+  UpdateStudentResponse
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import {
@@ -22,9 +22,10 @@ import {
   CourseRequest,
   CourseResponse,
   CourseType,
+  Process,
   ProcessRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse,
+  UpdateCourseResponse
 } from '../model/course';
 import { LoginRequest, LoginResponse } from '../model/login';
 import { RootPath, SubPath } from './api-path';
@@ -151,7 +152,7 @@ class ApiService extends BaseApiService {
     return this.get(RootPath.student, { id }).then(this.showMessage());
   }
 
-  getCourses(req: CourseRequest): Promise<IResponse<CourseResponse>> {
+  getCourses(req: Partial<CourseRequest>): Promise<IResponse<CourseResponse>> {
     return this.get(RootPath.courses, { ...req }).then(this.showMessage());
   }
 
@@ -168,7 +169,13 @@ class ApiService extends BaseApiService {
   }
 
   updateCourse(req: UpdateCourseRequest): Promise<IResponse<UpdateCourseResponse>> {
-    return this.post([RootPath.course, SubPath.update], req).then(this.showMessage(true));
+    return this.post([RootPath.courses, SubPath.update], req).then(this.showMessage(true));
+  }
+
+  getProcessById(id: number): Promise<IResponse<Process>> {
+    return this.get<IResponse<Process>>([RootPath.courses, SubPath.process], { id }).then(
+      this.showMessage()
+    );
   }
 
   createCourseCode(): Promise<IResponse<string>> {
