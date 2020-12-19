@@ -15,3 +15,8 @@ export const weekDays = [
   'Friday',
   'Saturday',
 ];
+
+export enum Gender {
+  'Male' = 1,
+  'Female',
+}

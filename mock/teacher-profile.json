@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "address": ["province", "city", "xian"],
+    "gender": 1,
+    "birthday": "2020-10-11",
+    "avatar": "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+    "description": "Lorem ipsum dolor sit amet of, consectetur adipiscing elitable. Vestibulum tincidunt est vitae ultrices accumsan.",
+    "workExperience": [
+      { "company": "xxxxxx", "post": "frontend", "startEnd": "2003-03-30 2008-01-11" },
+      { "company": "bbbb", "post": "frontend", "startEnd": "2008-03-30 2009-01-11" },
+      { "company": "eee", "post": "backend", "startEnd": "2009-07-03 2015-06-11" },
+      { "company": "mmmm", "post": "frontend", "startEnd": "2015-03-30 2020-01-11" }
+    ],
+    "education": [
+      { "level": "eee", "degree": "mmmmmmmm", "startEnd": "2009-07-03 2015-06-11" },
+      { "level": "ooooo", "degree": "ggggg", "startEnd": "2015-07-03 2019-06-11" }
+    ]
+  }
+]

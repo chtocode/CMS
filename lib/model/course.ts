@@ -17,8 +17,8 @@ export interface Course {
   startTime: string;
   price: number;
   maxStudents: number;
-  star: CourseStatus;
-  status: number;
+  star: number;
+  status: CourseStatus;
   duration: number;
   durationUnit: DurationUnit;
   cover: string;

@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { belongsTo, hasMany, Model, Response, Server } from 'miragejs';
+import { belongsTo, hasMany, JSONAPISerializer, Model, Response, Server } from 'miragejs';
 
 const students = require('./student.json');
 const users = require('./user.json');
@@ -11,6 +11,7 @@ const studentProfile = require('./student-profile.json');
 const teachers = require('./teacher.json');
 const sales = require('./sales.json');
 const schedule = require('./schedule.json');
+const teacherProfile = require('./teacher-profile.json');
 
 export default function makeServer({ environment = 'test' } = {}) {
   let server = new Server({
@@ -37,13 +38,21 @@ export default function makeServer({ environment = 'test' } = {}) {
         studentCourses: hasMany(),
         type: belongsTo('studentType'),
       }),
-      teacher: Model,
+      teacherProfile: Model,
+      teacher: Model.extend({
+        profile: belongsTo('teacherProfile'),
+      }),
       sales: Model,
       schedule: Model,
     },
 
+    serializers: {
+      application: JSONAPISerializer,
+    },
+
     seeds(server) {
       users.forEach((user) => server.create('user', user));
+      teacherProfile.forEach((teacher) => server.create('teacherProfile', teacher));
       teachers.forEach((teacher) => server.create('teacher', teacher));
       courseTypes.forEach((type) => server.create('courseType', type));
       sales.forEach((sale) => server.create('sale', sale));
@@ -192,7 +201,7 @@ export default function makeServer({ environment = 'test' } = {}) {
 
       this.get('/student', (schema, req) => {
         const id = req.queryParams.id;
-        const student = schema.studentProfiles.findBy({ id });
+        const student = schema.studentProfiles.findBy({ id }); // !FIXME: 前端传过来的实际是studentId, 不是studentProfileId
         const studentCourses = student.studentCourses;
         let courses = [];
 
@@ -333,12 +342,12 @@ export default function makeServer({ environment = 'test' } = {}) {
       });
 
       this.post('/courses/update', (schema, req) => {
-        const { id, ...others} = JSON.parse(req.requestBody);
+        const { id, ...others } = JSON.parse(req.requestBody);
         const target = schema.courses.findBy({ id });
 
         if (target) {
           const data = target.update({
-            ...others
+            ...others,
           });
 
           data.attrs.typeName = data.type.name;
@@ -349,7 +358,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
-      this.get('/courses/schedule', (schema, req) => { 
+      this.get('/courses/schedule', (schema, req) => {
         const id = req.queryParams.id;
         const data = schema.schedules.findBy({ id });
 
@@ -412,7 +421,11 @@ export default function makeServer({ environment = 'test' } = {}) {
 
       this.get('/teacher', (schema, req) => {
         const id = req.queryParams.id;
-        const data = schema.teachers.findBy({ id });
+        const data =  schema.teachers.find(id);
+        const courses = schema.courses.where(course => course.teacherId === +id).models;
+
+        data.attrs.profile = data.profile;
+        data.attrs.profile.attrs.courses = courses;
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });

@@ -8,11 +8,11 @@ import {
   StudentResponse,
   StudentsRequest,
   StudentsResponse,
-  Teacher,
+  TeacherResponse,
   TeachersRequest,
   TeachersResponse,
   UpdateStudentRequest,
-  UpdateStudentResponse,
+  UpdateStudentResponse
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import {
@@ -25,7 +25,7 @@ import {
   Schedule,
   ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse,
+  UpdateCourseResponse
 } from '../model/course';
 import { LoginRequest, LoginResponse } from '../model/login';
 import { RootPath, SubPath } from './api-path';
@@ -193,8 +193,8 @@ class ApiService extends BaseApiService {
     ).then(this.showMessage());
   }
 
-  getTeacherById(id: number): Promise<IResponse<Teacher>> {
-    return this.get(RootPath.teachers, { id }).then(this.showMessage());
+  getTeacherById(id: number): Promise<IResponse<TeacherResponse>> {
+    return this.get<IResponse<TeacherResponse>>(RootPath.teacher, { id }).then(this.showMessage());
   }
 }
 

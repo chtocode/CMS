@@ -38,7 +38,7 @@ export interface SideNav {
 
 const students: SideNav = {
   path: [],
-  label: 'Students',
+  label: 'Student',
   icon: <SolutionOutlined />,
   subNav: [
     { path: [RoutePath.students], label: 'Student List', icon: <TeamOutlined /> },
@@ -53,7 +53,7 @@ const students: SideNav = {
 
 const courses: SideNav = {
   path: [],
-  label: 'Courses',
+  label: 'Course',
   icon: <ReadOutlined />,
   subNav: [
     { path: [RoutePath.courses], label: 'All Courses', icon: <ProjectOutlined /> },
@@ -64,14 +64,13 @@ const courses: SideNav = {
 
 const teachers: SideNav = {
   path: [],
-  label: 'Teachers',
+  label: 'Teacher',
   icon: <DeploymentUnitOutlined />,
   subNav: [
     {
       path: [RoutePath.teachers],
       label: 'Teacher List',
       icon: <TeamOutlined />,
-      subNav: [{ path: ['bb'], label: 'Test', icon: <UpOutlined /> }],
     },
   ],
 };

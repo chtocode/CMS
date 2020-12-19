@@ -14,7 +14,7 @@
 		"duration": 3,
 		"durationUnit": 2,
 		"cover": "http://v.bootstrapmb.com/2020/11/cbgse9169/images/courses/pic1.jpg",
-		"teacherId": 2,
+		"teacherId": 1,
 		"typeId" : 14,
 		"ctime" : "2020-06-19 15:34:25"
 	},
@@ -90,7 +90,7 @@
 		"duration": 3,
 		"durationUnit": 2,
 		"cover": "http://v.bootstrapmb.com/2020/11/cbgse9169/images/courses/pic4.jpg",
-		"teacherId": 2,
+		"teacherId": 1,
 		"typeId" : 23,
 		"ctime" : "2020-06-19 15:34:25"
 	},
