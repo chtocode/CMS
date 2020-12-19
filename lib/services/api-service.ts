@@ -3,6 +3,8 @@ import axios, { AxiosError } from 'axios';
 import {
   AddStudentRequest,
   AddStudentResponse,
+  AddTeacherRequest,
+  AddTeacherResponse,
   LogoutRequest,
   LogoutResponse,
   StudentResponse,
@@ -12,7 +14,9 @@ import {
   TeachersRequest,
   TeachersResponse,
   UpdateStudentRequest,
-  UpdateStudentResponse
+  UpdateStudentResponse,
+  UpdateTeacherRequest,
+  UpdateTeacherResponse
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import {
@@ -195,6 +199,18 @@ class ApiService extends BaseApiService {
 
   getTeacherById(id: number): Promise<IResponse<TeacherResponse>> {
     return this.get<IResponse<TeacherResponse>>(RootPath.teacher, { id }).then(this.showMessage());
+  }
+
+  addTeacher(req: AddTeacherRequest): Promise<IResponse<AddTeacherResponse>> {
+    return this.post([RootPath.teachers, SubPath.add], req).then(this.showMessage(true));
+  }
+
+  updateTeacher(req: UpdateTeacherRequest): Promise<IResponse<UpdateTeacherResponse>> {
+    return this.post([RootPath.teachers, SubPath.update], req).then(this.showMessage(true));
+  }
+
+  deleteTeacher(req: DeleteRequest): Promise<IResponse<DeleteResponse>> {
+    return this.delete([RootPath.teachers, SubPath.delete], req).then(this.showMessage(true));
   }
 }
 

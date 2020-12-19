@@ -41,7 +41,7 @@ export interface TeacherProfile<T = CourseShort> {
   courses: T[];
 }
 
-export interface TeacherResponse extends Teacher{ 
+export interface TeacherResponse extends Teacher {
   profile: TeacherProfile;
 }
 
@@ -56,3 +56,19 @@ export interface WorkExperience {
   post: string;
   startEnd: string;
 }
+
+export interface AddTeacherRequest {
+  name: string;
+  country: string;
+  phone: number;
+  skills: Skill[];
+  email: string;
+}
+
+export type AddTeacherResponse = Teacher;
+
+export interface UpdateTeacherRequest extends AddTeacherRequest {
+  id: number;
+}
+
+export type UpdateTeacherResponse = Teacher;

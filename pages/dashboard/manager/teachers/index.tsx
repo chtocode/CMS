@@ -7,6 +7,7 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ModalForm from '../../../../components/common/modal-form';
 import Layout from '../../../../components/layout/layout';
+import AddTeacherForm from '../../../../components/teacher/add-teacher';
 import { Skill, Teacher } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
 
@@ -97,16 +98,17 @@ export default function Page() {
           <Popconfirm
             title="Are you sure to delete?"
             onConfirm={() => {
-              //   apiService.deleteStudent({ id: record.id }).then((res) => {
-              //     const { data: isDeleted } = res;
-              //     if (isDeleted) {
-              //       const index = data.findIndex((item) => item.id === record.id);
-              //       const updatedData = [...data];
-              //       updatedData.splice(index, 1);
-              //       setData(updatedData);
-              //       setTotal(total - 1);
-              //     }
-              //   });
+              apiService.deleteTeacher({ id: record.id }).then((res) => {
+                const { data: isDeleted } = res;
+
+                if (isDeleted) {
+                  const index = data.findIndex((item) => item.id === record.id);
+                  const updatedData = [...data];
+                  updatedData.splice(index, 1);
+                  setData(updatedData);
+                  setTotal(total - 1);
+                }
+              });
             }}
             okText="Confirm"
             cancelText="Cancel"
@@ -180,22 +182,24 @@ export default function Page() {
         visible={isModalDisplay}
         cancel={cancel}
       >
-        {/* <AddStudentForm
-          onFinish={(student: Teacher) => {
+        <AddTeacherForm
+          onFinish={(teacher: Teacher) => {
             /**
              * update local data if editing success
              */
-        /*if (!!editingStudent) {
-              const index = data.findIndex((item) => item.id === student.id);
+            if (!!editingTeacher) {
+              const index = data.findIndex((item) => item.id === teacher.id);
 
-              data[index] = student;
+              data[index] = teacher;
               setData([...data]);
+            } else {
+              setData([...data, teacher]);
             }
 
             setModalDisplay(false);
           }}
-          student={editingStudent}
-        /> */}
+          teacher={editingTeacher}
+        />
       </ModalForm>
     </Layout>
   );

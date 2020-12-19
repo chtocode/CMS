@@ -429,6 +429,52 @@ export default function makeServer({ environment = 'test' } = {}) {
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
+
+      this.post('/teachers/add', (schema, req) => {
+        const body = JSON.parse(req.requestBody);
+        const { name, phone, country, email, skills } = body;
+        const data = schema.teachers.create({
+          name,
+          email,
+          phone,
+          country,
+          skills,
+          courseAmount: 0,
+          ctime: format(new Date(), 'yyyy-MM-dd hh:mm:ss'),
+          updateAt: null,
+        });
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.post('/teachers/update', (schema, req) => {
+        const { id, email, name, country, skills, phone } = JSON.parse(req.requestBody);
+        const target = schema.teachers.findBy({ id });
+
+        if (target) {
+          const data = target.update({
+            email,
+            name,
+            country,
+            skills,
+            phone,
+            updateAt: format(new Date(), 'yyyy-MM-dd hh:mm:ss'),
+          });
+
+          return new Response(200, {}, { msg: 'success', code: 200, data });
+        } else {
+          return new Response(400, {}, { msg: `can\'t find student by id ${id} `, code: 400 });
+        }
+      });
+
+      this.delete('/teachers/delete', (schema, req) => {
+        const id = +req.queryParams.id;
+
+        schema.teachers.find(id).destroy();
+
+        return new Response(200, {}, { data: true, msg: 'success', code: 200 });
+      });
+
     },
   });
 
