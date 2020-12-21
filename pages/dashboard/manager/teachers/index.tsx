@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import ModalForm from '../../../../components/common/modal-form';
 import Layout from '../../../../components/layout/layout';
 import AddTeacherForm from '../../../../components/teacher/add-teacher';
+import { businessAreas } from '../../../../lib/constant';
 import { Skill, Teacher } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
 
@@ -56,11 +57,7 @@ export default function Page() {
       title: 'Country',
       dataIndex: 'country',
       width: '10%',
-      filters: [
-        { text: 'Canada', value: 'Canada' },
-        { text: 'Australia', value: 'Australia' },
-        { text: 'China', value: 'China' },
-      ],
+      filters: businessAreas.map(item =>({ text: item, value: item})),
       onFilter: (value: string, record: Teacher) => record.country.includes(value),
     },
     {

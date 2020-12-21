@@ -1,4 +1,5 @@
-import { format } from 'date-fns';
+import { format, subMonths } from 'date-fns';
+import { countBy } from 'lodash';
 import { belongsTo, hasMany, JSONAPISerializer, Model, Response, Server } from 'miragejs';
 
 const students = require('./student.json');
@@ -23,6 +24,7 @@ export default function makeServer({ environment = 'test' } = {}) {
       student: Model.extend({
         studentCourses: hasMany(),
         type: belongsTo('studentType'),
+        profile: belongsTo('studentProfile'),
       }),
       courseType: Model,
       course: Model.extend({
@@ -60,8 +62,8 @@ export default function makeServer({ environment = 'test' } = {}) {
       courses.forEach((course) => server.create('course', course));
       studentCourses.forEach((course) => server.create('studentCourse', course));
       studentTypes.forEach((type) => server.create('studentType', type));
-      students.forEach((student) => server.create('student', student));
       studentProfile.forEach((student) => server.create('studentProfile', student));
+      students.forEach((student) => server.create('student', student));
     },
 
     routes() {
@@ -69,7 +71,9 @@ export default function makeServer({ environment = 'test' } = {}) {
         if (
           request.url === '/_next/static/development/_devPagesManifest.json' ||
           request.url.includes('mocky.io') || // 忽略上传图片的路径
-          request.url.includes('dashboard')
+          request.url.includes('dashboard') ||
+          request.url.includes('amap') ||
+          request.url.includes('highcharts')
         ) {
           return true;
         }
@@ -421,8 +425,8 @@ export default function makeServer({ environment = 'test' } = {}) {
 
       this.get('/teacher', (schema, req) => {
         const id = req.queryParams.id;
-        const data =  schema.teachers.find(id);
-        const courses = schema.courses.where(course => course.teacherId === +id).models;
+        const data = schema.teachers.find(id);
+        const courses = schema.courses.where((course) => course.teacherId === +id).models;
 
         data.attrs.profile = data.profile;
         data.attrs.profile.attrs.courses = courses;
@@ -475,8 +479,85 @@ export default function makeServer({ environment = 'test' } = {}) {
         return new Response(200, {}, { data: true, msg: 'success', code: 200 });
       });
 
+      this.get('/statistics/overview', (schema, req) => {
+        const courses = schema.courses.all().models;
+        const data = {
+          student: getPeopleStatistics(schema, 'students'),
+          teacher: getPeopleStatistics(schema, 'teachers'),
+          course: {
+            total: courses.length,
+            lastMonthAdded: schema.courses.where(
+              (item) => new Date(item.ctime) >= subMonths(new Date(), 1)
+            ).models.length,
+          },
+        };
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.get('/statistics/student', (schema, req) => {
+        const source = schema.students.all().models;
+        const data = {
+          area: getStatisticList(countBy(source, 'area')),
+          typeName: getStatisticList(countBy(source, (item) => item.type.name)),
+          courses: getStatisticList(
+            source.reduce((acc, item) => {
+              const courses = item.studentCourses.models.map((item) => item.course.name);
+              const accumulate = accumulateFactory(acc);
+
+              courses.forEach(accumulate);
+              return acc;
+            }, {})
+          ),
+          ctime: getStatisticList(countBy(source, (item) => {
+            const index = item.ctime.lastIndexOf('-');
+            
+            return item.ctime.slice(0, index);
+          })),
+          interest: getStatisticList(
+            source
+              .map((item) => item.profile.interest)
+              .reduce((acc, cur) => {
+                const accumulate = accumulateFactory(acc);
+
+                cur.forEach(accumulate);
+                return acc;
+              }, {})
+          ),
+        };
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
     },
   });
 
   return server;
+}
+
+function getPeopleStatistics(schema, type) {
+  const all = schema[type].all().models;
+  const male = all.filter((item) => item.profile?.gender === 1).length;
+  const female = all.filter((item) => item.profile?.gender === 2).length;
+
+  return {
+    total: all.length,
+    lastMonthAdded: schema.teachers.where(
+      (item) => new Date(item.ctime) >= subMonths(new Date(), 1)
+    ).models.length,
+    gender: { male, female, unknown: all.length - male - female },
+  };
+}
+
+function getStatisticList(obj) {
+  return Object.entries(obj).map(([name, amount]) => ({ name, amount }));
+}
+
+function accumulateFactory(acc) {
+  return (key) => {
+    if (acc.hasOwnProperty(key)) {
+      acc[key] = acc[key] + 1;
+    } else {
+      acc[key] = 1;
+    }
+  };
 }

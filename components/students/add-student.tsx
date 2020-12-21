@@ -1,7 +1,7 @@
 import { Button, Form, Input, Select } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import { validateMessages } from '../../lib/constant';
+import { businessAreas, validateMessages } from '../../lib/constant';
 import { Student } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
 
@@ -68,10 +68,11 @@ export default function AddStudentForm(props: AddStudentFormProps): JSX.Element 
 
       <Form.Item label="Area" name="area" rules={[{ required: true }]}>
         <Select>
-          <Select.Option value="China">China</Select.Option>
-          <Select.Option value="Canada">Canada</Select.Option>
-          <Select.Option value="New Zealand">New Zealand</Select.Option>
-          <Select.Option value="Australia">Australia</Select.Option>
+          {businessAreas.map((item, index) => (
+            <Select.Option value={item} key={index}>
+              {item}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 

@@ -16,6 +16,8 @@
     "antd-img-crop": "^3.13.2",
     "axios": "^0.21.0",
     "date-fns": "^2.16.1",
+    "highcharts": "^8.2.2",
+    "highcharts-react-official": "^3.0.0",
     "less": "^3.13.0",
     "lodash": "^4.17.20",
     "next": "10.0.3",

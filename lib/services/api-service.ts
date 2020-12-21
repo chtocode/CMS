@@ -16,7 +16,7 @@ import {
   UpdateStudentRequest,
   UpdateStudentResponse,
   UpdateTeacherRequest,
-  UpdateTeacherResponse
+  UpdateTeacherResponse,
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import {
@@ -29,9 +29,14 @@ import {
   Schedule,
   ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse
+  UpdateCourseResponse,
 } from '../model/course';
 import { LoginRequest, LoginResponse } from '../model/login';
+import {
+  StatisticsOverviewResponse,
+  StatisticsResponse,
+  StatisticsType,
+} from '../model/statistics';
 import { RootPath, SubPath } from './api-path';
 
 const axiosInstance = axios.create({
@@ -212,6 +217,28 @@ class ApiService extends BaseApiService {
   deleteTeacher(req: DeleteRequest): Promise<IResponse<DeleteResponse>> {
     return this.delete([RootPath.teachers, SubPath.delete], req).then(this.showMessage(true));
   }
+
+  getStatisticsOverview(): Promise<IResponse<StatisticsOverviewResponse>> {
+    return this.get<IResponse<StatisticsOverviewResponse>>([
+      RootPath.statistics,
+      SubPath.overview,
+    ]).then(this.showMessage());
+  }
+
+  getStatistics<T>(type: StatisticsType): Promise<IResponse<StatisticsResponse<T>>> {
+    return this.get<IResponse<StatisticsResponse<T>>>([RootPath.statistics, type]).then(
+      this.showMessage()
+    );
+  }
+
+  /* Helper Function
+   * To get the countries of a specific region
+   * */
+  getWorld = async () => {
+    return await axios.get(
+      'https://code.highcharts.com/mapdata/custom/world-palestine-highres.geo.json'
+    );
+  };
 }
 
 export const apiService = new ApiService();

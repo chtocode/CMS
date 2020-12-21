@@ -2,7 +2,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select, Slider } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import { validateMessages } from '../../lib/constant';
+import { businessAreas, validateMessages } from '../../lib/constant';
 import { Skill, Teacher } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
 
@@ -80,10 +80,11 @@ export default function AddTeacherForm(props: AddTeacherFormProps): JSX.Element 
 
       <Form.Item label="Country" name="country" rules={[{ required: true }]}>
         <Select>
-          <Select.Option value="China">China</Select.Option>
-          <Select.Option value="Canada">Canada</Select.Option>
-          <Select.Option value="New Zealand">New Zealand</Select.Option>
-          <Select.Option value="Australia">Australia</Select.Option>
+          {businessAreas.map((item, index) => (
+            <Select.Option value={item} key={index}>
+              {item}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 
@@ -134,7 +135,7 @@ export default function AddTeacherForm(props: AddTeacherFormProps): JSX.Element 
                   </Form.Item>
                 </Col>
 
-                <Col style={{alignSelf: 'stretch'}}>
+                <Col style={{ alignSelf: 'stretch' }}>
                   {fields.length > 1 && (
                     <MinusCircleOutlined
                       onClick={() => remove(field.name)}

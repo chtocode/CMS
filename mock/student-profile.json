@@ -33,7 +33,7 @@
     "gender": 1,
     "education": "PHD",
     "age": 20,
-    "interest": ["php", "c#", "java", "javaScript", "html", "css", "c"],
+    "interest": ["html", "css", "c"],
     "avatar": "http://v.bootstrapmb.com/2020/11/cbgse9169/images/profile/profile.png",
     "memberStartAt": "2020-12-01 00:00:00",
     "memberEndAt": "2020-12-31 00:00:00",

@@ -5,10 +5,9 @@ import {
   FileAddOutlined,
   ProjectOutlined,
   ReadOutlined,
-  SelectOutlined,
+
   SolutionOutlined,
-  TeamOutlined,
-  UpOutlined
+  TeamOutlined
 } from '@ant-design/icons';
 import React from 'react';
 import { Role } from '../model';
@@ -42,12 +41,6 @@ const students: SideNav = {
   icon: <SolutionOutlined />,
   subNav: [
     { path: [RoutePath.students], label: 'Student List', icon: <TeamOutlined /> },
-    {
-      path: [RoutePath.selectStudents],
-      label: 'Select Students',
-      icon: <SelectOutlined />,
-      subNav: [{ path: ['aa'], label: 'Test', icon: <UpOutlined /> }],
-    },
   ],
 };
 

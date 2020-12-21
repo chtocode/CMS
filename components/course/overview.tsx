@@ -55,7 +55,7 @@ export default function CourseOverview(
       <StyledRow gutter={gutter} justify="space-between">
         <Col>Teacher:</Col>
         <Col style={{ fontWeight: 'bold' }}>
-          {props?.teacher && <Link href="/dashboard/manager">{props.teacher}</Link>}
+          {props?.teacherName && <Link href="/dashboard/manager">{props.teacherName}</Link>}
         </Col>
       </StyledRow>
 

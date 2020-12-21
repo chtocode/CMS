@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import ModalForm from '../../../../components/common/modal-form';
 import Layout from '../../../../components/layout/layout';
 import AddStudentForm from '../../../../components/students/add-student';
+import { businessAreas } from '../../../../lib/constant';
 import { Student } from '../../../../lib/model';
 import { CourseShort } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
@@ -59,11 +60,7 @@ export default function Dashboard() {
       title: 'Area',
       dataIndex: 'area',
       width: '10%',
-      filters: [
-        { text: '加拿大', value: '加拿大' },
-        { text: '澳洲', value: '澳洲' },
-        { text: '国内', value: '国内' },
-      ],
+      filters: businessAreas.map(item =>({ text: item, value: item})),
       onFilter: (value: string, record: Student) => record.area.includes(value),
     },
     {

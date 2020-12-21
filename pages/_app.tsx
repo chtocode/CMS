@@ -13,6 +13,10 @@ function MyApp({ Component, pageProps }) {
         <meta charSet="utf-8" />
         <title>Online Education</title>
         <meta key="description" name="description" content="Online Education System" />
+        {/* Implementation by amap*/}
+        {/* <script
+          src={`//webapi.amap.com/maps?v=1.4.15&key=${key}&plugin=Map3D,AMap.DistrictLayer `}
+        ></script> */}
       </Head>
       <Component {...pageProps} />
     </>
