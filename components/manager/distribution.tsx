@@ -4,18 +4,8 @@ import { useEffect, useState } from 'react';
 import { CommonChartComponentProps } from '../../lib/model/statistics';
 import apiService from '../../lib/services/api-service';
 
-export default function Distribution({ data }: CommonChartComponentProps) {
+export default function Distribution({ data, title }: CommonChartComponentProps) {
   const [options, setOptions] = useState<any>({
-    title: {
-      text: null,
-    },
-    mapNavigation: {
-      enabled: true,
-      buttonOptions: {
-        align: 'right',
-        verticalAlign: 'top',
-      },
-    },
     colorAxis: {
       min: 0,
       stops: [
@@ -28,6 +18,9 @@ export default function Distribution({ data }: CommonChartComponentProps) {
       layout: 'vertical',
       align: 'left',
       verticalAlign: 'bottom',
+    },
+    credits: {
+      enabled: false,
     },
   });
   const [world, setWorld] = useState<any>(null);
@@ -61,6 +54,11 @@ export default function Distribution({ data }: CommonChartComponentProps) {
         : {};
     });
     const options = {
+      title: {
+        text: `<span style="text-transform: capitalize">${title
+          .split(/(?=[A-Z])/)
+          .join(' ')}</span>`,
+      },
       series: [
         {
           data: mapSource,
@@ -76,7 +74,7 @@ export default function Distribution({ data }: CommonChartComponentProps) {
     };
 
     setOptions(options);
-  }, [data]);
+  }, [data, world]);
 
   return (
     <HighchartsReact

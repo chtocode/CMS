@@ -20,3 +20,11 @@ export enum Gender {
   'Male' = 1,
   'Female',
 }
+
+export enum SkillDes {
+  'Know' = 1,
+  'Practiced',
+  'Comprehend',
+  'Expert',
+  'Master',
+}

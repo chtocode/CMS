@@ -1,18 +1,20 @@
 import { DeploymentUnitOutlined, ReadOutlined, SolutionOutlined } from '@ant-design/icons';
-import { Card, Col, Progress, Row } from 'antd';
+import { Card, Col, Progress, Row, Select } from 'antd';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Bar } from '../../../components/common/bar';
-import { LineChart } from '../../../components/common/line';
-import { Pie } from '../../../components/common/pie';
 import AppLayout from '../../../components/layout/layout';
-import { StudentProfile } from '../../../lib/model';
+import { Bar } from '../../../components/manager/bar';
+import { LineChart } from '../../../components/manager/line';
+import { PieChart } from '../../../components/manager/pie';
+import { Role } from '../../../lib/constant';
+import { StudentProfile, Teacher, TeacherProfile } from '../../../lib/model';
 import {
   BasicStatistics,
   Statistic,
   StatisticsOverviewResponse,
-  StudentStatistics
+  StudentStatistics,
+  TeacherStatistics
 } from '../../../lib/model/statistics';
 import apiService from '../../../lib/services/api-service';
 
@@ -75,18 +77,25 @@ const Overview = ({ data, title, icon, style }: OverviewProps) => {
 
 /**
  * Implementation by amap;
+ * 使用地图时无法进行server side rendering
  */
 // const DistrictWithNoSSR = dynamic(() => import('../../../components/common/district'), {
 //   ssr: false,
 // });
 
-const DistributionWithNoSSR = dynamic(() => import('../../../components/common/distribution'), {
+/**
+ * 使用地图时无法进行server side rendering, 子组件需要获取地图数据
+ */
+const DistributionWithNoSSR = dynamic(() => import('../../../components/manager/distribution'), {
   ssr: false,
 });
 
 export default function Page() {
   const [overview, setOverview] = useState<StatisticsOverviewResponse>(null);
   const [studentStatistics, setStudentStatistics] = useState<StudentStatistics>(null);
+  const [teacherStatistics, setTeacherStatistics] = useState<TeacherStatistics>(null);
+  const [distributionRole, setDistributionRole] = useState<string>(Role.student);
+  const [selectedType, setSelectedType] = useState<string>('studentType');
 
   useEffect(() => {
     apiService.getStatisticsOverview().then((res) => {
@@ -95,10 +104,16 @@ export default function Page() {
       setOverview(data);
     });
 
-    apiService.getStatistics<StudentProfile>('student').then((res) => {
+    apiService.getStatistics<StudentProfile>(Role.student).then((res) => {
       const { data } = res;
 
       setStudentStatistics(data);
+    });
+
+    apiService.getStatistics<TeacherProfile & Teacher>(Role.teacher).then((res) => {
+      const { data } = res;
+
+      setTeacherStatistics(data);
     });
   }, []);
 
@@ -137,29 +152,84 @@ export default function Page() {
 
       <Row gutter={[16, 16]}>
         <Col span={12}>
-          <Card title="Student Distribution">
+          <Card
+            title="Distribution"
+            extra={
+              <Select defaultValue="student" onSelect={setDistributionRole} bordered={false}>
+                <Select.Option value={Role.student}>Student</Select.Option>
+                <Select.Option value={Role.teacher}>Teacher</Select.Option>
+              </Select>
+            }
+          >
             {/* <DistrictWithNoSSR data={studentStatistics?.area as Exclude<Statistic, number>[]} /> */}
-            <DistributionWithNoSSR data={studentStatistics?.area as Exclude<Statistic, number>[]} />
+            <DistributionWithNoSSR
+              data={
+                (distributionRole === Role.student
+                  ? studentStatistics?.area
+                  : teacherStatistics?.country) as Statistic[]
+              }
+              title={distributionRole}
+            />
           </Card>
         </Col>
 
         <Col span={12}>
-          <Card title="Student Type">
-            <Pie data={studentStatistics?.typeName as Exclude<Statistic, number>[]} />
+          <Card
+            title="Types"
+            extra={
+              <Select defaultValue={selectedType} bordered={false} onSelect={setSelectedType}>
+                <Select.Option value="studentType">Student Type</Select.Option>
+                <Select.Option value="gender">Gender</Select.Option>
+              </Select>
+            }
+          >
+            {selectedType === 'studentType' ? (
+              <PieChart data={studentStatistics?.typeName as Statistic[]} title={selectedType} />
+            ) : (
+              <Row gutter={16}>
+                <Col span={12}>
+                  <PieChart
+                    data={Object.entries(overview.student.gender).map(([name, amount]) => ({
+                      name,
+                      amount,
+                    }))}
+                    title="student gender"
+                  />
+                </Col>
+
+                <Col span={12}>
+                  <PieChart
+                    data={Object.entries(overview.teacher.gender).map(([name, amount]) => ({
+                      name,
+                      amount,
+                    }))}
+                    title="teacher gender"
+                  />
+                </Col>
+              </Row>
+            )}
           </Card>
         </Col>
       </Row>
 
       <Row gutter={[16, 16]}>
         <Col span={12}>
-          <Card title="Students Increment">
-            <LineChart data={studentStatistics?.ctime as Exclude<Statistic, number>[]} />
+          <Card title="Increment">
+            <LineChart
+              data={{
+                [Role.student]: studentStatistics?.ctime as Statistic[],
+                [Role.teacher]: teacherStatistics?.ctime as Statistic[],
+              }}
+            />
           </Card>
         </Col>
 
         <Col span={12}>
-          <Card title="Most Student Interested In">
-            <Bar data={studentStatistics?.interest as Exclude<Statistic, number>[]} />
+          <Card title="Languages">
+            <Bar data={{
+              interest: studentStatistics?.interest as Statistic[],
+              teacher: teacherStatistics?.skills as Statistic[]
+            }} />
           </Card>
         </Col>
       </Row>

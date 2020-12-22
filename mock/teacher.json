@@ -1,66 +1,102 @@
 [
   {
+    "country": "Canada",
+    "courseAmount": 9,
+    "ctime": "2020-11-11",
+    "email": "xxx@a.com",
     "id": 1,
     "name": "Moon",
-    "country": "Canada",
     "phone": 13877889900,
-    "skills": [
-      { "name": "JavaScript", "level": 3 },
-      { "name": "Java", "level": 4 },
-      { "name": "NodeJs", "level": 2 }
-    ],
-    "courseAmount": 9,
     "profileId": 1,
-    "email": "xxx@a.com",
-    "ctime": "2020-11-11",
+    "skills": [
+      {
+        "level": 3,
+        "name": "JavaScript"
+      },
+      {
+        "level": 2,
+        "name": "Java"
+      },
+      {
+        "level": 2,
+        "name": "NodeJs"
+      }
+    ],
     "updateAt": "2020-11-12"
   },
   {
+    "country": "China",
+    "courseAmount": 9,
+    "ctime": "2020-11-11",
+    "email": "xxx@a.com",
     "id": 2,
     "name": "Lucifer",
-    "country": "China",
     "phone": 13877889900,
+    "profileId": 9,
     "skills": [
-      { "name": "JavaScript", "level": 3 },
-      { "name": "Java", "level": 4 },
-      { "name": "NodeJs", "level": 2 }
+      {
+        "level": 1,
+        "name": "JavaScript"
+      },
+      {
+        "level": 3,
+        "name": "Java"
+      },
+      {
+        "level": 2,
+        "name": "NodeJs"
+      }
     ],
-    "courseAmount": 9,
-    "profileId": 1,
-    "email": "xxx@a.com",
-    "ctime": "2020-11-11",
     "updateAt": "2020-11-13"
   },
   {
+    "country": "New Zealand",
+    "courseAmount": 9,
+    "ctime": "2020-11-11",
+    "email": "xxx@a.com",
     "id": 3,
     "name": "Sky",
-    "country": "New Zealand",
     "phone": 13877889900,
+    "profileId": 2,
     "skills": [
-      { "name": "JavaScript", "level": 3 },
-      { "name": "Java", "level": 4 },
-      { "name": "NodeJs", "level": 2 }
+      {
+        "level": 4,
+        "name": "JavaScript"
+      },
+      {
+        "level": 4,
+        "name": "Java"
+      },
+      {
+        "level": 1,
+        "name": "NodeJs"
+      }
     ],
-    "courseAmount": 9,
-    "profileId": 1,
-    "email": "xxx@a.com",
-    "ctime": "2020-11-11",
     "updateAt": "2020-11-18"
   },
   {
+    "country": "Australia",
+    "courseAmount": 9,
+    "ctime": "2020-11-11",
+    "email": "xxx@a.com",
     "id": 4,
     "name": "Foo",
-    "country": "Australia",
     "phone": 13877889900,
+    "profileId": 7,
     "skills": [
-      { "name": "JavaScript", "level": 3 },
-      { "name": "Java", "level": 4 },
-      { "name": "NodeJs", "level": 2 }
+      {
+        "level": 3,
+        "name": "c"
+      },
+      {
+        "level": 4,
+        "name": "c++"
+      },
+      {
+        "level": 2,
+        "name": "c#"
+      }
     ],
-    "courseAmount": 9,
-    "profileId": 1,
-    "email": "xxx@a.com",
-    "ctime": "2020-11-11",
     "updateAt": "2020-11-15"
   }
 ]

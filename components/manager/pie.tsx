@@ -3,16 +3,13 @@ import HighchartsReact from 'highcharts-react-official';
 import { useEffect, useState } from 'react';
 import { CommonChartComponentProps } from '../../lib/model/statistics';
 
-export function Pie({ data }: CommonChartComponentProps) {
+export function PieChart({ data, title }: CommonChartComponentProps) {
   const [options, setOptions] = useState<any>({
     chart: {
       plotBackgroundColor: null,
       plotBorderWidth: null,
       plotShadow: false,
       type: 'pie',
-    },
-    title: {
-      text: '',
     },
     tooltip: {
       pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
@@ -32,6 +29,9 @@ export function Pie({ data }: CommonChartComponentProps) {
         },
       },
     },
+    credits: {
+      enabled: false,
+    },
   });
 
   useEffect(() => {
@@ -40,7 +40,13 @@ export function Pie({ data }: CommonChartComponentProps) {
     }
 
     const source = data.map((item) => ({ name: item.name, y: item.amount }));
+
     setOptions({
+      title: {
+        text: `<span style="text-transform: capitalize">${title
+          .split(/(?=[A-Z])/)
+          .join(' ')}</span>`,
+      },
       series: [
         {
           name: 'percentage',

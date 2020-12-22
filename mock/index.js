@@ -1,4 +1,4 @@
-import { format, subMonths } from 'date-fns';
+import { format, formatDistance, subMonths } from 'date-fns';
 import { countBy } from 'lodash';
 import { belongsTo, hasMany, JSONAPISerializer, Model, Response, Server } from 'miragejs';
 
@@ -509,11 +509,13 @@ export default function makeServer({ environment = 'test' } = {}) {
               return acc;
             }, {})
           ),
-          ctime: getStatisticList(countBy(source, (item) => {
-            const index = item.ctime.lastIndexOf('-');
-            
-            return item.ctime.slice(0, index);
-          })),
+          ctime: getStatisticList(
+            countBy(source, (item) => {
+              const index = item.ctime.lastIndexOf('-');
+
+              return item.ctime.slice(0, index);
+            })
+          ),
           interest: getStatisticList(
             source
               .map((item) => item.profile.interest)
@@ -523,6 +525,45 @@ export default function makeServer({ environment = 'test' } = {}) {
                 cur.forEach(accumulate);
                 return acc;
               }, {})
+          ),
+        };
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.get('/statistics/teacher', (schema, req) => {
+        const source = schema.teachers.all().models;
+        const data = {
+          country: getStatisticList(countBy(source, 'country')),
+          skills: source.reduce((acc, cur) => {
+            cur.skills.forEach((skill) => {
+              const { name, level } = skill;
+
+              if (acc.hasOwnProperty(name)) {
+                const target = acc[name].find((item) => item.level === level);
+
+                if (target) {
+                  target.amount = target.amount + 1;
+                } else {
+                  acc[name].push({ name: 'level', level, amount: 1,});
+                }
+              } else {
+                acc[name] = [{ name: 'level', level, amount: 1 }];
+              }
+            });
+            return acc;
+          }, {}),
+          workExperience: source.map((teacher) => {
+            const workingYears = getDuration(teacher.profile.workExperience);
+
+            return workingYears;
+          }),
+          ctime: getStatisticList(
+            countBy(source, (item) => {
+              const index = item.ctime.lastIndexOf('-');
+
+              return item.ctime.slice(0, index);
+            })
           ),
         };
 
@@ -560,4 +601,19 @@ function accumulateFactory(acc) {
       acc[key] = 1;
     }
   };
+}
+
+function getDuration(data, key = 'startEnd') {
+  const dates = data.map((item) => item[key].split(' ')).flat();
+  const { max, min } = dates.reduce(
+    (acc, cur) => {
+      const date = new Date(cur).getTime();
+      const { max, min } = acc;
+
+      return { max: date > max ? date : max, min: date < min ? date : min };
+    },
+    { max: new Date().getTime(), min: new Date().getTime() }
+  );
+
+  return formatDistance(new Date(min), new Date(max));
 }

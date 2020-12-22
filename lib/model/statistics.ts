@@ -1,6 +1,6 @@
 import { Course } from './course';
 import { StudentProfile } from './student';
-import { TeacherProfile } from './teacher';
+import { Teacher, TeacherProfile } from './teacher';
 
 export interface BasicStatistics {
   total: number; //总数
@@ -11,7 +11,7 @@ export interface GenderStatistics extends BasicStatistics {
   gender: { male: number; female: number; unknown: number };
 }
 
-export type Statistic = { amount: number; name: string } | number;
+export type Statistic = { amount: number; name: string; [key: string]: string | number };
 
 export type StatisticsType = 'student' | 'teacher' | 'course';
 
@@ -32,18 +32,17 @@ export interface StatisticsOverviewResponse {
 
 export type StudentStatistics = StatisticsResponse<StudentProfile>;
 
-export type TeacherStatistics = StatisticsResponse<TeacherProfile>;
+export type TeacherStatistics = StatisticsResponse<Teacher & TeacherProfile>;
 
 export type CourseStatistics = StatisticsResponse<Course>;
 
 export interface CommonChartComponentProps {
-  data: Exclude<Statistic, number>[];
+  data: Statistic[];
+  title?: string;
 }
 
 /**
  * teacher
- * count by country  google map
- * skills  可以求出掌握某项技能的老师的数量，熟练度的最高值，平均值，最低值。
  * age: 年龄相关，平均年龄。
  * work experience: 工作经验区间，3年以下，3-5年，5-10年，10年以上等等
  */

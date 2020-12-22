@@ -32,6 +32,7 @@
     "@types/lodash": "^4.14.165",
     "@types/node": "^14.14.9",
     "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@types/styled-components": "^5.1.4",
     "babel-plugin-import": "^1.13.3",
     "miragejs": "^0.1.41",

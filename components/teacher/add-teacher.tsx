@@ -2,7 +2,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select, Slider } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import { businessAreas, validateMessages } from '../../lib/constant';
+import { businessAreas, SkillDes, validateMessages } from '../../lib/constant';
 import { Skill, Teacher } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
 
@@ -128,9 +128,7 @@ export default function AddTeacherForm(props: AddTeacherFormProps): JSX.Element 
                       step={1}
                       min={1}
                       max={5}
-                      tipFormatter={(value: number) =>
-                        ['了解', '可以使用', '用的很溜', '专家级', '大师级'][value - 1]
-                      }
+                      tipFormatter={(value: number) => SkillDes[value]}
                     />
                   </Form.Item>
                 </Col>
