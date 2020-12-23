@@ -1,4 +1,4 @@
-import { Course } from './course';
+import { Course, Schedule } from './course';
 import { StudentProfile } from './student';
 import { Teacher, TeacherProfile } from './teacher';
 
@@ -11,7 +11,7 @@ export interface GenderStatistics extends BasicStatistics {
   gender: { male: number; female: number; unknown: number };
 }
 
-export type Statistic = { amount: number; name: string; [key: string]: string | number };
+export type Statistic = { amount: number; name: string; [key: string]: any };
 
 export type StatisticsType = 'student' | 'teacher' | 'course';
 
@@ -20,8 +20,8 @@ export interface StatisticsRequest<T> {
   fields?: keyof T[];
 }
 
-export type StatisticsResponse<T = any> = {
-  [key in keyof T]: Statistic | Statistic[];
+export type StatisticsResponse<T = any, U = Statistic> = {
+  [key in keyof T]: U | U[] | Statistic | Statistic[];
 };
 
 export interface StatisticsOverviewResponse {
@@ -34,24 +34,19 @@ export type StudentStatistics = StatisticsResponse<StudentProfile>;
 
 export type TeacherStatistics = StatisticsResponse<Teacher & TeacherProfile>;
 
-export type CourseStatistics = StatisticsResponse<Course>;
-
-export interface CommonChartComponentProps {
-  data: Statistic[];
-  title?: string;
+export interface ClassTimeStatistic {
+  name: string;
+  typeName: string;
+  classTime: string[];
 }
 
-/**
- * teacher
- * age: 年龄相关，平均年龄。
- * work experience: 工作经验区间，3年以下，3-5年，5-10年，10年以上等等
- */
+export interface CourseClassTimeStatistic extends Statistic {
+  courses: ClassTimeStatistic[];
+}
 
-/**
- * course
- * count by type 每种类型的课程数量
- * star
- * status
- * duration
- * class time  例如： 周一 共几节课，上课时间分布情况等。
- */
+export type CourseStatistics = StatisticsResponse<Course & Schedule, CourseClassTimeStatistic>;
+
+export interface CommonChartComponentProps<T = Statistic> {
+  data: T[];
+  title?: string;
+}

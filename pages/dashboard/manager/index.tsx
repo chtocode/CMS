@@ -4,13 +4,16 @@ import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AppLayout from '../../../components/layout/layout';
-import { Bar } from '../../../components/manager/bar';
-import { LineChart } from '../../../components/manager/line';
-import { PieChart } from '../../../components/manager/pie';
+import BarChart from '../../../components/manager/bar';
+import HeatChart from '../../../components/manager/heat';
+import LineChart from '../../../components/manager/line';
+import PieChart from '../../../components/manager/pie';
 import { Role } from '../../../lib/constant';
-import { StudentProfile, Teacher, TeacherProfile } from '../../../lib/model';
+import { Course, Schedule, StudentProfile, Teacher, TeacherProfile } from '../../../lib/model';
 import {
   BasicStatistics,
+  CourseClassTimeStatistic,
+  CourseStatistics,
   Statistic,
   StatisticsOverviewResponse,
   StudentStatistics,
@@ -94,6 +97,7 @@ export default function Page() {
   const [overview, setOverview] = useState<StatisticsOverviewResponse>(null);
   const [studentStatistics, setStudentStatistics] = useState<StudentStatistics>(null);
   const [teacherStatistics, setTeacherStatistics] = useState<TeacherStatistics>(null);
+  const [courseStatistics, setCourseStatistics] = useState<CourseStatistics>(null);
   const [distributionRole, setDistributionRole] = useState<string>(Role.student);
   const [selectedType, setSelectedType] = useState<string>('studentType');
 
@@ -114,6 +118,12 @@ export default function Page() {
       const { data } = res;
 
       setTeacherStatistics(data);
+    });
+
+    apiService.getStatistics<Course & Schedule, CourseClassTimeStatistic>('course').then((res) => {
+      const { data } = res;
+
+      setCourseStatistics(data);
     });
   }, []);
 
@@ -179,12 +189,15 @@ export default function Page() {
             extra={
               <Select defaultValue={selectedType} bordered={false} onSelect={setSelectedType}>
                 <Select.Option value="studentType">Student Type</Select.Option>
+                <Select.Option value="courseType">Course Type</Select.Option>
                 <Select.Option value="gender">Gender</Select.Option>
               </Select>
             }
           >
             {selectedType === 'studentType' ? (
               <PieChart data={studentStatistics?.typeName as Statistic[]} title={selectedType} />
+            ) : selectedType === 'courseType' ? (
+              <PieChart data={courseStatistics?.typeName as Statistic[]} title={selectedType} />
             ) : (
               <Row gutter={16}>
                 <Col span={12}>
@@ -219,6 +232,7 @@ export default function Page() {
               data={{
                 [Role.student]: studentStatistics?.ctime as Statistic[],
                 [Role.teacher]: teacherStatistics?.ctime as Statistic[],
+                course: courseStatistics?.ctime as Statistic[],
               }}
             />
           </Card>
@@ -226,10 +240,23 @@ export default function Page() {
 
         <Col span={12}>
           <Card title="Languages">
-            <Bar data={{
-              interest: studentStatistics?.interest as Statistic[],
-              teacher: teacherStatistics?.skills as Statistic[]
-            }} />
+            <BarChart
+              data={{
+                interest: studentStatistics?.interest as Statistic[],
+                teacher: teacherStatistics?.skills as Statistic[],
+              }}
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Card title="Course Schedule">
+            <HeatChart
+              data={courseStatistics?.classTime as CourseClassTimeStatistic[]}
+              title="Course schedule per weekday"
+            />
           </Card>
         </Col>
       </Row>

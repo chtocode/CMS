@@ -16,7 +16,7 @@ import {
   UpdateStudentRequest,
   UpdateStudentResponse,
   UpdateTeacherRequest,
-  UpdateTeacherResponse,
+  UpdateTeacherResponse
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import {
@@ -29,13 +29,14 @@ import {
   Schedule,
   ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse,
+  UpdateCourseResponse
 } from '../model/course';
 import { LoginRequest, LoginResponse } from '../model/login';
 import {
+  Statistic,
   StatisticsOverviewResponse,
   StatisticsResponse,
-  StatisticsType,
+  StatisticsType
 } from '../model/statistics';
 import { RootPath, SubPath } from './api-path';
 
@@ -225,8 +226,8 @@ class ApiService extends BaseApiService {
     ]).then(this.showMessage());
   }
 
-  getStatistics<T>(type: StatisticsType): Promise<IResponse<StatisticsResponse<T>>> {
-    return this.get<IResponse<StatisticsResponse<T>>>([RootPath.statistics, type]).then(
+  getStatistics<T, U = Statistic>(type: StatisticsType): Promise<IResponse<StatisticsResponse<T, U>>> {
+    return this.get<IResponse<StatisticsResponse<T, U>>>([RootPath.statistics, type]).then(
       this.showMessage()
     );
   }

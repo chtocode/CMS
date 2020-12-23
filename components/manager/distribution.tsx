@@ -22,6 +22,9 @@ export default function Distribution({ data, title }: CommonChartComponentProps)
     credits: {
       enabled: false,
     },
+    exporting: {
+      enabled: false,
+    }
   });
   const [world, setWorld] = useState<any>(null);
 

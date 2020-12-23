@@ -9,7 +9,7 @@ export interface LineChartProps {
   };
 }
 
-export function LineChart({ data }: LineChartProps) {
+export default function LineChart({ data }: LineChartProps) {
   const [options, setOptions] = useState<any>({
     title: {
       text: '',
@@ -38,6 +38,9 @@ export function LineChart({ data }: LineChartProps) {
     credits: {
       enabled: false,
     },
+    exporting: {
+      enabled: false,
+    }
   });
   const charRef = useRef(null);
 

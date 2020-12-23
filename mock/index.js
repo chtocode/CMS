@@ -1,5 +1,5 @@
 import { format, formatDistance, subMonths } from 'date-fns';
-import { countBy } from 'lodash';
+import { countBy, groupBy } from 'lodash';
 import { belongsTo, hasMany, JSONAPISerializer, Model, Response, Server } from 'miragejs';
 
 const students = require('./student.json');
@@ -509,13 +509,7 @@ export default function makeServer({ environment = 'test' } = {}) {
               return acc;
             }, {})
           ),
-          ctime: getStatisticList(
-            countBy(source, (item) => {
-              const index = item.ctime.lastIndexOf('-');
-
-              return item.ctime.slice(0, index);
-            })
-          ),
+          ctime: getCtimeStatistics(source),
           interest: getStatisticList(
             source
               .map((item) => item.profile.interest)
@@ -545,7 +539,7 @@ export default function makeServer({ environment = 'test' } = {}) {
                 if (target) {
                   target.amount = target.amount + 1;
                 } else {
-                  acc[name].push({ name: 'level', level, amount: 1,});
+                  acc[name].push({ name: 'level', level, amount: 1 });
                 }
               } else {
                 acc[name] = [{ name: 'level', level, amount: 1 }];
@@ -558,13 +552,32 @@ export default function makeServer({ environment = 'test' } = {}) {
 
             return workingYears;
           }),
-          ctime: getStatisticList(
-            countBy(source, (item) => {
-              const index = item.ctime.lastIndexOf('-');
+          ctime: getCtimeStatistics(source),
+        };
 
-              return item.ctime.slice(0, index);
-            })
-          ),
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.get('/statistics/course', (schema, req) => {
+        const source = schema.courses.all().models;
+        const data = {
+          typeName: getStatisticList(countBy(source, (item) => item.type.name)),
+          ctime: getCtimeStatistics(source),
+          classTime: Object.entries(
+            groupBy(
+              source.map((course) => {
+                const classTime = course.schedule.classTime;
+                const typeName = course.type.name;
+
+                return { classTime, typeName, name: course.name };
+              }),
+              (item) => item.typeName
+            )
+          ).map(([name, values]) => ({
+            name,
+            amount: values.length,
+            courses: values,
+          })),
         };
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
@@ -616,4 +629,14 @@ function getDuration(data, key = 'startEnd') {
   );
 
   return formatDistance(new Date(min), new Date(max));
+}
+
+function getCtimeStatistics(source) {
+  return getStatisticList(
+    countBy(source, (item) => {
+      const index = item.ctime.lastIndexOf('-');
+
+      return item.ctime.slice(0, index);
+    })
+  );
 }

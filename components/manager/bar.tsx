@@ -18,7 +18,7 @@ type ISeriesItem = {
   data: number[];
 };
 
-export function Bar({ data }: BarChartProps) {
+export default function BarChart({ data }: BarChartProps) {
   const [options, setOptions] = useState<any>({
     chart: {
       type: 'column',
@@ -56,6 +56,9 @@ export function Bar({ data }: BarChartProps) {
         },
       },
     },
+    exporting: {
+      enabled: false,
+    }
   });
 
   useEffect(() => {
