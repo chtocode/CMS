@@ -5,7 +5,6 @@ import {
   FileAddOutlined,
   ProjectOutlined,
   ReadOutlined,
-
   SolutionOutlined,
   TeamOutlined
 } from '@ant-design/icons';
@@ -24,44 +23,45 @@ export enum RoutePath {
   courses = 'courses',
   addCourse = 'add-course',
   editCourse = 'edit-course',
+  own = 'own',
 }
 
 export interface SideNav {
   icon?: JSX.Element;
   label: string;
   path: string[];
-  selected?: boolean;
+  hideLinkInBreadcrumb?: boolean; // 当前面包屑上的链接是否应该被隐藏
   subNav?: SideNav[];
-  hide?: boolean;
 }
 
 const students: SideNav = {
-  path: [],
+  path: [RoutePath.students],
   label: 'Student',
   icon: <SolutionOutlined />,
-  subNav: [
-    { path: [RoutePath.students], label: 'Student List', icon: <TeamOutlined /> },
-  ],
+  hideLinkInBreadcrumb: true,
+  subNav: [{ path: [''], label: 'Student List', icon: <TeamOutlined /> }],
 };
 
 const courses: SideNav = {
-  path: [],
+  path: [RoutePath.courses],
   label: 'Course',
   icon: <ReadOutlined />,
+  hideLinkInBreadcrumb: true,
   subNav: [
-    { path: [RoutePath.courses], label: 'All Courses', icon: <ProjectOutlined /> },
+    { path: [''], label: 'All Courses', icon: <ProjectOutlined /> },
     { path: [RoutePath.addCourse], label: 'Add Course', icon: <FileAddOutlined /> },
     { path: [RoutePath.editCourse], label: 'Edit Course', icon: <EditOutlined /> },
   ],
 };
 
 const teachers: SideNav = {
-  path: [],
+  path: [RoutePath.teachers],
   label: 'Teacher',
   icon: <DeploymentUnitOutlined />,
+  hideLinkInBreadcrumb: true,
   subNav: [
     {
-      path: [RoutePath.teachers],
+      path: [''],
       label: 'Teacher List',
       icon: <TeamOutlined />,
     },
@@ -74,8 +74,19 @@ const overview: SideNav = {
   icon: <DashboardOutlined />,
 };
 
+const studentCourses: SideNav = {
+  path: [RoutePath.courses],
+  label: 'Course',
+  icon: <ReadOutlined />,
+  hideLinkInBreadcrumb: true,
+  subNav: [
+    { path: [''], label: 'All Courses', icon: <ProjectOutlined /> },
+    { path: [RoutePath.own], label: 'My Courses', icon: <FileAddOutlined /> },
+  ],
+};
+
 export const routes: Map<Role, SideNav[]> = new Map([
   [Roles.manager, [overview, students, teachers, courses]],
   [Roles.teacher, [overview, students, courses]],
-  [Roles.student, [overview, courses]],
+  [Roles.student, [overview, studentCourses]],
 ]);

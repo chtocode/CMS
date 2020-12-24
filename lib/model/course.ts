@@ -34,6 +34,7 @@ export interface CourseRequest extends Paginator {
   code?: string;
   name?: string;
   type?: number;
+  userId?: number;
 }
 
 export interface CourseResponse {
@@ -103,4 +104,17 @@ export interface ScheduleRequest {
   courseId?: number;
   chapters: Omit<Chapter, 'id'>[];
   classTime: string[];
+}
+
+export interface StudentCourse {
+  id: number;
+  studentId: number;
+  ctime: string;
+  course_date: string;
+  course: Course;
+}
+
+export interface StudentOwnCoursesResponse {
+  total: number;
+  courses: StudentCourse[];
 }

@@ -9,6 +9,7 @@ import AppLayout from '../../../../components/layout/layout';
 import { Paginator } from '../../../../lib/model';
 import { Course } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
+import storage from '../../../../lib/services/storage';
 
 const Indicator = styled.div`
   position: relative;
@@ -64,7 +65,7 @@ export default function Page() {
           renderItem={(item) => (
             <List.Item key={item.id}>
               <CourseOverview {...item}>
-                <Link href={`/dashboard/manager/courses/${item.id}`} passHref>
+                <Link href={`/dashboard/${storage.userType}/courses/${item.id}`} passHref>
                   <Button type="primary">Read More</Button>
                 </Link>
               </CourseOverview>

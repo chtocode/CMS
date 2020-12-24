@@ -39,6 +39,7 @@ import {
   StatisticsType
 } from '../model/statistics';
 import { RootPath, SubPath } from './api-path';
+import storage from './storage';
 
 const axiosInstance = axios.create({
   withCredentials: true,
@@ -58,21 +59,34 @@ class BaseApiService {
       : path;
 
     return axiosInstance
-      .get(path)
+      .get(path, {
+        headers: {
+          Authorization: 'Bearer ' + storage?.token,
+        },
+      })
       .then((res) => res.data)
       .catch((err) => this.errorHandler(err));
   }
 
   protected async post<T>(path: IPath, params: object): Promise<T> {
     return axiosInstance
-      .post(this.getPath(path), params)
+      .post(this.getPath(path), params, {
+        headers: {
+          Authorization: 'Bearer ' + storage?.token,
+        },
+      })
       .then((res) => res.data)
       .catch(this.errorHandler);
   }
 
   protected async delete<T>(path: IPath, params: object): Promise<T> {
     return axiosInstance
-      .delete(this.getPath(path), { params })
+      .delete(this.getPath(path), {
+        params,
+        headers: {
+          Authorization: 'Bearer ' + storage?.token,
+        },
+      })
       .then((res) => res.data)
       .catch(this.errorHandler);
   }
@@ -162,7 +176,7 @@ class ApiService extends BaseApiService {
     return this.get(RootPath.student, { id }).then(this.showMessage());
   }
 
-  getCourses(req: Partial<CourseRequest>): Promise<IResponse<CourseResponse>> {
+  getCourses<T = CourseResponse>(req: Partial<CourseRequest>): Promise<IResponse<T>> {
     return this.get(RootPath.courses, { ...req }).then(this.showMessage());
   }
 
@@ -226,7 +240,9 @@ class ApiService extends BaseApiService {
     ]).then(this.showMessage());
   }
 
-  getStatistics<T, U = Statistic>(type: StatisticsType): Promise<IResponse<StatisticsResponse<T, U>>> {
+  getStatistics<T, U = Statistic>(
+    type: StatisticsType
+  ): Promise<IResponse<StatisticsResponse<T, U>>> {
     return this.get<IResponse<StatisticsResponse<T, U>>>([RootPath.statistics, type]).then(
       this.showMessage()
     );

@@ -12,4 +12,5 @@ export type LoginRequest = LoginFormValues;
 export interface LoginResponse {
   token: string;
   loginType: Role;
+  userId: number;
 }

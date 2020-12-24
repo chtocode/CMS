@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import WeekCalendar from '../../../../components/common/week-calendar';
 import CourseOverview from '../../../../components/course/overview';
 import Layout from '../../../../components/layout/layout';
+import { CourseStatusBadge, CourseStatusColor, CourseStatusText } from '../../../../lib/constant';
 import { CourseDetail, Schedule } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
 
@@ -42,12 +43,6 @@ const StyledRow = styled(Row)`
   margin: 0 0 0 -24px !important;
 `;
 
-enum CourseStatus {
-  'warning',
-  'success',
-  'default',
-}
-
 export async function getServerSideProps(context) {
   // todo get student profile here;
   const { id } = context.params;
@@ -59,14 +54,9 @@ export async function getServerSideProps(context) {
 
 const getChapterExtra = (source: Schedule, index: number) => {
   const activeIndex = source.chapters.findIndex((item) => item.id === source.current);
+  const status = index === activeIndex ? 1 : index < activeIndex ? 0 : 2;
 
-  if (index === activeIndex) {
-    return <Tag color={'green'}>进行中</Tag>;
-  } else if (index < activeIndex) {
-    return <Tag color={'default'}>已完成</Tag>;
-  } else {
-    return <Tag color={'orange'}>未开始</Tag>;
-  }
+  return <Tag color={CourseStatusColor[status]}>{CourseStatusText[status]}</Tag>;
 };
 
 export default function Page(props: { id: number }) {
@@ -79,7 +69,7 @@ export default function Page(props: { id: number }) {
     (async () => {
       const id = +router.query.id || props.id;
       const { data } = await apiService.getCourseById(id);
-      
+
       if (data) {
         const sales = data.sales;
         const info = [
@@ -124,7 +114,7 @@ export default function Page(props: { id: number }) {
             <H3>Start Time</H3>
             <Row>{data?.startTime}</Row>
 
-            <Badge status={CourseStatus[data?.status] as any} offset={[5, 24]}>
+            <Badge status={CourseStatusBadge[data?.status] as any} offset={[5, 24]}>
               <H3>Status</H3>
             </Badge>
             <Row>

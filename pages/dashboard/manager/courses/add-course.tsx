@@ -1,11 +1,11 @@
 import { Button, Result, Steps } from 'antd';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import AddCourseForm from '../../../components/course/add-course';
-import UpdateChapterForm from '../../../components/course/update-chapter';
-import { useUserType } from '../../../components/custom-hooks/login-state';
-import AppLayout from '../../../components/layout/layout';
-import { Course } from '../../../lib/model';
+import AddCourseForm from '../../../../components/course/add-course';
+import UpdateChapterForm from '../../../../components/course/update-chapter';
+import { useUserType } from '../../../../components/custom-hooks/login-state';
+import AppLayout from '../../../../components/layout/layout';
+import { Course } from '../../../../lib/model';
 
 const { Step } = Steps;
 

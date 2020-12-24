@@ -1,12 +1,12 @@
 import { Col, Input, Row, Select, Spin, Tabs } from 'antd';
 import { debounce } from 'lodash';
 import React, { useCallback, useState } from 'react';
-import AddCourseForm from '../../../components/course/add-course';
-import UpdateChapterForm from '../../../components/course/update-chapter';
-import AppLayout from '../../../components/layout/layout';
-import { gutter } from '../../../lib/constant';
-import { Course } from '../../../lib/model';
-import apiService from '../../../lib/services/api-service';
+import AddCourseForm from '../../../../components/course/add-course';
+import UpdateChapterForm from '../../../../components/course/update-chapter';
+import AppLayout from '../../../../components/layout/layout';
+import { gutter } from '../../../../lib/constant';
+import { Course } from '../../../../lib/model';
+import apiService from '../../../../lib/services/api-service';
 
 const { Option } = Select;
 

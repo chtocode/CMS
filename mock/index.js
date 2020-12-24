@@ -97,6 +97,7 @@ export default function makeServer({ environment = 'test' } = {}) {
               data: {
                 token: Math.random().toString(32).split('.')[1] + '~' + req.loginType,
                 loginType: req.loginType,
+                userId: user.models[0].id,
               },
               code: 200,
               msg: 'login success',
@@ -228,28 +229,61 @@ export default function makeServer({ environment = 'test' } = {}) {
       });
 
       this.get('/courses', (schema, req) => {
-        const { page, limit, ...others } = req.queryParams;
+        const permission = getPermission(req);
+        const { page, limit, userId, ...others } = req.queryParams;
         const conditions = Object.entries(others).filter(([key, value]) => !!value);
+        const filterData = (courses, sourceKey) => {
+          if (page && limit) {
+            courses = courses.slice((page - 1) * limit, page * limit);
+          }
+
+          if (conditions.length) {
+            courses = courses.filter((item) =>
+              conditions.every(([key, value]) => {
+                item = sourceKey ? item[sourceKey] : item;
+                if (key === 'name') {
+                  return item.name.includes(value);
+                } else if (key === 'type') {
+                  return item.type.name === value;
+                } else {
+                  return item[key] === value;
+                }
+              })
+            );
+          }
+          return courses;
+        };
+
+        if (userId && permission !== 9) {
+          if (permission === 1) {
+            const user = schema.users.find(userId);
+            let courses = schema.students
+              .findBy({ email: user.email })
+              .studentCourses.models.map((item) => {
+                item.attrs.course = item.course;
+                item.attrs.course.attrs.typeName = item.course.type.name;
+
+                return item;
+              });
+            const total = courses.length;
+            
+            courses = filterData(courses, 'course');
+
+            return new Response(200, {}, { msg: 'success', code: 200, data: { total, courses } });
+          }
+
+          if (permission === 2) {
+            const user = schema.users.find(userId);
+            const data = schema.teachers.findBy({ email: user.email }).models;
+
+            return new Response(200, {}, { msg: 'success', code: 200, data });
+          }
+        }
+
         let courses = schema.courses.all().models;
         const total = courses.length;
 
-        if (page && limit) {
-          courses = courses.slice((page - 1) * limit, page * limit);
-        }
-
-        if (conditions.length) {
-          courses = courses.filter((item) =>
-            conditions.every(([key, value]) => {
-              if (key === 'name') {
-                return item.name.includes(value);
-              } else if (key === 'type') {
-                return item.type.name === value;
-              } else {
-                return item[key] === value;
-              }
-            })
-          );
-        }
+        courses = filterData(courses); 
 
         courses.forEach((item) => {
           item.attrs.teacherName = item.teacher.name;
@@ -640,3 +674,24 @@ function getCtimeStatistics(source) {
     })
   );
 }
+
+/**
+ * 1: student 2: teacher 9: manger
+ */
+function getPermission(req) {
+  const token = req.requestHeaders?.Authorization;
+  const permission = token?.split('~')[1];
+
+  switch (permission) {
+    case 'student':
+      return 1;
+    case 'teacher':
+      return 2;
+    case 'manager':
+      return 9;
+    default:
+      return 0;
+  }
+}
+
+function getCoursesManager(schema, req) {}

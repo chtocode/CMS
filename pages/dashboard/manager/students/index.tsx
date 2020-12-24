@@ -144,6 +144,7 @@ export default function Dashboard() {
       { limit: pagination.pageSize, page: pagination.current, query },
       (item) => item === ''
     );
+    setLoading(true);
 
     apiService.getStudents(req).then((res) => {
       const { students, total } = res.data;

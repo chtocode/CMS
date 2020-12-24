@@ -17,7 +17,6 @@ export type StatisticsType = 'student' | 'teacher' | 'course';
 
 export interface StatisticsRequest<T> {
   type?: StatisticsType;
-  fields?: keyof T[];
 }
 
 export type StatisticsResponse<T = any, U = Statistic> = {
