@@ -118,3 +118,7 @@ export interface StudentOwnCoursesResponse {
   total: number;
   courses: StudentCourse[];
 }
+
+export interface ClassSchedule extends Course {
+  schedule: Schedule;
+}

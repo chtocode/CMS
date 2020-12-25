@@ -1,4 +1,5 @@
 import {
+  CalendarOutlined,
   DashboardOutlined,
   DeploymentUnitOutlined,
   EditOutlined,
@@ -24,6 +25,7 @@ export enum RoutePath {
   addCourse = 'add-course',
   editCourse = 'edit-course',
   own = 'own',
+  schedule = 'schedule',
 }
 
 export interface SideNav {
@@ -85,8 +87,14 @@ const studentCourses: SideNav = {
   ],
 };
 
+const classSchedule: SideNav = { 
+  path: [RoutePath.schedule],
+  label: 'Class Schedule',
+  icon: <CalendarOutlined />
+}
+
 export const routes: Map<Role, SideNav[]> = new Map([
   [Roles.manager, [overview, students, teachers, courses]],
   [Roles.teacher, [overview, students, courses]],
-  [Roles.student, [overview, studentCourses]],
+  [Roles.student, [overview, studentCourses, classSchedule]],
 ]);

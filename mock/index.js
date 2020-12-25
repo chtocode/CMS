@@ -266,7 +266,7 @@ export default function makeServer({ environment = 'test' } = {}) {
                 return item;
               });
             const total = courses.length;
-            
+
             courses = filterData(courses, 'course');
 
             return new Response(200, {}, { msg: 'success', code: 200, data: { total, courses } });
@@ -283,7 +283,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         let courses = schema.courses.all().models;
         const total = courses.length;
 
-        courses = filterData(courses); 
+        courses = filterData(courses);
 
         courses.forEach((item) => {
           item.attrs.teacherName = item.teacher.name;
@@ -613,6 +613,24 @@ export default function makeServer({ environment = 'test' } = {}) {
             courses: values,
           })),
         };
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.get('/student/schedule', (schema, req) => {
+        const userId = req.queryParams.userId;
+        const user = schema.users.find(userId);
+        const data = schema.students
+          .findBy({ email: user.email })
+          .studentCourses.models.map((item) => {
+            const course = item.course;
+
+            course.attrs.typeName = course.type.name;
+            course.attrs.schedule = course.schedule;
+            course.attrs.teacherName = course.teacher.name;
+
+            return course;
+          });
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });

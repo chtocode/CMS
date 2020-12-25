@@ -22,6 +22,7 @@ import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/
 import {
   AddCourseRequest,
   AddCourseResponse,
+  ClassSchedule,
   CourseDetailResponse,
   CourseRequest,
   CourseResponse,
@@ -246,6 +247,12 @@ class ApiService extends BaseApiService {
     return this.get<IResponse<StatisticsResponse<T, U>>>([RootPath.statistics, type]).then(
       this.showMessage()
     );
+  }
+
+  getClassSchedule(userId: number): Promise<IResponse<ClassSchedule[]>> {
+    return this.get<IResponse<ClassSchedule[]>>([RootPath.student, SubPath.schedule], {
+      userId,
+    }).then(this.showMessage());
   }
 
   /* Helper Function
