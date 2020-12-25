@@ -9,6 +9,9 @@ export enum RootPath {
   teachers = 'teachers',
   teacher = 'teacher',
   statistics = 'statistics',
+  profile = 'profile',
+  degrees = 'degrees',
+  countries = 'countries',
 }
 
 export enum SubPath {
@@ -19,4 +22,5 @@ export enum SubPath {
   type = 'type',
   schedule = 'schedule',
   overview = 'overview',
+  interest = 'interest',
 }

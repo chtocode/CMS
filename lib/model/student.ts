@@ -7,7 +7,7 @@ export interface Student<T = CourseShort> {
   typeId: number;
   typeName: string;
   updateAt: string;
-  area: string;
+  country: string;
   ctime: string;
   email: string;
   courses: T[];
@@ -42,8 +42,14 @@ export interface StudentRequest {
   id: number;
 }
 
-export type StudentResponse = StudentProfile;
-export interface StudentProfile extends Student<Course> {
+export type StudentResponse = StudentWithProfile;
+
+export interface StudentWithProfile extends Student<Course>, StudentProfile {}
+
+export interface StudentProfile {
+  name: string;
+  country: string;
+  email: string;
   address: string;
   phone: number;
   gender: number;

@@ -1,5 +1,5 @@
 import { Course, Schedule } from './course';
-import { StudentProfile } from './student';
+import { StudentWithProfile } from './student';
 import { Teacher, TeacherProfile } from './teacher';
 
 export interface BasicStatistics {
@@ -29,7 +29,7 @@ export interface StatisticsOverviewResponse {
   teacher: GenderStatistics;
 }
 
-export type StudentStatistics = StatisticsResponse<StudentProfile>;
+export type StudentStatistics = StatisticsResponse<StudentWithProfile>;
 
 export type TeacherStatistics = StatisticsResponse<Teacher & TeacherProfile>;
 

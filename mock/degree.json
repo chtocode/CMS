@@ -1,0 +1,11 @@
+[
+  { "short": "B.E.", "name": "Bachelor Degree of Engineering", "group": "BA" },
+  { "short": "B.S.", "name": "Bachelor Degree of Science", "group": "BA" },
+  { "short": "B.A.", "name": "Bachelor Degree of Art", "group": "BA" },
+  { "short": "BEd", "name": "Bachelor of Education", "group": "BA" },
+  { "short": "BBA", "name": "Bachelor of Business Adm", "group": "MA" },
+  { "short": "MA.Sc", "name": "Master of science", "group": "MA" },
+  { "short": "MA.Eng", "name": "Master of engineering", "group": "MA" },
+  { "short": "MBA", "name": "Master of Business Administration", "group": "MA" },
+  { "short": "Ph.D", "name": "Doctor of Philosophy", "group": "PH.D" }
+]

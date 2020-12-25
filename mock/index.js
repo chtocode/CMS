@@ -1,5 +1,5 @@
 import { format, formatDistance, subMonths } from 'date-fns';
-import { countBy, groupBy } from 'lodash';
+import { countBy, groupBy, uniq } from 'lodash';
 import { belongsTo, hasMany, JSONAPISerializer, Model, Response, Server } from 'miragejs';
 
 const students = require('./student.json');
@@ -13,6 +13,8 @@ const teachers = require('./teacher.json');
 const sales = require('./sales.json');
 const schedule = require('./schedule.json');
 const teacherProfile = require('./teacher-profile.json');
+const degree = require('./degree.json');
+const country = require('./country.json');
 
 export default function makeServer({ environment = 'test' } = {}) {
   let server = new Server({
@@ -46,6 +48,8 @@ export default function makeServer({ environment = 'test' } = {}) {
       }),
       sales: Model,
       schedule: Model,
+      degree: Model,
+      country: Model,
     },
 
     serializers: {
@@ -64,6 +68,8 @@ export default function makeServer({ environment = 'test' } = {}) {
       studentTypes.forEach((type) => server.create('studentType', type));
       studentProfile.forEach((student) => server.create('studentProfile', student));
       students.forEach((student) => server.create('student', student));
+      degree.forEach((degree) => server.create('degree', degree));
+      country.forEach((country) => server.create('country', country));
     },
 
     routes() {
@@ -108,6 +114,10 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
+      this.post('/logout', (schema, _) => {
+        return new Response(200, {}, { data: true, msg: 'success', code: 200 });
+      });
+
       this.get('/userType', (schema, req) => {
         const query = req.queryParams;
         const type = query.split('~')[1];
@@ -118,6 +128,8 @@ export default function makeServer({ environment = 'test' } = {}) {
           return new Response(400, {}, { msg: 'Token is not exist', code: 400 });
         }
       });
+
+      /* ----------------------------------------student api------------------------------------- */
 
       this.get('/students', (schema, req) => {
         const { query } = req.queryParams;
@@ -157,11 +169,11 @@ export default function makeServer({ environment = 'test' } = {}) {
 
       this.post('/students/add', (schema, req) => {
         const body = JSON.parse(req.requestBody);
-        const { name, email, area, type } = body;
+        const { name, email, country, type } = body;
         const data = schema.students.create({
           name,
           email,
-          area,
+          country,
           typeId: type,
           ctime: format(new Date(), 'yyyy-MM-dd hh:mm:ss'),
         });
@@ -172,14 +184,14 @@ export default function makeServer({ environment = 'test' } = {}) {
       });
 
       this.post('/students/update', (schema, req) => {
-        const { id, email, name, area, type } = JSON.parse(req.requestBody);
+        const { id, email, name, country, type } = JSON.parse(req.requestBody);
         const target = schema.students.findBy({ id });
 
         if (target) {
           const data = target.update({
             email,
             name,
-            area,
+            country,
             typeId: type,
             updateAt: format(new Date(), 'yyyy-MM-dd hh:mm:ss'),
           });
@@ -197,10 +209,6 @@ export default function makeServer({ environment = 'test' } = {}) {
 
         schema.students.find(id).destroy();
 
-        return new Response(200, {}, { data: true, msg: 'success', code: 200 });
-      });
-
-      this.post('/logout', (schema, _) => {
         return new Response(200, {}, { data: true, msg: 'success', code: 200 });
       });
 
@@ -227,6 +235,33 @@ export default function makeServer({ environment = 'test' } = {}) {
           return new Response(400, {}, { msg: `can\'t find student by id ${id} `, code: 400 });
         }
       });
+
+      this.get('/student/schedule', (schema, req) => {
+        const userId = req.queryParams.userId;
+        const user = schema.users.find(userId);
+        const data = schema.students
+          .findBy({ email: user.email })
+          .studentCourses.models.map((item) => {
+            const course = item.course;
+
+            course.attrs.typeName = course.type.name;
+            course.attrs.schedule = course.schedule;
+            course.attrs.teacherName = course.teacher.name;
+
+            return course;
+          });
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.get('/student/interest', (schema, req) => {
+        const source = schema.studentProfiles.all().models.map((item) => item.interest);
+        const data = uniq(source.flat());
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      /* --------------------------------course api----------------------------------------- */
 
       this.get('/courses', (schema, req) => {
         const permission = getPermission(req);
@@ -301,7 +336,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         const id = req.queryParams.id;
         const course = schema.courses.findBy({ id });
 
-        course.attrs.teacher = course.teacher.name;
+        course.attrs.teacherName = course.teacher.name;
         course.attrs.sales = course.sales;
         course.attrs.typeName = course.type.name;
         course.attrs.schedule = course.schedule;
@@ -436,6 +471,8 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
+      /* -------------------------------------teacher api---------------------------------- */
+
       this.get('/teachers', (schema, req) => {
         const { query } = req.queryParams;
         const limit = +req.queryParams.limit;
@@ -513,6 +550,8 @@ export default function makeServer({ environment = 'test' } = {}) {
         return new Response(200, {}, { data: true, msg: 'success', code: 200 });
       });
 
+      /* -----------------------------------statistics api--------------------------------- */
+
       this.get('/statistics/overview', (schema, req) => {
         const courses = schema.courses.all().models;
         const data = {
@@ -532,7 +571,7 @@ export default function makeServer({ environment = 'test' } = {}) {
       this.get('/statistics/student', (schema, req) => {
         const source = schema.students.all().models;
         const data = {
-          area: getStatisticList(countBy(source, 'area')),
+          country: getStatisticList(countBy(source, 'country')),
           typeName: getStatisticList(countBy(source, (item) => item.type.name)),
           courses: getStatisticList(
             source.reduce((acc, item) => {
@@ -617,20 +656,78 @@ export default function makeServer({ environment = 'test' } = {}) {
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
 
-      this.get('/student/schedule', (schema, req) => {
-        const userId = req.queryParams.userId;
+      /* --------------------------------- other api--------------------------------------------*/
+      this.get('/profile', (schema, req) => {
+        const { userId, userType } = req.queryParams;
+        const permission = getPermission(req, userType);
         const user = schema.users.find(userId);
-        const data = schema.students
-          .findBy({ email: user.email })
-          .studentCourses.models.map((item) => {
-            const course = item.course;
+        const target = { email: user.email };
+        let data = null;
 
-            course.attrs.typeName = course.type.name;
-            course.attrs.schedule = course.schedule;
-            course.attrs.teacherName = course.teacher.name;
+        if (permission === 1) {
+          const student = schema.students.findBy(target);
 
-            return course;
-          });
+          data = schema.studentProfiles.findBy(target);
+          data.attrs.name = student.name;
+          data.attrs.country = student.country;
+        } else if (permission === 2) {
+          const teacher = schema.teachers.findBy(target);
+
+          data = schema.teacherProfiles.findBy(target);
+          data.attrs.name = teacher.name;
+          data.attrs.country = teacher.country;
+        } else {
+          // TODO: manager profile
+        }
+
+        if (!!data) {
+          data.attrs.email = user.email;
+        }
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.post('/profile', (schema, req) => {
+        const { userId, ...info } = JSON.parse(req.requestBody);
+        const permission = getPermission(req);
+        const user = schema.users.find(userId);
+        const target = { email: user.email };
+        let data = null;
+
+        if (permission === 1) {
+          // !粗爆点，更新所有的字段，管它有没有
+          const student = schema.students.findBy(target).update(info);
+          const profile = schema.studentProfiles.findBy(target).update(info);
+
+          profile.attrs.name = student.name;
+          profile.attrs.country = student.country;
+          data = profile;
+        } else if (permission === 2) {
+          const teacher = schema.teachers.findBy(target).update(info);
+          const profile = schema.teacherProfiles.findBy(target).update(info);
+
+          profile.attrs.name = teacher.name;
+          profile.attrs.country = teacher.country;
+          data = profile
+        } else {
+          // TODO: manager profile
+        }
+
+        if (!!data) {
+          data.attrs.email = user.email;
+        }
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.get('/degrees', (schema) => {
+        const data = schema.degrees.all().models;
+
+        return new Response(200, {}, { msg: 'success', code: 200, data });
+      });
+
+      this.get('/countries', (schema) => {
+        const data = schema.countries.all().models;
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
@@ -696,9 +793,9 @@ function getCtimeStatistics(source) {
 /**
  * 1: student 2: teacher 9: manger
  */
-function getPermission(req) {
+function getPermission(req, role) {
   const token = req.requestHeaders?.Authorization;
-  const permission = token?.split('~')[1];
+  const permission = role || token?.split('~')[1];
 
   switch (permission) {
     case 'student':
@@ -711,5 +808,3 @@ function getPermission(req) {
       return 0;
   }
 }
-
-function getCoursesManager(schema, req) {}

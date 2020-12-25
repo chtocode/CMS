@@ -7,6 +7,7 @@ import {
   AddTeacherResponse,
   LogoutRequest,
   LogoutResponse,
+  Role,
   StudentResponse,
   StudentsRequest,
   StudentsResponse,
@@ -19,6 +20,7 @@ import {
   UpdateTeacherResponse
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
+import { Country, Degree } from '../model/common';
 import {
   AddCourseRequest,
   AddCourseResponse,
@@ -253,6 +255,29 @@ class ApiService extends BaseApiService {
     return this.get<IResponse<ClassSchedule[]>>([RootPath.student, SubPath.schedule], {
       userId,
     }).then(this.showMessage());
+  }
+
+  getProfileByUserId<T>(userId: number, userType?: Role): Promise<IResponse<T>> {
+    return this.get<IResponse<T>>([RootPath.profile], {
+      userId,
+      userType: userType || storage.userType,
+    }).then(this.showMessage());
+  }
+
+  getAllInterestLanguages(): Promise<IResponse<string[]>> {
+    return this.get([RootPath.student, SubPath.interest]).then(this.showMessage());
+  }
+
+  getDegrees(): Promise<IResponse<Degree[]>> {
+    return this.get([RootPath.degrees]).then(this.showMessage());
+  }
+
+  getCountries(): Promise<IResponse<Country[]>> {
+    return this.get([RootPath.countries]).then(this.showMessage());
+  }
+
+  updateProfile<T>(req: Partial<T>): Promise<IResponse<T>> {
+    return this.post([RootPath.profile], {...req, userId: storage.userId }).then(this.showMessage(true));
   }
 
   /* Helper Function

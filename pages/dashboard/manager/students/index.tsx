@@ -58,10 +58,10 @@ export default function Dashboard() {
     },
     {
       title: 'Area',
-      dataIndex: 'area',
+      dataIndex: 'country',
       width: '10%',
       filters: businessAreas.map(item =>({ text: item, value: item})),
-      onFilter: (value: string, record: Student) => record.area.includes(value),
+      onFilter: (value: string, record: Student) => record.country.includes(value),
     },
     {
       title: 'Email',

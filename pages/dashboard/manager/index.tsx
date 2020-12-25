@@ -9,7 +9,7 @@ import HeatChart from '../../../components/manager/heat';
 import LineChart from '../../../components/manager/line';
 import PieChart from '../../../components/manager/pie';
 import { Role } from '../../../lib/constant';
-import { Course, Schedule, StudentProfile, Teacher, TeacherProfile } from '../../../lib/model';
+import { Course, Schedule, StudentWithProfile, Teacher, TeacherProfile } from '../../../lib/model';
 import {
   BasicStatistics,
   CourseClassTimeStatistic,
@@ -108,7 +108,7 @@ export default function Page() {
       setOverview(data);
     });
 
-    apiService.getStatistics<StudentProfile>(Role.student).then((res) => {
+    apiService.getStatistics<StudentWithProfile>(Role.student).then((res) => {
       const { data } = res;
 
       setStudentStatistics(data);
@@ -171,11 +171,11 @@ export default function Page() {
               </Select>
             }
           >
-            {/* <DistrictWithNoSSR data={studentStatistics?.area as Exclude<Statistic, number>[]} /> */}
+            {/* <DistrictWithNoSSR data={studentStatistics?.country as Exclude<Statistic, number>[]} /> */}
             <DistributionWithNoSSR
               data={
                 (distributionRole === Role.student
-                  ? studentStatistics?.area
+                  ? studentStatistics?.country
                   : teacherStatistics?.country) as Statistic[]
               }
               title={distributionRole}

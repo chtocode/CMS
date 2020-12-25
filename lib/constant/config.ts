@@ -28,3 +28,16 @@ export enum SkillDes {
   'Expert',
   'Master',
 }
+
+export const interestColors: string[] = [
+  'magenta',
+  'volcano',
+  'orange',
+  'gold',
+  'green',
+  'cyan',
+  'geekblue',
+  'purple',
+  'red',
+  'lime',
+];

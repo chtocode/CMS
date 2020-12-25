@@ -1,10 +1,17 @@
-import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
+import {
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  ProfileOutlined,
+  UserOutlined
+} from '@ant-design/icons';
+import { Avatar, Dropdown, Layout, Menu } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { routes, SideNav } from '../../lib/constant/routes';
+import { StudentProfile } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
 import storage from '../../lib/services/storage';
 import { generateKey, getActiveKey } from '../../lib/util';
@@ -76,7 +83,7 @@ function renderMenuItems(data: SideNav[], parent = ''): JSX.Element[] {
         </Menu.SubMenu>
       );
     } else {
-      return (
+      return item.hide ? null : (
         <Menu.Item key={key} title={item.label} icon={item.icon}>
           {!!item.path.length || item.label.toLocaleLowerCase() === 'overview' ? (
             <Link
@@ -99,6 +106,7 @@ function renderMenuItems(data: SideNav[], parent = ''): JSX.Element[] {
 export default function AppLayout(props: React.PropsWithChildren<any>) {
   const { children } = props;
   const [collapsed, toggleCollapse] = useState(false);
+  const [avatar, setAvatar] = useState('');
   const router = useRouter();
   const userType = useUserType();
   const sideNave = routes.get(userType);
@@ -112,6 +120,17 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
   };
   const menuItems = renderMenuItems(sideNave);
   const { defaultOpenKeys, defaultSelectedKeys } = getMenuConfig(sideNave);
+
+  /**
+   * !!FIXME: Warning: React has detected a change in the order of Hooks called by AppLayout.
+   */
+  useEffect(() => {
+    apiService.getProfileByUserId<StudentProfile>(storage.userId).then((res) => {
+      const { data } = res;
+
+      setAvatar(data?.avatar);
+    });
+  }, []);
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -138,7 +157,25 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
           </HeaderIcon>
 
           <HeaderIcon>
-            <LogoutOutlined onClick={onLogout} />
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <ProfileOutlined />
+                    <Link href={`/dashboard/${storage.userType}/profile`}>
+                      <span>Profile</span>
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item onClick={onLogout}>
+                    <LogoutOutlined />
+                    <span>Logout</span>
+                  </Menu.Item>
+                </Menu>
+              }
+              placement="bottomLeft"
+            >
+              {avatar ? <Avatar src={avatar} /> : <Avatar icon={<UserOutlined />} />}
+            </Dropdown>
           </HeaderIcon>
         </StyledLayoutHeader>
 

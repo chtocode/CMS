@@ -4,6 +4,7 @@ import {
   DeploymentUnitOutlined,
   EditOutlined,
   FileAddOutlined,
+  ProfileOutlined,
   ProjectOutlined,
   ReadOutlined,
   SolutionOutlined,
@@ -26,6 +27,7 @@ export enum RoutePath {
   editCourse = 'edit-course',
   own = 'own',
   schedule = 'schedule',
+  profile = 'profile',
 }
 
 export interface SideNav {
@@ -34,6 +36,7 @@ export interface SideNav {
   path: string[];
   hideLinkInBreadcrumb?: boolean; // 当前面包屑上的链接是否应该被隐藏
   subNav?: SideNav[];
+  hide?: boolean;
 }
 
 const students: SideNav = {
@@ -93,8 +96,15 @@ const classSchedule: SideNav = {
   icon: <CalendarOutlined />
 }
 
+const profile: SideNav = {
+  path: [RoutePath.profile],
+  label: 'Profile',
+  hide: true,
+  icon: <ProfileOutlined />
+}
+
 export const routes: Map<Role, SideNav[]> = new Map([
   [Roles.manager, [overview, students, teachers, courses]],
-  [Roles.teacher, [overview, students, courses]],
-  [Roles.student, [overview, studentCourses, classSchedule]],
+  [Roles.teacher, [overview, students, courses, profile]],
+  [Roles.student, [overview, studentCourses, classSchedule, profile]],
 ]);

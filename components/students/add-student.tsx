@@ -14,7 +14,7 @@ const ModalFormSubmit = styled(Form.Item)`
 
 export interface AddStudentFormValues {
   name: string;
-  area: string;
+  country: string;
   type: number;
   email: string;
 }
@@ -50,7 +50,7 @@ export default function AddStudentForm(props: AddStudentFormProps): JSX.Element 
       initialValues={{
         name: student?.name,
         email: student?.email,
-        area: student?.area,
+        country: student?.country,
         typeId: student?.typeId,
       }}
     >
@@ -66,7 +66,7 @@ export default function AddStudentForm(props: AddStudentFormProps): JSX.Element 
         <Input type="email" placeholder="email" />
       </Form.Item>
 
-      <Form.Item label="Area" name="area" rules={[{ required: true }]}>
+      <Form.Item label="Area" name="country" rules={[{ required: true }]}>
         <Select>
           {businessAreas.map((item, index) => (
             <Select.Option value={item} key={index}>
