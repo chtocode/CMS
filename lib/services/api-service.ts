@@ -244,11 +244,12 @@ class ApiService extends BaseApiService {
   }
 
   getStatistics<T, U = Statistic>(
-    type: StatisticsType
+    type: StatisticsType,
+    userId: number
   ): Promise<IResponse<StatisticsResponse<T, U>>> {
-    return this.get<IResponse<StatisticsResponse<T, U>>>([RootPath.statistics, type]).then(
-      this.showMessage()
-    );
+    return this.get<IResponse<StatisticsResponse<T, U>>>([RootPath.statistics, type], {
+      userId,
+    }).then(this.showMessage());
   }
 
   getClassSchedule(userId: number): Promise<IResponse<ClassSchedule[]>> {
@@ -277,7 +278,9 @@ class ApiService extends BaseApiService {
   }
 
   updateProfile<T>(req: Partial<T>): Promise<IResponse<T>> {
-    return this.post([RootPath.profile], {...req, userId: storage.userId }).then(this.showMessage(true));
+    return this.post([RootPath.profile], { ...req, userId: storage.userId }).then(
+      this.showMessage(true)
+    );
   }
 
   /* Helper Function

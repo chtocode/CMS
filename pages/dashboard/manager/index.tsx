@@ -2,55 +2,28 @@ import { DeploymentUnitOutlined, ReadOutlined, SolutionOutlined } from '@ant-des
 import { Card, Col, Progress, Row, Select } from 'antd';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { OverviewCol, OverviewIconCol } from '../../../components/common/styled';
 import AppLayout from '../../../components/layout/layout';
 import BarChart from '../../../components/manager/bar';
 import HeatChart from '../../../components/manager/heat';
 import LineChart from '../../../components/manager/line';
 import PieChart from '../../../components/manager/pie';
 import { Role } from '../../../lib/constant';
-import { Course, Schedule, StudentWithProfile, Teacher, TeacherProfile } from '../../../lib/model';
+import { Course, OverviewProps, Schedule, StudentWithProfile, Teacher, TeacherProfile } from '../../../lib/model';
 import {
-  BasicStatistics,
   CourseClassTimeStatistic,
   CourseStatistics,
   Statistic,
   StatisticsOverviewResponse,
-  StudentStatistics,
-  TeacherStatistics
+  StatisticsResponse
 } from '../../../lib/model/statistics';
 import apiService from '../../../lib/services/api-service';
+import storage from '../../../lib/services/storage';
 
-interface OverviewProps {
-  data: BasicStatistics;
-  title: string;
-  icon: JSX.Element;
-  style?: React.CSSProperties;
-}
 
-const OverviewIconCol = styled(Col)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  .anticon {
-    background: #fff;
-    padding: 25px;
-    border-radius: 50%;
-    color: #999;
-  }
-`;
-const OverviewCol = styled(Col)`
-  color: #fff;
-  h3 {
-    color: #fff;
-  }
-  h2 {
-    color: #fff;
-    font-size: 32px;
-    margin-bottom: 0;
-  }
-`;
+type StudentStatistics = StatisticsResponse<StudentWithProfile>;
+
+type TeacherStatistics = StatisticsResponse<Teacher & TeacherProfile>;
 
 const Overview = ({ data, title, icon, style }: OverviewProps) => {
   const lastMonthAddedPercent = +parseFloat(
@@ -108,19 +81,19 @@ export default function Page() {
       setOverview(data);
     });
 
-    apiService.getStatistics<StudentWithProfile>(Role.student).then((res) => {
+    apiService.getStatistics<StudentWithProfile>(Role.student, storage.userId).then((res) => {
       const { data } = res;
 
       setStudentStatistics(data);
     });
 
-    apiService.getStatistics<TeacherProfile & Teacher>(Role.teacher).then((res) => {
+    apiService.getStatistics<TeacherProfile & Teacher>(Role.teacher, storage.userId).then((res) => {
       const { data } = res;
 
       setTeacherStatistics(data);
     });
 
-    apiService.getStatistics<Course & Schedule, CourseClassTimeStatistic>('course').then((res) => {
+    apiService.getStatistics<Course & Schedule, CourseClassTimeStatistic>('course', storage.userId).then((res) => {
       const { data } = res;
 
       setCourseStatistics(data);

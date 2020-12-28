@@ -116,7 +116,7 @@
     {
         "cover": "http://v.bootstrapmb.com/2020/11/cbgse9169/images/courses/pic6.jpg",
         "ctime": "2020-12-19 15:34:25",
-        "detail": "dsdd",
+        "detail": "结合 react-virtualized 实现滚动加载无限长列表，带有虚拟化（virtualization）功能，能够提高数据量大时候长列表的性能。 virtualized 是在大数据列表中应用的一种技术，主要是为了减少不可见区域不必要的渲染从而提高性能，特别是数据量在成千上万条效果尤为明显。了解更多结合 react-virtualized 实现滚动加载无限长列表，带有虚拟化（virtualization）功能，能够提高数据量大时候长列表的性能。 virtualized 是在大数据列表中应用的一种技术，主要是为了减少不可见区域不必要的渲染从而提高性能，特别是数据量在成千上万条效果尤为明显。了解更多,主要是为了减少不可见区域不必要的渲染从而提高性能，特别是数据量在成千上万条效果尤为明显。了解更多",
         "duration": 3,
         "durationUnit": 1,
         "id": 40,
@@ -126,7 +126,7 @@
         "salesId": 1,
         "scheduleId": 6,
         "star": 3,
-        "startTime": "2020-12-08",
+        "startTime": "2021-03-01",
         "status": 0,
         "teacherId": 2,
         "typeId": 22,

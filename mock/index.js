@@ -569,31 +569,66 @@ export default function makeServer({ environment = 'test' } = {}) {
       });
 
       this.get('/statistics/student', (schema, req) => {
-        const source = schema.students.all().models;
-        const data = {
-          country: getStatisticList(countBy(source, 'country')),
-          typeName: getStatisticList(countBy(source, (item) => item.type.name)),
-          courses: getStatisticList(
-            source.reduce((acc, item) => {
-              const courses = item.studentCourses.models.map((item) => item.course.name);
-              const accumulate = accumulateFactory(acc);
+        const { userId, userType } = req.queryParams;
+        const permission = getPermission(req);
+        let data = null;
 
-              courses.forEach(accumulate);
-              return acc;
-            }, {})
-          ),
-          ctime: getCtimeStatistics(source),
-          interest: getStatisticList(
-            source
-              .map((item) => item.profile.interest)
-              .reduce((acc, cur) => {
+        if (permission === 9) {
+          const source = schema.students.all().models;
+          data = {
+            country: getStatisticList(countBy(source, 'country')),
+            typeName: getStatisticList(countBy(source, (item) => item.type.name)),
+            courses: getStatisticList(
+              source.reduce((acc, item) => {
+                const courses = item.studentCourses.models.map((item) => item.course.name);
                 const accumulate = accumulateFactory(acc);
 
-                cur.forEach(accumulate);
+                courses.forEach(accumulate);
                 return acc;
               }, {})
-          ),
-        };
+            ),
+            ctime: getCtimeStatistics(source),
+            interest: getStatisticList(
+              source
+                .map((item) => item.profile.interest)
+                .reduce((acc, cur) => {
+                  const accumulate = accumulateFactory(acc);
+
+                  cur.forEach(accumulate);
+                  return acc;
+                }, {})
+            ),
+          };
+        } else if (permission === 1) {
+          const user = schema.users.find(userId);
+          const student = schema.students.findBy({ email: user.email });
+          const ownCourses = student.studentCourses.models.map((item) => {
+            item.attrs.course = item.course;
+
+            return item;
+          });
+          const interest = student.profile.interest;
+          const interestCourses = schema.courses
+            .all()
+            .models.filter(
+              (item) =>
+                interest.includes(item.type.name) && !student.studentCourseIds.includes(item.id)
+            );
+
+          data = {
+            own: { amount: ownCourses.length, name: 'own', courses: ownCourses },
+            recommend: {
+              amount: interestCourses.length,
+              name: 'interest',
+              courses: interestCourses.map(item => {
+                item.attrs.teacherName = item.teacher.name;
+                item.attrs.typeName = item.type.name;
+                
+                return item;
+              }),
+            },
+          };
+        }
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
@@ -708,7 +743,7 @@ export default function makeServer({ environment = 'test' } = {}) {
 
           profile.attrs.name = teacher.name;
           profile.attrs.country = teacher.country;
-          data = profile
+          data = profile;
         } else {
           // TODO: manager profile
         }
@@ -808,3 +843,5 @@ function getPermission(req, role) {
       return 0;
   }
 }
+
+function getStudentStatistics(schema, req) {}

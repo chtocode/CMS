@@ -1,6 +1,4 @@
 import { Course, Schedule } from './course';
-import { StudentWithProfile } from './student';
-import { Teacher, TeacherProfile } from './teacher';
 
 export interface BasicStatistics {
   total: number; //总数
@@ -28,10 +26,6 @@ export interface StatisticsOverviewResponse {
   student: GenderStatistics;
   teacher: GenderStatistics;
 }
-
-export type StudentStatistics = StatisticsResponse<StudentWithProfile>;
-
-export type TeacherStatistics = StatisticsResponse<Teacher & TeacherProfile>;
 
 export interface ClassTimeStatistic {
   name: string;
