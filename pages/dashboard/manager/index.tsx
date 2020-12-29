@@ -8,7 +8,7 @@ import BarChart from '../../../components/manager/bar';
 import HeatChart from '../../../components/manager/heat';
 import LineChart from '../../../components/manager/line';
 import PieChart from '../../../components/manager/pie';
-import { Role } from '../../../lib/constant';
+import { gutter, Role } from '../../../lib/constant';
 import { Course, OverviewProps, Schedule, StudentWithProfile, Teacher, TeacherProfile } from '../../../lib/model';
 import {
   CourseClassTimeStatistic,
@@ -133,7 +133,7 @@ export default function Page() {
         </Row>
       )}
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={gutter}>
         <Col span={12}>
           <Card
             title="Distribution"
@@ -198,7 +198,7 @@ export default function Page() {
         </Col>
       </Row>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={gutter}>
         <Col span={12}>
           <Card title="Increment">
             <LineChart
@@ -223,7 +223,7 @@ export default function Page() {
         </Col>
       </Row>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={gutter}>
         <Col span={24}>
           <Card title="Course Schedule">
             <HeatChart

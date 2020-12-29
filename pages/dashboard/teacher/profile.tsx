@@ -1,40 +1,50 @@
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import {
+  Button,
   Card,
   Cascader,
+  Col,
   Descriptions,
   Divider,
-
+  Form,
   Input,
-  InputNumber,
-
+  message,
   Radio,
+  Rate,
+  Row,
   Select,
   Tag,
   Tooltip,
   Upload
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
+import { FormListFieldData } from 'antd/lib/form/FormList';
 import TextArea from 'antd/lib/input/TextArea';
+import format from 'date-fns/format';
 import React, { useEffect, useState } from 'react';
+import DatePicker from '../../../components/common/date-picker';
 import EditableItem from '../../../components/common/editable-text';
 import { DescriptionsVerticalMiddle, FormItemNoMb } from '../../../components/common/styled';
 import AppLayout from '../../../components/layout/layout';
-import { Gender, programLanguageColors } from '../../../lib/constant';
-import { Country, Degree, StudentProfile } from '../../../lib/model';
+import { Gender, gutter, programLanguageColors, skillDes } from '../../../lib/constant';
+import { Country, Teacher, TeacherProfile } from '../../../lib/model';
 import apiService from '../../../lib/services/api-service';
 import storage from '../../../lib/services/storage';
 import { beforeUploadAvatar } from '../../../lib/util';
 import addressOptions from '../../../public/address.json';
 
+type Profile = TeacherProfile & Pick<Teacher, 'country' | 'email' | 'name' | 'phone' | 'skills'>;
+
 export default function Page() {
-  const [data, setData] = useState<StudentProfile>(null);
-  const [existInterests, setExistInterests] = useState<string[]>([]);
-  const [degrees, setDegrees] = useState<Degree[]>([]);
+  const [data, setData] = useState<Profile>(null);
   const [countries, setCountries] = useState<Country[]>([]);
   const [fileList, setFileList] = useState([]);
-  const updateProfile = (value: Partial<StudentProfile>) => {
-    apiService.updateProfile<StudentProfile>(value).then((res) => {
+  const updateProfile = (value: Partial<Profile>) => {
+    if (value.birthday) {
+      value.birthday = format(new Date(value.birthday), 'yyyy-MM-dd');
+    }
+
+    apiService.updateProfile<Profile>(value).then((res) => {
       const { data } = res;
 
       if (!!data) {
@@ -44,7 +54,7 @@ export default function Page() {
   };
 
   useEffect(() => {
-    apiService.getProfileByUserId<StudentProfile>(storage.userId).then((res) => {
+    apiService.getProfileByUserId<Profile>(storage.userId).then((res) => {
       const { data } = res;
 
       setData(data);
@@ -58,17 +68,6 @@ export default function Page() {
       ]);
     });
 
-    apiService.getAllInterestLanguages().then((res) => {
-      const { data } = res;
-
-      setExistInterests(data);
-    });
-
-    apiService.getDegrees().then((res) => {
-      const { data } = res;
-
-      setDegrees(data);
-    });
     apiService.getCountries().then((res) => {
       const { data } = res;
 
@@ -118,10 +117,10 @@ export default function Page() {
                 </EditableItem>
               </Descriptions.Item>
 
-              <Descriptions.Item label="Age">
-                <EditableItem textNode={data?.age} onSave={updateProfile}>
-                  <FormItemNoMb name="age" initialValue={data?.age}>
-                    <InputNumber min={0} max={100} />
+              <Descriptions.Item label="Birthday">
+                <EditableItem textNode={data?.birthday} onSave={updateProfile}>
+                  <FormItemNoMb name="birthday" initialValue={new Date(data?.birthday)}>
+                    <DatePicker style={{ width: '100%' }} />
                   </FormItemNoMb>
                 </EditableItem>
               </Descriptions.Item>
@@ -180,60 +179,98 @@ export default function Page() {
 
             <Divider />
 
-            {/* 会员时长禁止更新, 必须由系统生成 */}
-            <DescriptionsVerticalMiddle title="Member">
-              <Descriptions.Item label="Duration">
-                From: {data.memberStartAt} To: {data.memberEndAt}
-              </Descriptions.Item>
-            </DescriptionsVerticalMiddle>
-
-            <Divider />
-
-            <DescriptionsVerticalMiddle title="Other" column={6}>
-              <Descriptions.Item label="Degree" span={2}>
-                <EditableItem textNode={data?.education} onSave={updateProfile}>
-                  <FormItemNoMb name="eduction" initialValue={data?.education}>
-                    <Select defaultValue={data?.education} style={{ minWidth: 100 }}>
-                      {degrees.map((item, index) => (
-                        <Select.Option value={item.short} key={index}>
-                          {item.short}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </FormItemNoMb>
-                </EditableItem>
-              </Descriptions.Item>
-
-              <Descriptions.Item label="Interest" span={4}>
+            <DescriptionsVerticalMiddle title="Other" column={6} layout="vertical">
+              <Descriptions.Item label="Skills" span={3}>
                 <EditableItem
-                  textNode={data?.interest.map((item, index) => (
-                    <Tag color={programLanguageColors[index]} key={item} style={{ padding: '5px 10px' }}>
-                      {item}
-                    </Tag>
+                  textContainerStyles={{ width: '100%' }}
+                  textNode={data?.skills.map((item, index) => (
+                    <Row gutter={gutter}>
+                      <Col span={4}>
+                        <Tag
+                          color={programLanguageColors[index]}
+                          key={item.name}
+                          style={{ padding: '5px 10px' }}
+                        >
+                          {item.name}
+                        </Tag>
+                      </Col>
+                      <Col offset={1}>
+                        <Rate value={item.level} tooltips={skillDes} count={5} disabled />
+                      </Col>
+                    </Row>
                   ))}
                   onSave={updateProfile}
+                  initialValues={{ skills: data?.skills }}
+                  layout="column"
                 >
-                  <FormItemNoMb name="interest" initialValue={data?.interest}>
-                    <Select
-                      mode="tags"
-                      placeholder="select one interest language"
-                      defaultValue={data?.interest}
-                      style={{ minWidth: '10em' }}
-                    >
-                      {existInterests.map((item, index) => (
-                        <Select.Option value={item} key={index}>
-                          {item}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </FormItemNoMb>
+                  <Form.List name="skills">
+                    {(fields: FormListFieldData[], { add, remove }) => (
+                      <>
+                        {fields.map((field) => (
+                          <Row gutter={gutter} key={field.key}>
+                            <Col span={10}>
+                              <Form.Item
+                                {...field}
+                                name={[field.name, 'name']}
+                                fieldKey={[field.fieldKey, 'name']}
+                                rules={[{ required: true }]}
+                              >
+                                <Input placeholder="Skill Name" />
+                              </Form.Item>
+                            </Col>
+
+                            <Col span={10}>
+                              <Form.Item
+                                {...field}
+                                name={[field.name, 'level']}
+                                fieldKey={[field.fieldKey, 'level']}
+                                rules={[{ required: true }]}
+                              >
+                                <Rate tooltips={skillDes} count={5} />
+                              </Form.Item>
+                            </Col>
+
+                            <Col span={2}>
+                              <FormItemNoMb>
+                                <MinusCircleOutlined
+                                  onClick={() => {
+                                    if (fields.length > 1) {
+                                      remove(field.name);
+                                    } else {
+                                      message.warn('You must set at least one skill.');
+                                    }
+                                  }}
+                                />
+                              </FormItemNoMb>
+                            </Col>
+                          </Row>
+                        ))}
+
+                        <Row>
+                          <Col span={20}>
+                            <Form.Item>
+                              <Button
+                                type="dashed"
+                                size="large"
+                                onClick={() => add()}
+                                block
+                                icon={<PlusOutlined />}
+                              >
+                                Add Skill
+                              </Button>
+                            </Form.Item>
+                          </Col>
+                        </Row>
+                      </>
+                    )}
+                  </Form.List>
                 </EditableItem>
               </Descriptions.Item>
 
-              <Descriptions.Item label="Intro">
-                <EditableItem textNode={data?.description} onSave={updateProfile}>
+              <Descriptions.Item label="Intro" span={3}>
+                <EditableItem textNode={data?.description} onSave={updateProfile} layout="column">
                   <FormItemNoMb name="description" initialValue={data?.description}>
-                    <TextArea style={{ minWidth: '50vw' }} />
+                    <TextArea />
                   </FormItemNoMb>
                 </EditableItem>
               </Descriptions.Item>

@@ -1,12 +1,14 @@
 import { Col, Input, Row, Select, Spin, Tabs } from 'antd';
 import { debounce } from 'lodash';
-import React, { useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useState } from 'react';
 import AddCourseForm from '../../../../components/course/add-course';
 import UpdateChapterForm from '../../../../components/course/update-chapter';
 import AppLayout from '../../../../components/layout/layout';
 import { gutter } from '../../../../lib/constant';
 import { Course } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
+import storage from '../../../../lib/services/storage';
 
 const { Option } = Select;
 
@@ -16,7 +18,7 @@ export default function Page() {
   const [searchResult, setSearchResult] = useState<Course[]>([]);
   const [course, setCourse] = useState<Course>(null);
   const search = useCallback(
-    debounce((value: string) => {
+    debounce((value: string, cb?: (courses?: Course[]) => void) => {
       if (!value) {
         return;
       }
@@ -24,18 +26,34 @@ export default function Page() {
       setIsSearching(true);
 
       apiService
-        .getCourses({ [searchBy]: value })
+        .getCourses({ [searchBy]: value, userId: storage.userId })
         .then((res) => {
           const { data } = res;
 
           if (!!data) {
             setSearchResult(data.courses);
+            if (!!cb) {
+              cb(data.courses);
+            }
           }
         })
         .finally(() => setIsSearching(false));
     }, 1000),
     [searchBy]
   );
+  const router = useRouter();
+
+  useEffect(() => {
+    const { uid } = router.query;
+
+    if (uid) {
+      search(uid as string, (courses) => {
+        setCourse(courses[0]);
+      });
+    }
+
+    return () => {};
+  }, []);
 
   return (
     <AppLayout>
@@ -52,7 +70,7 @@ export default function Page() {
               notFoundContent={isSearching ? <Spin size="small" /> : null}
               filterOption={false}
               showSearch
-              onSearch={search}
+              onSearch={(value) => search(value)}
               style={{ flex: 1 }}
               onSelect={(id) => {
                 const course = searchResult.find((item) => item.id === id);

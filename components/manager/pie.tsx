@@ -34,7 +34,7 @@ export default function PieChart({ data, title }: CommonChartComponentProps) {
     },
     exporting: {
       enabled: false,
-    }
+    },
   });
 
   useEffect(() => {
@@ -43,17 +43,15 @@ export default function PieChart({ data, title }: CommonChartComponentProps) {
     }
 
     const source = data.map((item) => ({ name: item.name, y: item.amount }));
-    const titleText = title
-          .split(/(?=[A-Z])/)
-          .join(' ')
+    const titleText = title?.split(/(?=[A-Z])/).join(' ') || '';
 
     setOptions({
       title: {
         text: `<span style="text-transform: capitalize">${titleText}</span>`,
       },
-      subtitle: { 
+      subtitle: {
         text: `${titleText.split(' ')[0]} total: ${source.reduce((acc, cur) => acc + cur.y, 0)}`,
-        align: 'right'
+        align: 'right',
       },
       series: [
         {

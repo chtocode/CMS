@@ -1,5 +1,5 @@
 import { Paginator, ResponseWithPaginator } from './api';
-import { CourseShort } from './course';
+import { Course } from './course';
 
 export interface Teacher {
   id: number;
@@ -29,7 +29,7 @@ export interface TeachersResponse {
   paginator?: ResponseWithPaginator;
 }
 
-export interface TeacherProfile<T = CourseShort> {
+export interface TeacherProfile {
   id: number;
   address: string[];
   gender: number;
@@ -38,11 +38,11 @@ export interface TeacherProfile<T = CourseShort> {
   description: string;
   workExperience: WorkExperience[];
   education: Education[];
-  courses: T[];
 }
 
 export interface TeacherResponse extends Teacher {
   profile: TeacherProfile;
+  courses?: Course[];
 }
 
 export interface Education {

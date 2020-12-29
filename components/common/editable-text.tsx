@@ -2,17 +2,19 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import Form, { useForm } from 'antd/lib/form/Form';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 
 export interface EditableItemProps {
   textNode: any;
   onSave: (value: object) => void;
   allowEnterToSave?: boolean;
   hideControlBtn?: boolean;
+  textContainerStyles?: CSSProperties;
+  initialValues?: { [key: string]: any };
+  layout?: 'column' | 'row';
 }
 
 const Control = styled.div`
-  display: flex;
   align-items: center;
   .anticon {
     cursor: pointer;
@@ -31,6 +33,7 @@ const Control = styled.div`
 export default function EditableItem(props: React.PropsWithChildren<EditableItemProps>) {
   const [isEditing, setIsEditing] = useState(false);
   const [form] = useForm();
+  const isColumn = props.layout === 'column';
 
   return (
     <>
@@ -46,23 +49,35 @@ export default function EditableItem(props: React.PropsWithChildren<EditableItem
               form.submit();
             }
           }}
+          initialValues={props?.initialValues}
+          style={{ width: '100%' }}
         >
-          <Control>
+          <Control
+            style={{
+              display: isColumn ? 'block' : 'flex',
+            }}
+          >
             {props.children}
             {!props.hideControlBtn && (
-              <>
-                <Button type="link" onClick={() => setIsEditing(false)}>
-                  <CloseOutlined />
+              <div style={isColumn ? { display: 'flex', gap: 10, marginTop: 10 } : {}}>
+                <Button
+                  type={isColumn ? 'default' : 'link'}
+                  danger={isColumn}
+                  onClick={() => setIsEditing(false)}
+                >
+                  {isColumn ? 'Cancel' : <CloseOutlined />}
                 </Button>
-                <Button htmlType="submit" type="link">
-                  <CheckOutlined />
+                <Button htmlType="submit" type={isColumn ? 'default' : 'link'}>
+                  {isColumn ? 'Save' : <CheckOutlined />}
                 </Button>
-              </>
+              </div>
             )}
           </Control>
         </Form>
       ) : (
-        <div onDoubleClick={() => setIsEditing(true)}>{props.textNode}</div>
+        <div onDoubleClick={() => setIsEditing(true)} style={props?.textContainerStyles}>
+          {props.textNode}
+        </div>
       )}
     </>
   );

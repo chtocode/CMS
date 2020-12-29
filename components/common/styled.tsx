@@ -1,4 +1,4 @@
-import { Col } from 'antd';
+import { Col, Descriptions, Form } from 'antd';
 import styled from 'styled-components';
 
 export const OverviewIconCol = styled(Col)`
@@ -23,5 +23,15 @@ export const OverviewCol = styled(Col)`
     color: #fff;
     font-size: 32px;
     margin-bottom: 0;
+  }
+`;
+
+export const FormItemNoMb = styled(Form.Item)`
+  margin-bottom: 0;
+`;
+
+export const DescriptionsVerticalMiddle = styled(Descriptions)`
+  .ant-descriptions-item-label {
+    align-items: center;
   }
 `;

@@ -2,9 +2,10 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Col, Input, Row, Select, Table, Tag } from 'antd';
 import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
 import { formatDistanceToNow } from 'date-fns';
-import { debounce, omitBy } from 'lodash';
+import { omitBy } from 'lodash';
 import Link from 'next/link';
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDebounceSearch } from '../../../../components/custom-hooks/debounce-search';
 import AppLayout from '../../../../components/layout/layout';
 import {
   CourseStatusColor,
@@ -75,10 +76,7 @@ export default function Page() {
       render: (value: string) => formatDistanceToNow(new Date(value), { addSuffix: true }),
     },
   ];
-  const debouncedQuery = useCallback(
-    debounce((nextValue) => setQuery(nextValue), 1000),
-    []
-  );
+  const debouncedQuery = useDebounceSearch(setQuery);
 
   useEffect(() => {
     const req = omitBy(
@@ -87,6 +85,7 @@ export default function Page() {
         page: pagination.current,
         userId: storage.userId,
         [searchBy]: query,
+        own: true
       },
       (item) => item === ''
     );
@@ -118,9 +117,7 @@ export default function Page() {
             }
             addonAfter={<SearchOutlined />}
             placeholder={`Search by ${searchBy}`}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              debouncedQuery(event.target.value);
-            }}
+            onChange={debouncedQuery}
           />
         </Col>
       </Row>

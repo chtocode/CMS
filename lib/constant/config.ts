@@ -29,7 +29,9 @@ export enum SkillDes {
   'Master',
 }
 
-export const interestColors: string[] = [
+export const skillDes = new Array(5).fill(0).map((_, index) => SkillDes[index + 1]);
+
+export const programLanguageColors: string[] = [
   'magenta',
   'volcano',
   'orange',

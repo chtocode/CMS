@@ -199,6 +199,10 @@ class ApiService extends BaseApiService {
     return this.post([RootPath.courses, SubPath.update], req).then(this.showMessage(true));
   }
 
+  deleteCourse(id: number): Promise<IResponse<boolean>> {
+    return this.delete([RootPath.course], { id }).then(this.showMessage(true));
+  }
+
   getScheduleById(id: number): Promise<IResponse<Schedule>> {
     return this.get<IResponse<Schedule>>([RootPath.courses, SubPath.schedule], { id }).then(
       this.showMessage()
@@ -233,7 +237,7 @@ class ApiService extends BaseApiService {
   }
 
   deleteTeacher(req: DeleteRequest): Promise<IResponse<DeleteResponse>> {
-    return this.delete([RootPath.teachers, SubPath.delete], req).then(this.showMessage(true));
+    return this.delete([RootPath.teacher], req).then(this.showMessage(true));
   }
 
   getStatisticsOverview(): Promise<IResponse<StatisticsOverviewResponse>> {

@@ -182,7 +182,7 @@ export default function Page(props: { id: number }) {
               </Tabs.TabPane>
 
               <Tabs.TabPane tab="Courses" key="2">
-                <Table dataSource={data?.profile.courses} columns={columns} rowKey="id"></Table>
+                <Table dataSource={data?.courses} columns={columns} rowKey="id"></Table>
               </Tabs.TabPane>
             </Tabs>
           </Card>

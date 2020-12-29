@@ -17,4 +17,5 @@ export interface OverviewProps<T = BasicStatistics> {
   title: string;
   icon: JSX.Element;
   style?: React.CSSProperties;
+  mainKey?: 'amount' | 'total';
 }

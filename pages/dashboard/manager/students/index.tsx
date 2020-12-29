@@ -1,19 +1,20 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Popconfirm, Space, Table } from 'antd';
 import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
+import TextLink from 'antd/lib/typography/Link';
 import { formatDistanceToNow } from 'date-fns';
-import { debounce, omitBy } from 'lodash';
+import { omitBy } from 'lodash';
 import Link from 'next/link';
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ModalForm from '../../../../components/common/modal-form';
+import { useDebounceSearch } from '../../../../components/custom-hooks/debounce-search';
 import Layout from '../../../../components/layout/layout';
 import AddStudentForm from '../../../../components/students/add-student';
 import { businessAreas } from '../../../../lib/constant';
 import { Student } from '../../../../lib/model';
 import { CourseShort } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
-
 
 const Search = styled(Input.Search)`
   width: 30%;
@@ -60,7 +61,7 @@ export default function Dashboard() {
       title: 'Area',
       dataIndex: 'country',
       width: '10%',
-      filters: businessAreas.map(item =>({ text: item, value: item})),
+      filters: businessAreas.map((item) => ({ text: item, value: item })),
       onFilter: (value: string, record: Student) => record.country.includes(value),
     },
     {
@@ -93,14 +94,14 @@ export default function Dashboard() {
       dataIndex: 'action',
       render: (_, record: Student) => (
         <Space size="middle">
-          <a
+          <TextLink
             onClick={() => {
               setEditingStudent(record);
               setModalDisplay(true);
             }}
           >
             Edit
-          </a>
+          </TextLink>
 
           <Popconfirm
             title="Are you sure to delete?"
@@ -121,17 +122,14 @@ export default function Dashboard() {
             okText="Confirm"
             cancelText="Cancel"
           >
-            <a>Delete</a>
+            <TextLink>Delete</TextLink>
           </Popconfirm>
         </Space>
       ),
     },
   ];
   const [query, setQuery] = useState<string>('');
-  const debouncedQuery = useCallback(
-    debounce((nextValue) => setQuery(nextValue), 1000),
-    []
-  );
+  const debouncedQuery = useDebounceSearch(setQuery);
   const [isModalDisplay, setModalDisplay] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student>(null);
   const cancel = () => {
@@ -169,11 +167,9 @@ export default function Dashboard() {
           Add
         </Button>
         <Search
-          placeholder="通过名称搜索"
+          placeholder="Search by name"
           onSearch={(value) => setQuery(value)}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            debouncedQuery(event.target.value);
-          }}
+          onChange={debouncedQuery}
         />
       </FlexContainer>
       <Table

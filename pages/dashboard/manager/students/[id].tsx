@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Layout from '../../../../components/layout/layout';
-import { interestColors } from '../../../../lib/constant';
+import { programLanguageColors } from '../../../../lib/constant';
 import { StudentResponse } from '../../../../lib/model';
 import { Course } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
@@ -131,7 +131,7 @@ export default function Page(props: { id: number }) {
                 <Row gutter={[6, 16]}>
                   <Col>
                     {data?.interest.map((item, index) => (
-                      <Tag color={interestColors[index]} key={item} style={{ padding: '5px 10px' }}>
+                      <Tag color={programLanguageColors[index]} key={item} style={{ padding: '5px 10px' }}>
                         {item}
                       </Tag>
                     ))}

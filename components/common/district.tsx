@@ -1,3 +1,4 @@
+import Link from 'antd/lib/typography/Link';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CommonChartComponentProps } from '../../lib/model/statistics';
@@ -85,7 +86,7 @@ export default function District({ data = [] }: CommonChartComponentProps) {
     if (!map) {
       return;
     }
-    
+
     let infoWindow = null;
     const listener = (event) => {
       const px = event.pixel;
@@ -151,7 +152,7 @@ export default function District({ data = [] }: CommonChartComponentProps) {
           <li key={index} style={{ height: 30 }}>
             <span style={{ backgroundColor: color }} className="legend"></span>
             <span> &gt; </span>
-            <a>{counts[index]}</a>
+            <Link>{counts[index]}</Link>
           </li>
         ))}
       </Legend>

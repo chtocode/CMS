@@ -1,4 +1,5 @@
 import { Button, List, Spin } from 'antd';
+import { omitBy } from 'lodash';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -18,25 +19,46 @@ const Indicator = styled.div`
   transform: translateX(50%);
 `;
 
-export default function Page() {
+export function useCourses(query: string) {
   const [courses, setCourses] = useState<Course[]>([]);
   const [paginator, setPaginator] = useState<Paginator>({ limit: 20, page: 1 });
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [total, setTotal] = useState<number>(0);
 
   useEffect(() => {
-    apiService.getCourses(paginator).then((res) => {
+    const req = omitBy(
+      { ...paginator, userId: storage.userId, name: query },
+      (item) => item === '' || item === null
+    );
+
+    apiService.getCourses(req).then((res) => {
       const {
         data: { total, courses: fresh },
       } = res;
-      const source = [...courses, ...fresh];
+      const source = query !== null ? fresh : [...courses, ...fresh];
 
       setCourses(source);
+      setTotal(total);
       setHasMore(total > source.length);
     });
-  }, [paginator]);
+  }, [paginator, query]);
+
+  return {
+    courses,
+    hasMore,
+    paginator,
+    total,
+    setPaginator,
+    setCourses,
+    setTotal,
+  };
+}
+
+export function ScrollMode() {
+  const { paginator, setPaginator, hasMore, courses } = useCourses(null);
 
   return (
-    <AppLayout>
+    <>
       <InfiniteScroll
         next={() => setPaginator({ ...paginator, page: paginator.page + 1 })}
         hasMore={hasMore}
@@ -74,6 +96,14 @@ export default function Page() {
         ></List>
       </InfiniteScroll>
       <BackTop />
+    </>
+  );
+}
+
+export default function Page() {
+  return (
+    <AppLayout>
+      <ScrollMode />
     </AppLayout>
   );
 }

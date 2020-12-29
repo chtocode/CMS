@@ -1,19 +1,18 @@
 import {
-  BulbOutlined,
   CalendarFilled,
-  DesktopOutlined,
+
   HeartFilled,
   ReloadOutlined,
-  SafetyOutlined,
+
   TeamOutlined
 } from '@ant-design/icons';
 import {
   Card,
-  Col,
+
   List,
   message,
-  Progress,
-  Row,
+
+
   Space,
   Statistic as StatisticComponent,
   Tooltip
@@ -23,10 +22,10 @@ import { groupBy } from 'lodash';
 import Link from 'next/link';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import styled from 'styled-components';
-import { OverviewCol, OverviewIconCol } from '../../../components/common/styled';
 import AppLayout from '../../../components/layout/layout';
-import { DurationUnit, gutter } from '../../../lib/constant';
-import { Course, OverviewProps } from '../../../lib/model';
+import UserOverview, { OverviewStatistic } from '../../../components/user-overview';
+import { DurationUnit, Role } from '../../../lib/constant';
+import { Course } from '../../../lib/model';
 import { Statistic } from '../../../lib/model/statistics';
 import apiService from '../../../lib/services/api-service';
 import storage from '../../../lib/services/storage';
@@ -34,13 +33,6 @@ interface StudentStatistic {
   own: Statistic;
   recommend: Statistic;
 }
-
-interface OverviewStatistic {
-  amount: number;
-  total: number;
-  status: number;
-}
-
 interface StoreState {
   page: number;
   max: number;
@@ -52,35 +44,6 @@ type ActionType = 'increment' | 'reset' | 'setMax' | 'setRecommend';
 type Action = {
   type: ActionType;
   payload?: number | Course[];
-};
-
-const Overview = ({ data, title, icon, style }: OverviewProps<OverviewStatistic>) => {
-  const percentage = +parseFloat(String((data.amount / data.total) * 100)).toFixed(1);
-  const des = ['pending', 'in active', 'have done'];
-
-  return (
-    <Card style={{ borderRadius: 5, cursor: 'pointer', ...style }}>
-      <Row>
-        <OverviewIconCol span={6}>{icon}</OverviewIconCol>
-        <OverviewCol span={18}>
-          <h3>{title}</h3>
-          {data && (
-            <>
-              <h2>{data.amount}</h2>
-              <Progress
-                percent={100 - percentage}
-                size="small"
-                showInfo={false}
-                strokeColor="white"
-                trailColor="lightgreen"
-              />
-              <p>{`${percentage + '%'} lessons ${des[data.status]}`}</p>
-            </>
-          )}
-        </OverviewCol>
-      </Row>
-    </Card>
-  );
 };
 
 const { Countdown } = StatisticComponent;
@@ -133,11 +96,6 @@ function reducer(state: StoreState, action: Action): StoreState {
 export default function Dashboard() {
   const [data, setData] = useState<StudentStatistic>(null);
   const [overview, setOverview] = useState<OverviewStatistic[]>(null);
-  const getOverviewData = (status: number): OverviewStatistic => {
-    const target = overview.find((item) => item.status === status);
-
-    return target ? target : { status, amount: 0, total: data.own.courses.length };
-  };
   const [state, dispatch] = useReducer<Reducer<StoreState, Action>>(reducer, initialState);
   const changeBatch = async () => {
     try {
@@ -160,7 +118,7 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    apiService.getStatistics<StudentStatistic>('student', storage.userId).then((res) => {
+    apiService.getStatistics<StudentStatistic>(Role.student, storage.userId).then((res) => {
       const { data } = res;
       const { own, recommend } = data;
       const ownCourses = (own as Statistic).courses;
@@ -184,32 +142,7 @@ export default function Dashboard() {
     <AppLayout>
       {data ? (
         <>
-          <Row gutter={gutter}>
-            <Col span={8}>
-              <Overview
-                title="Pending"
-                icon={<BulbOutlined />}
-                data={getOverviewData(0)}
-                style={{ background: '#1890ff' }}
-              ></Overview>
-            </Col>
-            <Col span={8}>
-              <Overview
-                title="Active"
-                icon={<DesktopOutlined />}
-                data={getOverviewData(1)}
-                style={{ background: '#673bb7' }}
-              ></Overview>
-            </Col>
-            <Col span={8}>
-              <Overview
-                title="Done"
-                icon={<SafetyOutlined />}
-                data={getOverviewData(2)}
-                style={{ background: '#ffaa16' }}
-              ></Overview>
-            </Col>
-          </Row>
+          <UserOverview overview={overview} total={data?.own.courses.length} />
 
           <Card
             title={<h3> Courses you might be interested in </h3>}

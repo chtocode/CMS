@@ -1,5 +1,5 @@
-import { format, formatDistance, subMonths } from 'date-fns';
-import { countBy, groupBy, uniq } from 'lodash';
+import { format, formatDistance, isSameMonth, subMonths } from 'date-fns';
+import { countBy, groupBy, intersection, uniq } from 'lodash';
 import { belongsTo, hasMany, JSONAPISerializer, Model, Response, Server } from 'miragejs';
 
 const students = require('./student.json');
@@ -288,45 +288,59 @@ export default function makeServer({ environment = 'test' } = {}) {
           }
           return courses;
         };
+        const getAllCourses = () => {
+          let courses = schema.courses.all().models;
+          const total = courses.length;
 
-        if (userId && permission !== 9) {
-          if (permission === 1) {
-            const user = schema.users.find(userId);
-            let courses = schema.students
-              .findBy({ email: user.email })
-              .studentCourses.models.map((item) => {
-                item.attrs.course = item.course;
-                item.attrs.course.attrs.typeName = item.course.type.name;
+          courses = filterData(courses);
 
-                return item;
-              });
-            const total = courses.length;
+          courses.forEach((item) => {
+            item.attrs.teacherName = item.teacher.name;
+            item.attrs.typeName = item.type.name;
+          });
 
-            courses = filterData(courses, 'course');
+          return { courses, total };
+        };
+        const getStudentOwnCourses = () => {
+          const user = schema.users.find(userId);
+          let courses = schema.students
+            .findBy({ email: user.email })
+            .studentCourses.models.map((item) => {
+              item.attrs.course = item.course;
+              item.attrs.course.attrs.typeName = item.course.type.name;
 
-            return new Response(200, {}, { msg: 'success', code: 200, data: { total, courses } });
-          }
+              return item;
+            });
 
-          if (permission === 2) {
-            const user = schema.users.find(userId);
-            const data = schema.teachers.findBy({ email: user.email }).models;
+          return { total: courses.length, courses: filterData(courses, 'course') };
+        };
+        let data = null;
 
-            return new Response(200, {}, { msg: 'success', code: 200, data });
-          }
+        if (permission === 1) {
+          const { own } = req.queryParams;
+
+          data = own ? getStudentOwnCourses() : getAllCourses();
         }
 
-        let courses = schema.courses.all().models;
-        const total = courses.length;
+        if (permission === 2) {
+          const user = schema.users.find(userId);
+          const teacher = schema.teachers.findBy({ email: user.email });
+          const courses = schema.courses.where({ teacherId: teacher.id }).models;
 
-        courses = filterData(courses);
+          courses.forEach((item) => {
+            item.attrs.teacherName = item.teacher.name;
+            item.attrs.typeName = item.type.name;
+          });
 
-        courses.forEach((item) => {
-          item.attrs.teacherName = item.teacher.name;
-          item.attrs.typeName = item.type.name;
-        });
+          data = { total: courses.length, courses: filterData(courses) };
+        }
 
-        if (courses) {
-          return new Response(200, {}, { msg: 'success', code: 200, data: { total, courses } });
+        if (permission === 9) {
+          data = getAllCourses();
+        }
+
+        if (data) {
+          return new Response(200, {}, { msg: 'success', code: 200, data });
         } else {
           return new Response(500, {}, { msg: 'server error', code: 500 });
         }
@@ -431,6 +445,14 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
+      this.delete('/course', (schema, req) => {
+        const id = +req.queryParams.id;
+
+        schema.courses.find(id).destroy();
+
+        return new Response(200, {}, { data: true, msg: 'success', code: 200 });
+      });
+
       this.get('/courses/schedule', (schema, req) => {
         const id = req.queryParams.id;
         const data = schema.schedules.findBy({ id });
@@ -500,7 +522,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         const courses = schema.courses.where((course) => course.teacherId === +id).models;
 
         data.attrs.profile = data.profile;
-        data.attrs.profile.attrs.courses = courses;
+        data.attrs.courses = courses;
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
@@ -542,7 +564,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
-      this.delete('/teachers/delete', (schema, req) => {
+      this.delete('/teacher', (schema, req) => {
         const id = +req.queryParams.id;
 
         schema.teachers.find(id).destroy();
@@ -569,12 +591,13 @@ export default function makeServer({ environment = 'test' } = {}) {
       });
 
       this.get('/statistics/student', (schema, req) => {
-        const { userId, userType } = req.queryParams;
+        const { userId } = req.queryParams;
         const permission = getPermission(req);
         let data = null;
 
         if (permission === 9) {
           const source = schema.students.all().models;
+
           data = {
             country: getStatisticList(countBy(source, 'country')),
             typeName: getStatisticList(countBy(source, (item) => item.type.name)),
@@ -620,13 +643,29 @@ export default function makeServer({ environment = 'test' } = {}) {
             recommend: {
               amount: interestCourses.length,
               name: 'interest',
-              courses: interestCourses.map(item => {
+              courses: interestCourses.map((item) => {
                 item.attrs.teacherName = item.teacher.name;
                 item.attrs.typeName = item.type.name;
-                
+
                 return item;
               }),
             },
+          };
+        } else if (permission === 2) {
+          const source = schema.courses.where({ teacherId: +userId }).models;
+          const coursesIds = source.map((item) => +item.id);
+          const students = schema.students
+            .all()
+            .models.filter(
+              (student) => !!intersection(student.studentCourseIds, coursesIds).length
+            );
+
+          data = {
+            total: students.length,
+            // TODO:  lastMonthAdded 逻辑上是不对的，应该取上月购买了当前课程的学生数量
+            lastMonthAdded: students.filter((item) =>
+              isSameMonth(new Date(item.ctime), subMonths(new Date(), 1))
+            ).length,
           };
         }
 
@@ -634,60 +673,56 @@ export default function makeServer({ environment = 'test' } = {}) {
       });
 
       this.get('/statistics/teacher', (schema, req) => {
-        const source = schema.teachers.all().models;
-        const data = {
-          country: getStatisticList(countBy(source, 'country')),
-          skills: source.reduce((acc, cur) => {
-            cur.skills.forEach((skill) => {
-              const { name, level } = skill;
+        const { userId } = req.queryParams;
+        const permission = getPermission(req);
+        let data = null;
 
-              if (acc.hasOwnProperty(name)) {
-                const target = acc[name].find((item) => item.level === level);
+        if (permission === 9) {
+          const source = schema.teachers.all().models;
 
-                if (target) {
-                  target.amount = target.amount + 1;
+          data = {
+            country: getStatisticList(countBy(source, 'country')),
+            skills: source.reduce((acc, cur) => {
+              cur.skills.forEach((skill) => {
+                const { name, level } = skill;
+
+                if (acc.hasOwnProperty(name)) {
+                  const target = acc[name].find((item) => item.level === level);
+
+                  if (target) {
+                    target.amount = target.amount + 1;
+                  } else {
+                    acc[name].push({ name: 'level', level, amount: 1 });
+                  }
                 } else {
-                  acc[name].push({ name: 'level', level, amount: 1 });
+                  acc[name] = [{ name: 'level', level, amount: 1 }];
                 }
-              } else {
-                acc[name] = [{ name: 'level', level, amount: 1 }];
-              }
-            });
-            return acc;
-          }, {}),
-          workExperience: source.map((teacher) => {
-            const workingYears = getDuration(teacher.profile.workExperience);
+              });
+              return acc;
+            }, {}),
+            workExperience: source.map((teacher) => {
+              const workingYears = getDuration(teacher.profile.workExperience);
 
-            return workingYears;
-          }),
-          ctime: getCtimeStatistics(source),
-        };
+              return workingYears;
+            }),
+            ctime: getCtimeStatistics(source),
+          };
+        } else if (permission === 2) {
+          const source = schema.courses.where({ teacherId: +userId }).models;
+
+          data = getCourseStatistics(source);
+          data.status = getStatisticList(countBy(source, (item) => item.status));
+        } else if (permission === 1) {
+          return new Response(403, {}, { msg: 'Permission denied!', code: 403, data });
+        }
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
 
       this.get('/statistics/course', (schema, req) => {
         const source = schema.courses.all().models;
-        const data = {
-          typeName: getStatisticList(countBy(source, (item) => item.type.name)),
-          ctime: getCtimeStatistics(source),
-          classTime: Object.entries(
-            groupBy(
-              source.map((course) => {
-                const classTime = course.schedule.classTime;
-                const typeName = course.type.name;
-
-                return { classTime, typeName, name: course.name };
-              }),
-              (item) => item.typeName
-            )
-          ).map(([name, values]) => ({
-            name,
-            amount: values.length,
-            courses: values,
-          })),
-        };
-
+        const data = getCourseStatistics(source);
+        
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
 
@@ -702,15 +737,18 @@ export default function makeServer({ environment = 'test' } = {}) {
         if (permission === 1) {
           const student = schema.students.findBy(target);
 
-          data = schema.studentProfiles.findBy(target);
+          data = student.profile;
           data.attrs.name = student.name;
           data.attrs.country = student.country;
         } else if (permission === 2) {
           const teacher = schema.teachers.findBy(target);
 
-          data = schema.teacherProfiles.findBy(target);
+          data = teacher.profile;
           data.attrs.name = teacher.name;
           data.attrs.country = teacher.country;
+          data.attrs.skills = teacher.skills;
+          data.attrs.email = teacher.email;
+          data.attrs.phone = teacher.phone;
         } else {
           // TODO: manager profile
         }
@@ -739,10 +777,13 @@ export default function makeServer({ environment = 'test' } = {}) {
           data = profile;
         } else if (permission === 2) {
           const teacher = schema.teachers.findBy(target).update(info);
-          const profile = schema.teacherProfiles.findBy(target).update(info);
+          const profile = teacher.profile.update(info);
 
           profile.attrs.name = teacher.name;
           profile.attrs.country = teacher.country;
+          profile.attrs.skills = teacher.skills;
+          profile.attrs.email = teacher.email;
+          profile.attrs.phone = teacher.phone;
           data = profile;
         } else {
           // TODO: manager profile
@@ -844,4 +885,28 @@ function getPermission(req, role) {
   }
 }
 
-function getStudentStatistics(schema, req) {}
+/**
+ * @function getCourseStatistics
+ * @param {Course[]} source - course collections
+ */
+function getCourseStatistics(source) {
+  return {
+    typeName: getStatisticList(countBy(source, (item) => item.type.name)),
+    ctime: getCtimeStatistics(source),
+    classTime: Object.entries(
+      groupBy(
+        source.map((course) => {
+          const classTime = course.schedule.classTime;
+          const typeName = course.type.name;
+
+          return { classTime, typeName, name: course.name };
+        }),
+        (item) => item.typeName
+      )
+    ).map(([name, values]) => ({
+      name,
+      amount: values.length,
+      courses: values,
+    })),
+  };
+}

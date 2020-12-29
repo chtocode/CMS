@@ -1,11 +1,13 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Popconfirm, Space, Table } from 'antd';
 import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
-import { debounce, omitBy } from 'lodash';
+import TextLink from 'antd/lib/typography/Link';
+import { omitBy } from 'lodash';
 import Link from 'next/link';
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ModalForm from '../../../../components/common/modal-form';
+import { useDebounceSearch } from '../../../../components/custom-hooks/debounce-search';
 import Layout from '../../../../components/layout/layout';
 import AddTeacherForm from '../../../../components/teacher/add-teacher';
 import { businessAreas } from '../../../../lib/constant';
@@ -83,14 +85,14 @@ export default function Page() {
       dataIndex: 'action',
       render: (_, record: Teacher) => (
         <Space size="middle">
-          <a
+          <TextLink
             onClick={() => {
               setEditingTeacher(record);
               setModalDisplay(true);
             }}
           >
             Edit
-          </a>
+          </TextLink>
 
           <Popconfirm
             title="Are you sure to delete?"
@@ -110,17 +112,14 @@ export default function Page() {
             okText="Confirm"
             cancelText="Cancel"
           >
-            <a>Delete</a>
+            <TextLink>Delete</TextLink>
           </Popconfirm>
         </Space>
       ),
     },
   ];
   const [query, setQuery] = useState<string>('');
-  const debouncedQuery = useCallback(
-    debounce((nextValue) => setQuery(nextValue), 1000),
-    []
-  );
+  const debouncedQuery = useDebounceSearch(setQuery);
   const [isModalDisplay, setModalDisplay] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState<Teacher>(null);
   const cancel = () => {
@@ -158,10 +157,8 @@ export default function Page() {
         </Button>
         <Search
           placeholder="通过名称搜索"
-          onSearch={(value) => setQuery(value)}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            debouncedQuery(event.target.value);
-          }}
+          onSearch={setQuery}
+          onChange={debouncedQuery}
         />
       </FlexContainer>
       <Table
