@@ -34,7 +34,7 @@ import {
   UpdateCourseRequest,
   UpdateCourseResponse
 } from '../model/course';
-import { LoginRequest, LoginResponse } from '../model/login';
+import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from '../model/login';
 import {
   Statistic,
   StatisticsOverviewResponse,
@@ -148,12 +148,16 @@ class ApiService extends BaseApiService {
   /**
    * ? unused get user type by token
    */
-  getUserType(token: string): Promise<IResponse<string>> {
-    return this.get<IResponse<string>>(RootPath.userType, { token }).then(this.showMessage());
+  getUserRole(token: string): Promise<IResponse<string>> {
+    return this.get<IResponse<string>>(RootPath.userRole, { token }).then(this.showMessage());
   }
 
   logout(req: LogoutRequest): Promise<IResponse<LogoutResponse>> {
     return this.post<IResponse<LogoutResponse>>(RootPath.logout, req).then(this.showMessage());
+  }
+
+  signUp(req: SignUpRequest): Promise<IResponse<SignUpResponse>> {
+    return this.post<IResponse<SignUpResponse>>([RootPath.signUp], req).then(this.showMessage(true));
   }
 
   getStudents(req?: StudentsRequest): Promise<IResponse<StudentsResponse>> {
@@ -257,15 +261,15 @@ class ApiService extends BaseApiService {
   }
 
   getClassSchedule(userId: number): Promise<IResponse<ClassSchedule[]>> {
-    return this.get<IResponse<ClassSchedule[]>>([RootPath.student, SubPath.schedule], {
+    return this.get<IResponse<ClassSchedule[]>>([RootPath.class, SubPath.schedule], {
       userId,
     }).then(this.showMessage());
   }
 
-  getProfileByUserId<T>(userId: number, userType?: Role): Promise<IResponse<T>> {
+  getProfileByUserId<T>(userId: number, userRole?: Role): Promise<IResponse<T>> {
     return this.get<IResponse<T>>([RootPath.profile], {
       userId,
-      userType: userType || storage.userType,
+      role: userRole || storage.role,
     }).then(this.showMessage());
   }
 

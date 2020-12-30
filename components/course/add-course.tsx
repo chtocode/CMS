@@ -151,7 +151,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
       message.error('You must select a course to update!');
       return;
     }
-    
+
     const req: AddCourseRequest = {
       ...values,
       duration: +values.duration.number,
@@ -221,10 +221,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
             <Form.Item
               label="Course Name"
               name="name"
-              rules={[
-                { required: true },
-                { max: 100, min: 3, message: 'Course name length must between 3-100 characters' },
-              ]}
+              rules={[{ required: true }, { max: 100, min: 3 }]}
             >
               <Input type="text" placeholder="course name" />
             </Form.Item>

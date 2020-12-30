@@ -16,7 +16,7 @@ import apiService from '../../lib/services/api-service';
 import storage from '../../lib/services/storage';
 import { generateKey, getActiveKey } from '../../lib/util';
 import AppBreadcrumb from '../breadcrumb';
-import { useUserType } from '../custom-hooks/login-state';
+import { useUserRole } from '../custom-hooks/login-state';
 
 const { Header, Content, Sider } = Layout;
 
@@ -71,7 +71,7 @@ const getMenuConfig = (
 };
 
 function renderMenuItems(data: SideNav[], parent = ''): JSX.Element[] {
-  const userType = useUserType();
+  const userRole = useUserRole();
 
   return data.map((item, index) => {
     const key = generateKey(item, index);
@@ -87,7 +87,7 @@ function renderMenuItems(data: SideNav[], parent = ''): JSX.Element[] {
         <Menu.Item key={key} title={item.label} icon={item.icon}>
           {!!item.path.length || item.label.toLocaleLowerCase() === 'overview' ? (
             <Link
-              href={['/dashboard', userType, parent, ...item.path]
+              href={['/dashboard', userRole, parent, ...item.path]
                 .filter((item) => !!item)
                 .join('/')}
               replace
@@ -108,8 +108,8 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
   const [collapsed, toggleCollapse] = useState(false);
   const [avatar, setAvatar] = useState('');
   const router = useRouter();
-  const userType = useUserType();
-  const sideNave = routes.get(userType);
+  const userRole = useUserRole();
+  const sideNave = routes.get(userRole);
   const onLogout = async () => {
     const { data: isLogout } = await apiService.logout({ token: storage.token });
 
@@ -160,12 +160,14 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
             <Dropdown
               overlay={
                 <Menu>
-                  <Menu.Item>
-                    <ProfileOutlined />
-                    <Link href={`/dashboard/${storage.userType}/profile`}>
-                      <span>Profile</span>
-                    </Link>
-                  </Menu.Item>
+                  {userRole !== 'manager' && (
+                    <Menu.Item>
+                      <ProfileOutlined />
+                      <Link href={`/dashboard/${storage.role}/profile`}>
+                        <span>Profile</span>
+                      </Link>
+                    </Menu.Item>
+                  )}
                   <Menu.Item onClick={onLogout}>
                     <LogoutOutlined />
                     <span>Logout</span>

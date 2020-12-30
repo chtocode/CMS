@@ -3,7 +3,6 @@ import { Button, Input, Popconfirm, Space, Table } from 'antd';
 import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
 import TextLink from 'antd/lib/typography/Link';
 import { formatDistanceToNow } from 'date-fns';
-import { omitBy } from 'lodash';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -15,6 +14,7 @@ import { businessAreas } from '../../../../lib/constant';
 import { Student } from '../../../../lib/model';
 import { CourseShort } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
+import storage from '../../../../lib/services/storage';
 
 const Search = styled(Input.Search)`
   width: 30%;
@@ -79,8 +79,8 @@ export default function Dashboard() {
       dataIndex: 'typeName',
       width: '15%',
       filters: [
-        { text: '开发', value: '开发' },
-        { text: '测试', value: '测试' },
+        { text: 'developer', value: 'developer' },
+        { text: 'tester', value: 'tester' },
       ],
       onFilter: (value: string, record: Student) => record.typeName === value,
     },
@@ -138,13 +138,11 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const req = omitBy(
-      { limit: pagination.pageSize, page: pagination.current, query },
-      (item) => item === ''
-    );
+    const req = { limit: pagination.pageSize, page: pagination.current, userId: storage.userId };
+
     setLoading(true);
 
-    apiService.getStudents(req).then((res) => {
+    apiService.getStudents(query ? { ...req, query } : req).then((res) => {
       const { students, total } = res.data;
 
       setData(students);

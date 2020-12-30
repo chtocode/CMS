@@ -105,6 +105,6 @@ const profile: SideNav = {
 
 export const routes: Map<Role, SideNav[]> = new Map([
   [Roles.manager, [overview, students, teachers, courses]],
-  [Roles.teacher, [overview, students, courses, profile]],
+  [Roles.teacher, [overview, classSchedule, students, courses, profile]],
   [Roles.student, [overview, studentCourses, classSchedule, profile]],
 ]);

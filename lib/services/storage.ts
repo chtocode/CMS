@@ -21,8 +21,8 @@ export class Storage {
     return this.userInfo?.token;
   }
 
-  get userType(): Role {
-    return this.userInfo?.loginType;
+  get role(): Role {
+    return this.userInfo?.role;
   }
 
   get userId(): number {

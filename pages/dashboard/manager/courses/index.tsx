@@ -87,7 +87,7 @@ export function ScrollMode() {
           renderItem={(item) => (
             <List.Item key={item.id}>
               <CourseOverview {...item}>
-                <Link href={`/dashboard/${storage.userType}/courses/${item.id}`} passHref>
+                <Link href={`/dashboard/${storage.role}/courses/${item.id}`} passHref>
                   <Button type="primary">Read More</Button>
                 </Link>
               </CourseOverview>

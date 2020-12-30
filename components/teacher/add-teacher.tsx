@@ -2,7 +2,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row, Select, Slider } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import { businessAreas, SkillDes, validateMessages } from '../../lib/constant';
+import { businessAreas, phone, SkillDes, validateMessages } from '../../lib/constant';
 import { Skill, Teacher } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
 
@@ -70,11 +70,7 @@ export default function AddTeacherForm(props: AddTeacherFormProps): JSX.Element 
         <Input type="text" placeholder="teacher name" />
       </Form.Item>
 
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[{ type: 'email', message: 'email format invalid' }]}
-      >
+      <Form.Item label="Email" name="email" rules={[{ type: 'email' }]}>
         <Input type="email" placeholder="email" />
       </Form.Item>
 
@@ -91,10 +87,7 @@ export default function AddTeacherForm(props: AddTeacherFormProps): JSX.Element 
       <Form.Item
         label="Phone"
         name="phone"
-        rules={[
-          { required: true, message: 'Please input your phone number!' },
-          { pattern: /^1[3-9]\d{9}$/, message: 'Phone number invalid' },
-        ]}
+        rules={[{ required: true }, { pattern: phone }]}
       >
         <Input addonBefore={prefixSelector} placeholder="mobile phone" />
       </Form.Item>
@@ -111,7 +104,7 @@ export default function AddTeacherForm(props: AddTeacherFormProps): JSX.Element 
                     {...field}
                     name={[field.name, 'name']}
                     fieldKey={[field.fieldKey, 'name']}
-                    rules={[{ required: true, message: 'Missing Name' }]}
+                    rules={[{ required: true }]}
                   >
                     <Input style={{ textAlign: 'right' }} />
                   </Form.Item>

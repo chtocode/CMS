@@ -92,7 +92,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         const user = schema.users.where({
           email: req.email,
           password: req.password,
-          type: req.loginType,
+          type: req.role,
         });
 
         if (!!user.length) {
@@ -101,8 +101,8 @@ export default function makeServer({ environment = 'test' } = {}) {
             {},
             {
               data: {
-                token: Math.random().toString(32).split('.')[1] + '~' + req.loginType,
-                loginType: req.loginType,
+                token: Math.random().toString(32).split('.')[1] + '~' + req.role,
+                role: req.role,
                 userId: user.models[0].id,
               },
               code: 200,
@@ -118,7 +118,7 @@ export default function makeServer({ environment = 'test' } = {}) {
         return new Response(200, {}, { data: true, msg: 'success', code: 200 });
       });
 
-      this.get('/userType', (schema, req) => {
+      this.get('/userRole', (schema, req) => {
         const query = req.queryParams;
         const type = query.split('~')[1];
 
@@ -129,42 +129,86 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
+      this.post('/signup', (schema, req) => {
+        const { email, role, password } = JSON.parse(req.requestBody);
+
+        const data = schema.users.create({
+          email,
+          role,
+          password,
+        });
+
+        return new Response(200, {}, { data: true, msg: 'success', code: 200 });
+      });
+
       /* ----------------------------------------student api------------------------------------- */
 
       this.get('/students', (schema, req) => {
-        const { query } = req.queryParams;
+        const { query, userId } = req.queryParams;
+        const permission = getPermission(req);
         const limit = +req.queryParams.limit;
         const page = +req.queryParams.page;
         const all = schema.students.all();
-        let students = all.filter((item) => !query || item.name.includes(query)).models;
-        const total = !query ? all.length : students.length;
-        let data = { total, students };
+        const getResult = (students, total) => {
+          students = students.slice(limit * (page - 1), limit * page);
+          students = students.map((student) => {
+            const studentCourses = student.studentCourses;
+            let courses = [];
 
-        if (limit && page) {
-          const start = limit * (page - 1);
+            if (studentCourses.length) {
+              courses = studentCourses.models.map((model) => {
+                const name = model.course.name;
 
-          students = students.slice(start, start + limit);
-          data = { ...data, paginator: { limit, page, total } };
+                return { name, id: +model.id, courseId: model.course.id };
+              });
+            }
+
+            student.attrs.courses = courses;
+            student.attrs.typeName = student.type.name;
+            return student;
+          });
+
+          return { total, paginator: { limit, page, total }, students };
+        };
+        let data = null;
+
+        if (permission === 9) {
+          let students = all.filter((item) => !query || item.name.includes(query)).models;
+          const total = !query ? all.length : students.length;
+
+          data = getResult(students, total);
+        } else if (permission === 2) {
+          const user = schema.users.find(userId);
+          const teacher = schema.teachers.findBy({ email: user.email });
+          const courses = schema.courses.all().filter((item) => item.teacherId === +teacher.id)
+            .models;
+          const courseIds = courses.map((item) => +item.id);
+          const studentsBelongTeacher = all.models
+            .map((item) => {
+              const ids = intersection(
+                item.studentCourses.models.map((item) => item.courseId),
+                courseIds
+              );
+
+              // omit the courses does not belong to the teacher
+              item.studentCourses = item.studentCourses.filter((item) =>
+                ids.includes(+item.courseId)
+              );
+
+              return item.studentCourses.length ? item : null;
+            })
+            .filter((item) => !!item);
+          const students = studentsBelongTeacher.filter(
+            (item) => !query || item.name.includes(query)
+          );
+          const total = !query ? studentsBelongTeacher.length : students.length;
+
+          data = getResult(students, total);
+        } else if (permission === 1) {
+          return new Response(403, {}, { msg: 'Permission denied', code: 403, data: null });
         }
 
-        students = students.map((student) => {
-          const studentCourses = student.studentCourses;
-          let courses = [];
-
-          if (studentCourses.length) {
-            courses = studentCourses.models.map((model) => {
-              const name = model.course.name;
-
-              return { name, id: +model.id };
-            });
-          }
-
-          student.attrs.courses = courses;
-          student.attrs.typeName = student.type.name;
-          return student;
-        });
-
-        return new Response(200, {}, { data: { ...data, students }, msg: 'success', code: 200 });
+        return new Response(200, {}, { data, msg: 'success', code: 200 });
       });
 
       this.post('/students/add', (schema, req) => {
@@ -236,12 +280,14 @@ export default function makeServer({ environment = 'test' } = {}) {
         }
       });
 
-      this.get('/student/schedule', (schema, req) => {
+      this.get('/class/schedule', (schema, req) => {
+        const permission = getPermission(req);
         const userId = req.queryParams.userId;
         const user = schema.users.find(userId);
-        const data = schema.students
-          .findBy({ email: user.email })
-          .studentCourses.models.map((item) => {
+        let data = null;
+
+        if (permission === 1) {
+          data = schema.students.findBy({ email: user.email }).studentCourses.models.map((item) => {
             const course = item.course;
 
             course.attrs.typeName = course.type.name;
@@ -250,6 +296,22 @@ export default function makeServer({ environment = 'test' } = {}) {
 
             return course;
           });
+        } else if (permission === 2) {
+          const teacher = schema.teachers.findBy({ email: user.email });
+
+          data = schema.courses
+            .all()
+            .models.filter((item) => +item.teacherId === +teacher.id)
+            .map((course) => {
+              course.attrs.typeName = course.type.name;
+              course.attrs.schedule = course.schedule;
+              course.attrs.teacherName = course.teacher.name;
+
+              return course;
+            });
+        } else if (permission === 9) {
+          return new Response(403, {}, { msg: 'Permission denied', code: 403, data });
+        }
 
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
@@ -266,7 +328,9 @@ export default function makeServer({ environment = 'test' } = {}) {
       this.get('/courses', (schema, req) => {
         const permission = getPermission(req);
         const { page, limit, userId, ...others } = req.queryParams;
-        const conditions = Object.entries(others).filter(([key, value]) => !!value);
+        const conditions = Object.entries(others).filter(
+          ([key, value]) => !!value && key !== 'own'
+        );
         const filterData = (courses, sourceKey) => {
           if (page && limit) {
             courses = courses.slice((page - 1) * limit, page * limit);
@@ -722,14 +786,14 @@ export default function makeServer({ environment = 'test' } = {}) {
       this.get('/statistics/course', (schema, req) => {
         const source = schema.courses.all().models;
         const data = getCourseStatistics(source);
-        
+
         return new Response(200, {}, { msg: 'success', code: 200, data });
       });
 
       /* --------------------------------- other api--------------------------------------------*/
       this.get('/profile', (schema, req) => {
-        const { userId, userType } = req.queryParams;
-        const permission = getPermission(req, userType);
+        const { userId, role } = req.queryParams;
+        const permission = getPermission(req, role);
         const user = schema.users.find(userId);
         const target = { email: user.email };
         let data = null;

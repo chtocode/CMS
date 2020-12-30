@@ -3,7 +3,7 @@ export enum RootPath {
   logout = 'logout',
   students = 'students',
   student = 'student',
-  userType = 'userType',
+  userRole = 'userRole',
   courses = 'courses',
   course = 'course',
   teachers = 'teachers',
@@ -12,6 +12,8 @@ export enum RootPath {
   profile = 'profile',
   degrees = 'degrees',
   countries = 'countries',
+  class = 'class',
+  signUp = 'signup'
 }
 
 export enum SubPath {

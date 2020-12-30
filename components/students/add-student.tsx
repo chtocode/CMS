@@ -58,11 +58,7 @@ export default function AddStudentForm(props: AddStudentFormProps): JSX.Element 
         <Input type="text" placeholder="student name" />
       </Form.Item>
 
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[{ type: 'email', message: 'email format invalid' }]}
-      >
+      <Form.Item label="Email" name="email" rules={[{ type: 'email' }]}>
         <Input type="email" placeholder="email" />
       </Form.Item>
 

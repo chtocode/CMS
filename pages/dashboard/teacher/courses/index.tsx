@@ -24,7 +24,7 @@ export function TableMode({ query }: { query?: string }) {
       title: 'name',
       dataIndex: 'name',
       render: (name: string, record) => (
-        <Link href={`/dashboard/${storage.userType}/courses/${record.id}`}>{name}</Link>
+        <Link href={`/dashboard/${storage.role}/courses/${record.id}`}>{name}</Link>
       ),
     },
     {
@@ -60,7 +60,7 @@ export function TableMode({ query }: { query?: string }) {
       dataIndex: 'action',
       render: (_, record: Course) => (
         <Space size="middle">
-          <Link href={`/dashboard/${storage.userType}/courses/edit-course?uid=${record.uid}`}>
+          <Link href={`/dashboard/${storage.role}/courses/edit-course?uid=${record.uid}`}>
             Edit
           </Link>
           <Popconfirm
@@ -98,11 +98,7 @@ export function TableMode({ query }: { query?: string }) {
         dataSource={courses}
         columns={columns}
         onChange={({ pageSize, current }) => {
-          const { page, limit } = paginator;
-
-          if (page !== current || limit !== pageSize) {
-            setPaginator({ page: current, limit: pageSize });
-          }
+          setPaginator({ page: current, limit: pageSize });
         }}
         pagination={{ current: paginator.page, pageSize: paginator.limit, showSizeChanger: true }}
       />

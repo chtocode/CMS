@@ -1,6 +1,6 @@
 import { memoize } from 'lodash';
 import { useRouter } from 'next/router';
-import { useUserType } from '../../components/custom-hooks/login-state';
+import { useUserRole } from '../../components/custom-hooks/login-state';
 import { SideNav } from '../constant/routes';
 
 /**
@@ -75,10 +75,10 @@ const omitDetailPath = (path: string): string => {
  */
 const getKeyPathInfo = (data: SideNav[]): { keys: string[]; paths: string[] } => {
   const getPaths = generateFactory(generatePath);
-  const userType = useUserType();
+  const userRole = useUserRole();
   const paths = getPaths(data)
     .reduce((acc, cur) => [...acc, ...cur], [])
-    .map((item) => ['/dashboard', userType, item].filter((item) => !!item).join('/'));
+    .map((item) => ['/dashboard', userRole, item].filter((item) => !!item).join('/'));
   const getKeys = generateFactory(generateKey);
   const keys = getKeys(data).reduce((acc, cur) => [...acc, ...cur], []);
 

@@ -1,12 +1,14 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Col, Form, Input, Radio, Row, Typography } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Radio, Row, Space, Typography } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import React from 'react';
 import styled from 'styled-components';
-import { Role } from '../../lib/constant';
-import { LoginFormValues } from '../../lib/model/login';
-import apiService from '../../lib/services/api-service';
-import storage from '../../lib/services/storage';
+import { Role, validateMessages } from '../lib/constant';
+import { LoginFormValues } from '../lib/model/login';
+import apiService from '../lib/services/api-service';
+import storage from '../lib/services/storage';
 
 const { Title } = Typography;
 
@@ -44,24 +46,16 @@ export default function Login() {
           }}
           onFinish={(values: LoginFormValues) => login(values)}
           form={form}
+          validateMessages={validateMessages}
         >
-          <StyledTitle>课程管理助手</StyledTitle>
-          <Form.Item
-            name="loginType"
-            initialValue="student"
-            rules={[
-              {
-                required: true,
-                message: 'Please choose a login type',
-              },
-            ]}
-          >
+          <StyledTitle>Course Management Assistant</StyledTitle>
+          <Form.Item name="role" initialValue={Role.student} rules={[{ required: true }]}>
             <Radio.Group
               onChange={(event: RadioChangeEvent) => {
-                const loginType = event.target.value;
+                const role = event.target.value;
 
                 form.resetFields();
-                form.setFieldsValue({ loginType });
+                form.setFieldsValue({ role });
               }}
             >
               <Radio.Button value={Role.student}>Student</Radio.Button>
@@ -70,49 +64,29 @@ export default function Login() {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: '请输入您的邮箱',
-              },
-              {
-                type: 'email',
-                message: '邮箱格式错误',
-              },
-            ]}
-          >
-            <Input prefix={<UserOutlined />} type="email" placeholder="请输入邮箱" />
+          <Form.Item name="email" rules={[{ required: true }, { type: 'email' }]}>
+            <Input prefix={<UserOutlined />} type="email" placeholder="Please input email" />
           </Form.Item>
 
-          <Form.Item
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: '请输入您的密码',
-              },
-              {
-                min: 4,
-                max: 16,
-                message: '密码长度错误',
-              },
-            ]}
-          >
-            <Input prefix={<LockOutlined />} type="password" placeholder="请输入密码" />
+          <Form.Item name="password" rules={[{ required: true }, { min: 4, max: 16 }]}>
+            <Input prefix={<LockOutlined />} type="password" placeholder="Please input password" />
           </Form.Item>
 
           <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>记住我</Checkbox>
+            <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
           <Form.Item>
             <StyledButton type="primary" htmlType="submit">
-              登录
+              Sign in
             </StyledButton>
           </Form.Item>
         </Form>
+
+        <Space>
+          <span>No account?</span>
+          <Link href="/signup">Sign up</Link>
+        </Space>
       </Col>
     </Row>
   );

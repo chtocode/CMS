@@ -13,8 +13,9 @@ export interface Student<T = CourseShort> {
   courses: T[];
 }
 
-export interface StudentsRequest extends Partial<Paginator> {
+export interface StudentsRequest extends Paginator {
   query?: string;
+  userId?: number;
 }
 
 export interface StudentsResponse {

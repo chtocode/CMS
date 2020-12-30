@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import AddCourseForm from '../../../../components/course/add-course';
 import UpdateChapterForm from '../../../../components/course/update-chapter';
-import { useUserType } from '../../../../components/custom-hooks/login-state';
+import { useUserRole } from '../../../../components/custom-hooks/login-state';
 import AppLayout from '../../../../components/layout/layout';
 import { Course } from '../../../../lib/model';
 
@@ -15,7 +15,7 @@ export default function Page() {
   const [courseId, setCourseId] = useState(null);
   const [scheduleId, setScheduleId] = useState(null);
   const router = useRouter();
-  const userType = useUserType();
+  const userRole = useUserRole();
   const moveToNex = () => {
     setStep(step + 1);
     setAvailableNavigate([...availableNavigate, step + 1]);
@@ -36,7 +36,7 @@ export default function Page() {
         <Button
           type="primary"
           key="detail"
-          onClick={() => router.push(`/dashboard/${userType}/courses/${courseId}`)} // !跳转后mirage状态丢失，新的的数据找不到，所以这里会报500
+          onClick={() => router.push(`/dashboard/${userRole}/courses/${courseId}`)} // !跳转后mirage状态丢失，新的的数据找不到，所以这里会报500
         >
           Go Course
         </Button>,

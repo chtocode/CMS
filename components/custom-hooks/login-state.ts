@@ -11,16 +11,16 @@ export function useLoginState(): UserInfo {
       router.push('/login', undefined, { shallow: true });
     }
 
-    if (!!storage.userType) {
-      router.push(`/dashboard/${storage.userType}`, undefined, { shallow: true });
+    if (!!storage.role) {
+      router.push(`/dashboard/${storage.role}`, undefined, { shallow: true });
     }
   }, []);
 
   return storage.userInfo;
 }
 
-export function useUserType(): Role {
+export function useUserRole(): Role {
   const router = useRouter();
 
-  return storage.userType || (router.pathname.split('/')[2] as Role); // 2: path name start with a slash; e.g.: '/d/a' --split--> ['','d',a'];
+  return storage.role || (router.pathname.split('/')[2] as Role); // 2: path name start with a slash; e.g.: '/d/a' --split--> ['','d',a'];
 }

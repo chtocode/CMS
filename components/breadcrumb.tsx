@@ -4,21 +4,21 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { routes, SideNav } from '../lib/constant/routes';
 import { deepSearchRecordFactory, getSideNavNameByPath } from '../lib/util';
-import { useUserType } from './custom-hooks/login-state';
+import { useUserRole } from './custom-hooks/login-state';
 
 export default function AppBreadcrumb() {
   const router = useRouter();
   const path = router.pathname;
   const paths = path.split('/').slice(1);
   const root = '/' + paths.slice(0, 2).join('/');
-  const userType = useUserType();
-  const sideNav = routes.get(userType);
+  const userRol = useUserRole();
+  const sideNav = routes.get(userRol);
   const names = getSideNavNameByPath(sideNav, path) || [];
 
   return (
     <Breadcrumb style={{ margin: '0 16px', padding: 16 }}>
       <Breadcrumb.Item key={root}>
-        <Link href={root}>{`CMS ${userType.toLocaleUpperCase()} SYSTEM`}</Link>
+        <Link href={root}>{`CMS ${userRol.toLocaleUpperCase()} SYSTEM`}</Link>
       </Breadcrumb.Item>
 
       {names.map((name, index) => {

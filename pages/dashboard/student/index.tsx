@@ -1,21 +1,21 @@
 import {
-  CalendarFilled,
+    CalendarFilled,
 
-  HeartFilled,
-  ReloadOutlined,
+    HeartFilled,
+    ReloadOutlined,
 
-  TeamOutlined
+    TeamOutlined
 } from '@ant-design/icons';
 import {
-  Card,
+    Card,
 
-  List,
-  message,
+    List,
+    message,
 
 
-  Space,
-  Statistic as StatisticComponent,
-  Tooltip
+    Space,
+    Statistic as StatisticComponent,
+    Tooltip
 } from 'antd';
 import { isFuture } from 'date-fns';
 import { groupBy } from 'lodash';
@@ -187,7 +187,7 @@ export default function Dashboard() {
                   <List.Item.Meta
                     avatar={<img src={item.cover} width="200px" />}
                     title={
-                      <Link href={`/dashboard/${storage.userType}/courses/${item.id}`} passHref>
+                      <Link href={`/dashboard/${storage.role}/courses/${item.id}`} passHref>
                         {item.name}
                       </Link>
                     }

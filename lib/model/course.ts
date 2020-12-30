@@ -3,6 +3,7 @@ import { Paginator } from './api';
 export interface CourseShort {
   id: number;
   name: string;
+  courseId: number;
 }
 
 type DurationUnit = 1 | 2 | 3 | 4 | 5;
