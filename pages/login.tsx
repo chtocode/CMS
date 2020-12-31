@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
+import Header from '../components/home/header';
 import { Role, validateMessages } from '../lib/constant';
 import { LoginFormValues } from '../lib/model/login';
 import apiService from '../lib/services/api-service';
@@ -12,15 +13,19 @@ import storage from '../lib/services/storage';
 
 const { Title } = Typography;
 
-const StyledButton = styled(Button)`
+export const StyledButton = styled(Button)`
   &&& {
     width: 100%;
   }
 `;
 
-const StyledTitle = styled(Title)`
-  &&& {
-    text-align: center;
+export const StyledTitle = styled(Title)`
+  text-align: center;
+  margin: 0.5em 0;
+  @media (max-width: 700px) {
+    margin-top: 2em;
+    font-size: 18px !important;
+    padding-bottom: 0;
   }
 `;
 
@@ -37,57 +42,66 @@ export default function Login() {
   };
 
   return (
-    <Row justify="center" style={{ marginTop: '5%' }}>
-      <Col span={8}>
-        <Form
-          name="login"
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={(values: LoginFormValues) => login(values)}
-          form={form}
-          validateMessages={validateMessages}
-        >
-          <StyledTitle>Course Management Assistant</StyledTitle>
-          <Form.Item name="role" initialValue={Role.student} rules={[{ required: true }]}>
-            <Radio.Group
-              onChange={(event: RadioChangeEvent) => {
-                const role = event.target.value;
+    <>
+      <Header />
 
-                form.resetFields();
-                form.setFieldsValue({ role });
-              }}
-            >
-              <Radio.Button value={Role.student}>Student</Radio.Button>
-              <Radio.Button value={Role.teacher}>Teacher</Radio.Button>
-              <Radio.Button value={Role.manager}>Manager</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
+      <StyledTitle>Course Management Assistant</StyledTitle>
 
-          <Form.Item name="email" rules={[{ required: true }, { type: 'email' }]}>
-            <Input prefix={<UserOutlined />} type="email" placeholder="Please input email" />
-          </Form.Item>
+      <Row justify="center">
+        <Col md={8} sm={24}>
+          <Form
+            name="login"
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={(values: LoginFormValues) => login(values)}
+            form={form}
+            validateMessages={validateMessages}
+          >
+            <Form.Item name="role" initialValue={Role.student} rules={[{ required: true }]}>
+              <Radio.Group
+                onChange={(event: RadioChangeEvent) => {
+                  const role = event.target.value;
 
-          <Form.Item name="password" rules={[{ required: true }, { min: 4, max: 16 }]}>
-            <Input prefix={<LockOutlined />} type="password" placeholder="Please input password" />
-          </Form.Item>
+                  form.resetFields();
+                  form.setFieldsValue({ role });
+                }}
+              >
+                <Radio.Button value={Role.student}>Student</Radio.Button>
+                <Radio.Button value={Role.teacher}>Teacher</Radio.Button>
+                <Radio.Button value={Role.manager}>Manager</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
 
-          <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
+            <Form.Item name="email" rules={[{ required: true }, { type: 'email' }]}>
+              <Input prefix={<UserOutlined />} type="email" placeholder="Please input email" />
+            </Form.Item>
 
-          <Form.Item>
-            <StyledButton type="primary" htmlType="submit">
-              Sign in
-            </StyledButton>
-          </Form.Item>
-        </Form>
+            <Form.Item name="password" rules={[{ required: true }, { min: 4, max: 16 }]}>
+              <Input
+                prefix={<LockOutlined />}
+                type="password"
+                placeholder="Please input password"
+              />
+            </Form.Item>
 
-        <Space>
-          <span>No account?</span>
-          <Link href="/signup">Sign up</Link>
-        </Space>
-      </Col>
-    </Row>
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+
+            <Form.Item>
+              <StyledButton type="primary" htmlType="submit">
+                Sign in
+              </StyledButton>
+            </Form.Item>
+          </Form>
+
+          <Space>
+            <span>No account?</span>
+            <Link href="/signup">Sign up</Link>
+          </Space>
+        </Col>
+      </Row>
+    </>
   );
 }
