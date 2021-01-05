@@ -156,7 +156,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
       ...values,
       duration: +values.duration.number,
       typeId: +values.typeId,
-      startTime: format(values.startTime, 'yyy-MM-dd'),
+      startTime: values.startTime && format(values.startTime, 'yyy-MM-dd'),
       teacherId: +values.teacherId || +course.teacherId,
       durationUnit: +values.duration.unit,
     };

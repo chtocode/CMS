@@ -46,7 +46,7 @@ export default function UpdateChapterForm({
       weekday: string;
       time: string;
     }[] = form.getFieldValue(clsTime) || [];
-    let result = selected.map((item) => item.weekday);
+    let result = selected.map((item) => item?.weekday);
 
     if (namePath) {
       const value = form.getFieldValue(namePath);
