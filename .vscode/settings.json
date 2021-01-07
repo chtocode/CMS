@@ -3,6 +3,7 @@
         "Sider",
         "antd",
         "highcharts",
+        "scrollable",
         "signup"
     ]
 }

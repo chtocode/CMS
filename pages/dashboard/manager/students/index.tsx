@@ -1,20 +1,21 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Popconfirm, Space, Table } from 'antd';
-import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
+import { ColumnType } from 'antd/lib/table';
 import TextLink from 'antd/lib/typography/Link';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ModalForm from '../../../../components/common/modal-form';
 import { useDebounceSearch } from '../../../../components/custom-hooks/debounce-search';
+import { useListEffect } from '../../../../components/custom-hooks/list-effect';
 import Layout from '../../../../components/layout/layout';
 import AddStudentForm from '../../../../components/students/add-student';
 import { businessAreas } from '../../../../lib/constant';
-import { Student } from '../../../../lib/model';
+import { Student, StudentsRequest, StudentsResponse } from '../../../../lib/model';
 import { CourseShort } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
-import storage from '../../../../lib/services/storage';
+import { genCommonTableProps } from '../../../../lib/util';
 
 const Search = styled(Input.Search)`
   width: 30%;
@@ -27,16 +28,16 @@ const FlexContainer = styled.div`
   align-items: center;
   margin-bottom: 16px;
 `;
-
 export default function Dashboard() {
-  const [data, setData] = useState<Student[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [pagination, setPagination] = useState<Partial<TablePaginationConfig>>({
-    current: 1,
-    pageSize: 10,
-    showSizeChanger: true,
-  });
-  const [total, setTotal] = useState(0);
+  const [query, setQuery] = useState<string>('');
+  const debouncedQuery = useDebounceSearch(setQuery);
+  const [isModalDisplay, setModalDisplay] = useState(false);
+  const [editingStudent, setEditingStudent] = useState<Student>(null);
+  const { data, loading, paginator, setPaginator, total, setTotal, setData } = useListEffect<
+    StudentsRequest,
+    StudentsResponse,
+    Student
+  >(apiService.getStudents.bind(apiService), 'students', true, { query });
   const columns: ColumnType<Student>[] = [
     {
       title: 'No.',
@@ -128,28 +129,10 @@ export default function Dashboard() {
       ),
     },
   ];
-  const [query, setQuery] = useState<string>('');
-  const debouncedQuery = useDebounceSearch(setQuery);
-  const [isModalDisplay, setModalDisplay] = useState(false);
-  const [editingStudent, setEditingStudent] = useState<Student>(null);
   const cancel = () => {
     setModalDisplay(false);
     setEditingStudent(null);
   };
-
-  useEffect(() => {
-    const req = { limit: pagination.pageSize, page: pagination.current, userId: storage.userId };
-
-    setLoading(true);
-
-    apiService.getStudents(query ? { ...req, query } : req).then((res) => {
-      const { students, total } = res.data;
-
-      setData(students);
-      setTotal(total);
-      setLoading(false);
-    });
-  }, [query, pagination]);
 
   return (
     <Layout>
@@ -171,12 +154,14 @@ export default function Dashboard() {
         />
       </FlexContainer>
       <Table
-        rowKey="id"
-        dataSource={data}
-        onChange={setPagination}
-        loading={loading}
-        pagination={{ ...pagination, total }}
-        columns={columns}
+        {...genCommonTableProps({
+          data,
+          paginator,
+          loading,
+          setPaginator,
+          columns,
+          total,
+        })}
       ></Table>
 
       <ModalForm

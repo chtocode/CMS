@@ -1,11 +1,11 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Col, Input, Row, Select, Table, Tag } from 'antd';
-import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
+import { ColumnType } from 'antd/lib/table';
 import { formatDistanceToNow } from 'date-fns';
-import { omitBy } from 'lodash';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDebounceSearch } from '../../../../components/custom-hooks/debounce-search';
+import { useListEffect } from '../../../../components/custom-hooks/list-effect';
 import AppLayout from '../../../../components/layout/layout';
 import {
   CourseStatusColor,
@@ -13,19 +13,11 @@ import {
   DurationUnit,
   gutter
 } from '../../../../lib/constant';
-import { StudentCourse, StudentOwnCoursesResponse } from '../../../../lib/model';
+import { CourseRequest, StudentCourse, StudentOwnCoursesResponse } from '../../../../lib/model';
 import { apiService } from '../../../../lib/services/api-service';
-import storage from '../../../../lib/services/storage';
+import { genCommonTableProps } from '../../../../lib/util';
 
 export default function Page() {
-  const [data, setData] = useState(null);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [pagination, setPagination] = useState<Partial<TablePaginationConfig>>({
-    current: 1,
-    pageSize: 10,
-    showSizeChanger: true,
-  });
   const [query, setQuery] = useState<string>('');
   const [searchBy, setSearchBy] = useState<'name' | 'type'>('name');
   const columns: ColumnType<StudentCourse>[] = [
@@ -77,32 +69,11 @@ export default function Page() {
     },
   ];
   const debouncedQuery = useDebounceSearch(setQuery);
-
-  useEffect(() => {
-    const req = omitBy(
-      {
-        limit: pagination.pageSize,
-        page: pagination.current,
-        userId: storage.userId,
-        [searchBy]: query,
-        own: true
-      },
-      (item) => item === ''
-    );
-    setLoading(true);
-
-    apiService.getCourses<StudentOwnCoursesResponse>(req).then((res) => {
-      const {
-        data: { total, courses },
-      } = res;
-
-      setData(courses);
-      setLoading(false);
-      setTotal(total);
-    });
-
-    return () => {};
-  }, [pagination, query]);
+  const { data, total, paginator, loading, setPaginator } = useListEffect<
+    Partial<CourseRequest>,
+    StudentOwnCoursesResponse,
+    StudentCourse
+  >(apiService.getCourses.bind(apiService), 'courses', true, { [searchBy]: query, own: true });
 
   return (
     <AppLayout>
@@ -123,12 +94,7 @@ export default function Page() {
       </Row>
 
       <Table
-        rowKey="id"
-        dataSource={data}
-        onChange={setPagination}
-        loading={loading}
-        pagination={{ ...pagination, total }}
-        columns={columns}
+        {...genCommonTableProps({ data, loading, columns, paginator, setPaginator, total })}
       ></Table>
     </AppLayout>
   );

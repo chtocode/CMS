@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { flatten } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useScrollLoad } from '../../../components/custom-hooks/scroll-load';
+import { useListEffect } from '../../../components/custom-hooks/list-effect';
 import AppLayout from '../../../components/layout/layout';
 import {
   Message,
@@ -18,7 +18,7 @@ type DataSource = [string, Message[]][];
 
 export default function Page() {
   const [type, setType] = useState<MessageType>(null);
-  const { paginator, setPaginator, data, hasMore } = useScrollLoad<
+  const { paginator, setPaginator, data, hasMore } = useListEffect<
     MessagesRequest,
     MessagesResponse,
     Message

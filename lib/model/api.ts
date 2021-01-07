@@ -23,5 +23,4 @@ export type DeleteResponse = boolean;
 export interface ListResponse {
   total: number;
   paginator?: Paginator;
-  // [key: string]: any;
 }

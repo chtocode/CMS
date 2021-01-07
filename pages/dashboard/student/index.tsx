@@ -1,22 +1,5 @@
-import {
-  CalendarFilled,
-
-  HeartFilled,
-  ReloadOutlined,
-
-  TeamOutlined
-} from '@ant-design/icons';
-import {
-  Card,
-
-  List,
-  message,
-
-
-  Space,
-  Statistic as StatisticComponent,
-  Tooltip
-} from 'antd';
+import { CalendarFilled, HeartFilled, ReloadOutlined, TeamOutlined } from '@ant-design/icons';
+import { Card, List, message, Space, Statistic as StatisticComponent, Tooltip } from 'antd';
 import { isFuture } from 'date-fns';
 import { groupBy } from 'lodash';
 import Link from 'next/link';

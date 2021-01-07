@@ -5,14 +5,14 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import BackTop from '../../../../components/common/back-top';
 import { Indicator } from '../../../../components/common/styled';
 import CourseOverview from '../../../../components/course/overview';
-import { useScrollLoad } from '../../../../components/custom-hooks/scroll-load';
+import { useListEffect } from '../../../../components/custom-hooks/list-effect';
 import AppLayout from '../../../../components/layout/layout';
 import { Course, CourseRequest, CourseResponse } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
 import storage from '../../../../lib/services/storage';
 
 export function ScrollMode() {
-  const { paginator, setPaginator, hasMore, data } = useScrollLoad<
+  const { paginator, setPaginator, hasMore, data } = useListEffect<
     CourseRequest,
     CourseResponse,
     Course

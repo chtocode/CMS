@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { IResponse, ListResponse, Paginator, RequestOmitPaginator } from '../../lib/model';
 import storage from '../../lib/services/storage';
 
-export function useScrollLoad<P, T extends ListResponse, U = any>(
+export function useListEffect<P, T extends ListResponse, U = any>(
   apiFn: (req: P) => Promise<IResponse<ListResponse>>,
   sourceKey: keyof T,
   onlyFresh = true,
@@ -13,6 +13,7 @@ export function useScrollLoad<P, T extends ListResponse, U = any>(
   const [paginator, setPaginator] = useState<Paginator>({ limit: 20, page: 1 });
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [total, setTotal] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
   const request = useCallback(apiFn, []);
   const stringParams = JSON.stringify(params || {});
 
@@ -22,6 +23,8 @@ export function useScrollLoad<P, T extends ListResponse, U = any>(
       (item: string | number | boolean | null) => item === '' || item === null
     ) as any;
 
+    setLoading(true);
+
     request(req).then((res) => {
       const { data: newData } = res;
       const fresh = (newData[sourceKey as string] as unknown) as U[];
@@ -29,7 +32,10 @@ export function useScrollLoad<P, T extends ListResponse, U = any>(
 
       setData(source);
       setTotal(newData.total);
-      setHasMore(onlyFresh ? !!source.length && source.length < newData.total : newData.total > source.length);
+      setHasMore(
+        onlyFresh ? !!source.length && source.length < newData.total : newData.total > source.length
+      );
+      setLoading(false);
     });
   }, [paginator, stringParams]);
 
@@ -38,8 +44,10 @@ export function useScrollLoad<P, T extends ListResponse, U = any>(
     hasMore,
     paginator,
     total,
+    loading,
     setPaginator,
-    setData: setData,
+    setData,
     setTotal,
+    setLoading,
   };
 }

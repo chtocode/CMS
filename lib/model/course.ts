@@ -36,6 +36,7 @@ export interface CourseRequest extends Paginator {
   name?: string;
   type?: number;
   userId?: number;
+  own?: any; // ?这个字段是多余的，真实的后台可以根据token等鉴定用户权限
 }
 
 export interface CourseResponse extends ListResponse {

@@ -34,8 +34,8 @@ import apiService from '../../lib/services/api-service';
 import storage from '../../lib/services/storage';
 import { generateKey, getActiveKey } from '../../lib/util';
 import AppBreadcrumb from '../breadcrumb';
+import { useListEffect } from '../custom-hooks/list-effect';
 import { useUserRole } from '../custom-hooks/login-state';
-import { useScrollLoad } from '../custom-hooks/scroll-load';
 
 const { Header, Content, Sider } = Layout;
 
@@ -205,7 +205,7 @@ interface MessagesProps {
 }
 
 function Messages(props: MessagesProps): JSX.Element {
-  const { paginator, setPaginator, hasMore, data, setData } = useScrollLoad<
+  const { paginator, setPaginator, hasMore, data, setData } = useListEffect<
     MessagesRequest,
     MessagesResponse,
     Message

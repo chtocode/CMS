@@ -2,16 +2,20 @@ import { Input, Modal, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import TextLink from 'antd/lib/typography/Link';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useListEffect } from '../../../../components/custom-hooks/list-effect';
 import AppLayout from '../../../../components/layout/layout';
-import { CourseShort, Student } from '../../../../lib/model';
+import { CourseShort, Student, StudentsRequest, StudentsResponse } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
 import storage from '../../../../lib/services/storage';
+import { genCommonTableProps } from '../../../../lib/util';
 
 export default function Page() {
-  const [data, setData] = useState<Student[]>(null);
-  const [total, setTotal] = useState<number>(0);
-  const [paginator, setPaginator] = useState({ page: 1, limit: 20 });
+  const { paginator, setPaginator, total, loading, data } = useListEffect<
+    StudentsRequest,
+    StudentsResponse,
+    Student
+  >(apiService.getStudents, 'students');
   const columns: ColumnsType<Student> = [
     { title: 'N.O', key: 'index', render: (_1, _2, index) => index + 1 },
     { title: 'name', dataIndex: 'name' },
@@ -24,9 +28,7 @@ export default function Page() {
         <>
           {ary.map((item) => (
             <Space key={item.id}>
-              <Link href={`/dashboard/${storage.role}/courses/${item.courseId}`}>
-                {item.name}
-              </Link>
+              <Link href={`/dashboard/${storage.role}/courses/${item.courseId}`}>{item.name}</Link>
             </Space>
           ))}
         </>
@@ -63,36 +65,10 @@ export default function Page() {
     },
   ];
 
-  useEffect(() => {
-    const req = { ...paginator, userId: storage.userId };
-
-    apiService.getStudents(req).then((res) => {
-      const {
-        data: { total, students },
-      } = res;
-
-      setData(students);
-      setTotal(total);
-    });
-
-    return () => {};
-  }, [paginator]);
-
   return (
     <AppLayout>
       <Table
-        rowKey="id"
-        dataSource={data}
-        columns={columns}
-        onChange={({ pageSize, current }) => {
-          setPaginator({ page: current, limit: pageSize });
-        }}
-        pagination={{
-          pageSize: paginator.limit,
-          current: paginator.page,
-          total,
-          showSizeChanger: true,
-        }}
+        {...genCommonTableProps({ data, columns, loading, paginator, setPaginator, total })}
       ></Table>
     </AppLayout>
   );

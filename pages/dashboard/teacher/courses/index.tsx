@@ -5,16 +5,17 @@ import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useDebounceSearch } from '../../../../components/custom-hooks/debounce-search';
-import { useScrollLoad } from '../../../../components/custom-hooks/scroll-load';
+import { useListEffect } from '../../../../components/custom-hooks/list-effect';
 import AppLayout from '../../../../components/layout/layout';
 import { CourseStatusText, DurationUnit, gutter } from '../../../../lib/constant';
 import { Course, CourseRequest, CourseResponse } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
 import storage from '../../../../lib/services/storage';
+import { genCommonTableProps } from '../../../../lib/util';
 import { ScrollMode } from '../../manager/courses';
 
 export function TableMode({ query }: { query?: string }) {
-  const { data, setPaginator, paginator, setData, total, setTotal } = useScrollLoad<
+  const { data, setPaginator, paginator, setData, total, setTotal, loading } = useListEffect<
     CourseRequest,
     CourseResponse,
     Course
@@ -98,15 +99,7 @@ export function TableMode({ query }: { query?: string }) {
     <>
       <Row gutter={gutter}></Row>
 
-      <Table
-        rowKey="id"
-        dataSource={data}
-        columns={columns}
-        onChange={({ pageSize, current }) => {
-          setPaginator({ page: current, limit: pageSize });
-        }}
-        pagination={{ current: paginator.page, pageSize: paginator.limit, showSizeChanger: true }}
-      />
+      <Table {...genCommonTableProps({ data, setPaginator, paginator, total, columns, loading })} />
     </>
   );
 }

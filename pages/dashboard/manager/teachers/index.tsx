@@ -1,18 +1,19 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Popconfirm, Space, Table } from 'antd';
-import { ColumnType, TablePaginationConfig } from 'antd/lib/table';
+import { ColumnType } from 'antd/lib/table';
 import TextLink from 'antd/lib/typography/Link';
-import { omitBy } from 'lodash';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ModalForm from '../../../../components/common/modal-form';
 import { useDebounceSearch } from '../../../../components/custom-hooks/debounce-search';
+import { useListEffect } from '../../../../components/custom-hooks/list-effect';
 import Layout from '../../../../components/layout/layout';
 import AddTeacherForm from '../../../../components/teacher/add-teacher';
 import { businessAreas } from '../../../../lib/constant';
-import { Skill, Teacher } from '../../../../lib/model';
+import { Skill, Teacher, TeachersRequest, TeachersResponse } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
+import { genCommonTableProps } from '../../../../lib/util';
 
 const Search = styled(Input.Search)`
   width: 30%;
@@ -27,14 +28,19 @@ const FlexContainer = styled.div`
 `;
 
 export default function Page() {
-  const [data, setData] = useState<Teacher[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [pagination, setPagination] = useState<Partial<TablePaginationConfig>>({
-    current: 1,
-    pageSize: 10,
-    showSizeChanger: true,
-  });
-  const [total, setTotal] = useState(0);
+  const [query, setQuery] = useState<string>('');
+  const debouncedQuery = useDebounceSearch(setQuery);
+  const [isModalDisplay, setModalDisplay] = useState(false);
+  const [editingTeacher, setEditingTeacher] = useState<Teacher>(null);
+  const { paginator, setPaginator, total, data, setData, loading, setTotal } = useListEffect<
+    TeachersRequest,
+    TeachersResponse,
+    Teacher
+  >(apiService.getTeachers.bind(apiService), 'teachers', true, { query });
+  const cancel = () => {
+    setModalDisplay(false);
+    setEditingTeacher(null);
+  };
   const columns: ColumnType<Teacher>[] = [
     {
       title: 'No.',
@@ -59,7 +65,7 @@ export default function Page() {
       title: 'Country',
       dataIndex: 'country',
       width: '10%',
-      filters: businessAreas.map(item =>({ text: item, value: item})),
+      filters: businessAreas.map((item) => ({ text: item, value: item })),
       onFilter: (value: string, record: Teacher) => record.country.includes(value),
     },
     {
@@ -118,29 +124,6 @@ export default function Page() {
       ),
     },
   ];
-  const [query, setQuery] = useState<string>('');
-  const debouncedQuery = useDebounceSearch(setQuery);
-  const [isModalDisplay, setModalDisplay] = useState(false);
-  const [editingTeacher, setEditingTeacher] = useState<Teacher>(null);
-  const cancel = () => {
-    setModalDisplay(false);
-    setEditingTeacher(null);
-  };
-
-  useEffect(() => {
-    const req = omitBy(
-      { limit: pagination.pageSize, page: pagination.current, query },
-      (item) => item === ''
-    );
-
-    apiService.getTeachers(req).then((res) => {
-      const { teachers, total } = res.data;
-
-      setData(teachers);
-      setTotal(total);
-      setLoading(false);
-    });
-  }, [query, pagination]);
 
   return (
     <Layout>
@@ -155,19 +138,10 @@ export default function Page() {
         >
           Add
         </Button>
-        <Search
-          placeholder="通过名称搜索"
-          onSearch={setQuery}
-          onChange={debouncedQuery}
-        />
+        <Search placeholder="通过名称搜索" onSearch={setQuery} onChange={debouncedQuery} />
       </FlexContainer>
       <Table
-        rowKey="id"
-        dataSource={data}
-        onChange={setPagination}
-        loading={loading}
-        pagination={{ ...pagination, total }}
-        columns={columns}
+        {...genCommonTableProps({ data, total, columns, paginator, setPaginator, loading })}
       ></Table>
 
       <ModalForm
