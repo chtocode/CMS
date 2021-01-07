@@ -1,4 +1,4 @@
-import { Paginator, ResponseWithPaginator } from './api';
+import { ListResponse, Paginator } from './api';
 import { Course, CourseShort } from './course';
 
 export interface Student<T = CourseShort> {
@@ -18,12 +18,9 @@ export interface StudentsRequest extends Paginator {
   userId?: number;
 }
 
-export interface StudentsResponse {
+export interface StudentsResponse extends ListResponse {
   students: Student[];
-  total: number;
-  paginator?: ResponseWithPaginator;
 }
-
 export interface AddStudentRequest {
   name: string;
   address: string;

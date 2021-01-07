@@ -73,13 +73,11 @@ export default function makeServer({ environment = 'test' } = {}) {
     },
 
     routes() {
+      const passthroughKeywords = ['mocky.io', 'dashboard', 'amap', 'highcharts', 'message'];
       this.passthrough((request) => {
         if (
           request.url === '/_next/static/development/_devPagesManifest.json' ||
-          request.url.includes('mocky.io') || // 忽略上传图片的路径
-          request.url.includes('dashboard') ||
-          request.url.includes('amap') ||
-          request.url.includes('highcharts')
+          passthroughKeywords.some((words) => request.url.includes(words))
         ) {
           return true;
         }

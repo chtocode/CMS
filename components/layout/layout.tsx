@@ -1,22 +1,41 @@
 import {
+  BellOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+
   ProfileOutlined,
   UserOutlined
 } from '@ant-design/icons';
-import { Avatar, Dropdown, Layout, Menu } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  Dropdown,
+  Layout,
+  List,
+  Menu,
+  Row,
+  Space,
+  Spin,
+  Tabs
+} from 'antd';
+import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import styled from 'styled-components';
 import { routes, SideNav } from '../../lib/constant/routes';
 import { StudentProfile } from '../../lib/model';
+import { Message, MessagesRequest, MessagesResponse, MessageType } from '../../lib/model/message';
 import apiService from '../../lib/services/api-service';
 import storage from '../../lib/services/storage';
 import { generateKey, getActiveKey } from '../../lib/util';
 import AppBreadcrumb from '../breadcrumb';
 import { useUserRole } from '../custom-hooks/login-state';
+import { useScrollLoad } from '../custom-hooks/scroll-load';
 
 const { Header, Content, Sider } = Layout;
 
@@ -34,7 +53,7 @@ const Logo = styled.div`
   font-family: monospace;
 `;
 
-const HeaderIcon = styled.div`
+const HeaderIcon = styled.span`
   font-size: 18px;
   color: #fff;
   cursor: pointer;
@@ -58,6 +77,81 @@ const StyledContent = styled(Content)`
   background-color: #fff;
   padding: 16px;
   min-height: auto;
+`;
+
+const TabNavContainer = styled.div`
+  margin-bottom: 0;
+  padding: 10px 20px 0 20px;
+  .ant-tabs-nav-list {
+    width: 100%;
+    justify-content: space-around;
+  }
+`;
+
+const TabPane = styled(Tabs.TabPane)`
+  position: relative;
+  .ant-list-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    &:hover {
+      background: #1890ff45;
+    }
+  }
+  .ant-list-item-meta-title {
+    margin-bottom: 0;
+  }
+  .ant-list-item-action {
+    margin: 0 0 0 48px;
+  }
+  .ant-list-item-meta-avatar {
+    align-self: flex-end;
+  }
+  .ant-list-item-meta-description {
+    margin: 5px 0;
+    white-space: normal;
+    display: -webkit-box;
+    max-height: 3em;
+    max-width: 100%;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ant-list-item-meta {
+    margin-bottom: 0;
+  }
+`;
+
+const Footer = styled(Row)`
+  height: 50px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0 0 4px 4px;
+  border: 1px solid #f0f0f0;
+  border-left: none;
+  border-right: none;
+  background: #fff;
+  z-index: 9;
+  .ant-col {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:first-child {
+      box-shadow: 1px 0 0 0 #f0f0f0;
+    }
+  }
+  button {
+    border: none;
+  }
+`;
+
+const MessageContainer = styled.div`
+  height: 380px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 const getMenuConfig = (
@@ -101,6 +195,187 @@ function renderMenuItems(data: SideNav[], parent = ''): JSX.Element[] {
       );
     }
   });
+}
+
+interface MessagesProps {
+  type: MessageType;
+  scrollTarget: string;
+  clearAll: number;
+  onRead?: (amount: number) => void;
+}
+
+function Messages(props: MessagesProps): JSX.Element {
+  const { paginator, setPaginator, hasMore, data, setData } = useScrollLoad<
+    MessagesRequest,
+    MessagesResponse,
+    Message
+  >(apiService.getMessages.bind(apiService), 'messages', false, { type: props.type });
+
+  useEffect(() => {
+    if (props.clearAll && data && data.length) {
+      const ids = data.filter((item) => item.status === 0).map((item) => item.id);
+
+      apiService.markAsRead(ids).then((res) => {
+        if (res.data) {
+          setData(data.map((item) => ({ ...item, status: 1 })));
+        }
+
+        if (props.onRead) {
+          props.onRead(ids.length);
+        }
+      });
+    }
+  }, [props.clearAll]);
+
+  return (
+    <InfiniteScroll
+      next={() => setPaginator({ ...paginator, page: paginator.page + 1 })}
+      hasMore={hasMore}
+      loader={
+        <div style={{ textAlign: 'center' }}>
+          <Spin />
+        </div>
+      }
+      dataLength={data.length}
+      endMessage={<div style={{ textAlign: 'center' }}>No more</div>}
+      scrollableTarget={props.scrollTarget}
+    >
+      <List
+        itemLayout="vertical"
+        dataSource={data}
+        renderItem={(item, index) => (
+          <List.Item
+            key={index}
+            style={{ opacity: item.status ? 0.4 : 1 }}
+            actions={[
+              <Space>{formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}</Space>,
+            ]}
+            onClick={() => {
+              if (item.status === 1) {
+                return;
+              }
+
+              apiService.markAsRead([item.id]).then((res) => {
+                if (res.data) {
+                  const target = data.find((msg) => item.id === msg.id);
+
+                  target.status = 1;
+                  setData([...data]);
+                }
+
+                if (props.onRead) {
+                  props.onRead(1);
+                }
+              });
+            }}
+          >
+            <List.Item.Meta
+              avatar={<Avatar icon={<UserOutlined />} />}
+              title={item.from.nickname}
+              description={item.content}
+            />
+          </List.Item>
+        )}
+      ></List>
+    </InfiniteScroll>
+  );
+}
+
+export function MessagePanel() {
+  const types: MessageType[] = ['notification', 'message'];
+  const [activeType, setActiveType] = useState<MessageType>('notification');
+  const [msgStatistic, setMsgStatistic] = useState({ total: 0, notification: 0, message: 0 });
+  const [clean, setClean] = useState<{ [key in MessageType]: number }>({
+    notification: 0,
+    message: 0,
+  });
+
+  useEffect(() => {
+    apiService.getMessageStatistic().then((res) => {
+      const { data } = res;
+
+      if (!!data) {
+        const {
+          receive: { notification, message },
+        } = data;
+        const total = notification.unread + message.unread;
+
+        setMsgStatistic({
+          total,
+          notification: notification.unread,
+          message: message.unread,
+        });
+      }
+    });
+  }, []);
+
+  return (
+    <Badge size="small" count={msgStatistic.total} offset={[10, 0]}>
+      <HeaderIcon>
+        <Dropdown
+          overlayStyle={{
+            background: '#fff',
+            borderRadius: 4,
+            width: 400,
+            height: 500,
+            overflow: 'hidden',
+          }}
+          placement="bottomRight"
+          trigger={['click']}
+          overlay={
+            <>
+              <Tabs
+                renderTabBar={(props, DefaultTabBar) => (
+                  <TabNavContainer>
+                    <DefaultTabBar {...props} />
+                  </TabNavContainer>
+                )}
+                onChange={(key: MessageType) => {
+                  if (key !== activeType) {
+                    setActiveType(key);
+                  }
+                }}
+                animated
+              >
+                {types.map((type) => (
+                  <TabPane key={type} tab={`${type} (${msgStatistic[type]})`}>
+                    <MessageContainer id={type}>
+                      <Messages
+                        type={type}
+                        scrollTarget={type}
+                        clearAll={clean[type]}
+                        onRead={(amount) => {
+                          setMsgStatistic({
+                            ...msgStatistic,
+                            total: msgStatistic.total - amount,
+                            [type]: msgStatistic[type] - amount,
+                          });
+                        }}
+                      />
+                    </MessageContainer>
+                  </TabPane>
+                ))}
+              </Tabs>
+
+              <Footer justify="space-between" align="middle">
+                <Col span={12}>
+                  <Button onClick={() => setClean({ ...clean, [activeType]: ++clean[activeType] })}>
+                    Mark all as read
+                  </Button>
+                </Col>
+                <Col span={12}>
+                  {/* TODO: 历史消息列表 */}
+                  <Button>View history</Button>
+                </Col>
+              </Footer>
+            </>
+          }
+        >
+          <BellOutlined style={{ fontSize: 24, marginTop: 5 }} />
+        </Dropdown>
+      </HeaderIcon>
+    </Badge>
+  );
 }
 
 export default function AppLayout(props: React.PropsWithChildren<any>) {
@@ -156,29 +431,33 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </HeaderIcon>
 
-          <HeaderIcon>
-            <Dropdown
-              overlay={
-                <Menu>
-                  {userRole !== 'manager' && (
-                    <Menu.Item>
-                      <ProfileOutlined />
-                      <Link href={`/dashboard/${storage.role}/profile`}>
-                        <span>Profile</span>
-                      </Link>
+          <Row align="middle">
+            <MessagePanel />
+
+            <HeaderIcon style={{ marginLeft: '2em' }}>
+              <Dropdown
+                overlay={
+                  <Menu>
+                    {userRole !== 'manager' && (
+                      <Menu.Item>
+                        <ProfileOutlined />
+                        <Link href={`/dashboard/${storage.role}/profile`}>
+                          <span>Profile</span>
+                        </Link>
+                      </Menu.Item>
+                    )}
+                    <Menu.Item onClick={onLogout}>
+                      <LogoutOutlined />
+                      <span>Logout</span>
                     </Menu.Item>
-                  )}
-                  <Menu.Item onClick={onLogout}>
-                    <LogoutOutlined />
-                    <span>Logout</span>
-                  </Menu.Item>
-                </Menu>
-              }
-              placement="bottomLeft"
-            >
-              {avatar ? <Avatar src={avatar} /> : <Avatar icon={<UserOutlined />} />}
-            </Dropdown>
-          </HeaderIcon>
+                  </Menu>
+                }
+                placement="bottomLeft"
+              >
+                {avatar ? <Avatar src={avatar} /> : <Avatar icon={<UserOutlined />} />}
+              </Dropdown>
+            </HeaderIcon>
+          </Row>
         </StyledLayoutHeader>
 
         <AppBreadcrumb />

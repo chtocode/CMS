@@ -1,19 +1,20 @@
 export enum RootPath {
+  class = 'class',
+  countries = 'countries',
+  course = 'course',
+  courses = 'courses',
+  degrees = 'degrees',
   login = 'login',
   logout = 'logout',
-  students = 'students',
-  student = 'student',
-  userRole = 'userRole',
-  courses = 'courses',
-  course = 'course',
-  teachers = 'teachers',
-  teacher = 'teacher',
-  statistics = 'statistics',
+  message = 'message',
   profile = 'profile',
-  degrees = 'degrees',
-  countries = 'countries',
-  class = 'class',
-  signUp = 'signup'
+  signUp = 'signup',
+  statistics = 'statistics',
+  student = 'student',
+  students = 'students',
+  teacher = 'teacher',
+  teachers = 'teachers',
+  userRole = 'userRole',
 }
 
 export enum SubPath {
@@ -25,4 +26,5 @@ export enum SubPath {
   schedule = 'schedule',
   overview = 'overview',
   interest = 'interest',
+  statistics = 'statistics',
 }

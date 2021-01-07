@@ -4,6 +4,7 @@ import {
   DeploymentUnitOutlined,
   EditOutlined,
   FileAddOutlined,
+  MessageOutlined,
   ProfileOutlined,
   ProjectOutlined,
   ReadOutlined,
@@ -28,6 +29,7 @@ export enum RoutePath {
   own = 'own',
   schedule = 'schedule',
   profile = 'profile',
+  message = 'message',
 }
 
 export interface SideNav {
@@ -103,8 +105,14 @@ const profile: SideNav = {
   icon: <ProfileOutlined />
 }
 
+const messages: SideNav = {
+  path: [RoutePath.message],
+  label: 'Message',
+  icon: <MessageOutlined />
+}
+
 export const routes: Map<Role, SideNav[]> = new Map([
-  [Roles.manager, [overview, students, teachers, courses]],
-  [Roles.teacher, [overview, classSchedule, students, courses, profile]],
-  [Roles.student, [overview, studentCourses, classSchedule, profile]],
+  [Roles.manager, [overview, students, teachers, courses, messages]],
+  [Roles.teacher, [overview, classSchedule, students, courses, profile, messages]],
+  [Roles.student, [overview, studentCourses, classSchedule, profile, messages]],
 ]);

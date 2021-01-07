@@ -1,61 +1,22 @@
 import { Button, List, Spin } from 'antd';
-import { omitBy } from 'lodash';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import styled from 'styled-components';
 import BackTop from '../../../../components/common/back-top';
+import { Indicator } from '../../../../components/common/styled';
 import CourseOverview from '../../../../components/course/overview';
+import { useScrollLoad } from '../../../../components/custom-hooks/scroll-load';
 import AppLayout from '../../../../components/layout/layout';
-import { Paginator } from '../../../../lib/model';
-import { Course } from '../../../../lib/model/course';
+import { Course, CourseRequest, CourseResponse } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
 import storage from '../../../../lib/services/storage';
 
-const Indicator = styled.div`
-  position: relative;
-  left: 50%,
-  margin-top: 10px;
-  transform: translateX(50%);
-`;
-
-export function useCourses(query: string) {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [paginator, setPaginator] = useState<Paginator>({ limit: 20, page: 1 });
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const [total, setTotal] = useState<number>(0);
-
-  useEffect(() => {
-    const req = omitBy(
-      { ...paginator, userId: storage.userId, name: query },
-      (item) => item === '' || item === null
-    );
-
-    apiService.getCourses(req).then((res) => {
-      const {
-        data: { total, courses: fresh },
-      } = res;
-      const source = query !== null ? fresh : [...courses, ...fresh];
-
-      setCourses(source);
-      setTotal(total);
-      setHasMore(total > source.length);
-    });
-  }, [paginator, query]);
-
-  return {
-    courses,
-    hasMore,
-    paginator,
-    total,
-    setPaginator,
-    setCourses,
-    setTotal,
-  };
-}
-
 export function ScrollMode() {
-  const { paginator, setPaginator, hasMore, courses } = useCourses(null);
+  const { paginator, setPaginator, hasMore, data } = useScrollLoad<
+    CourseRequest,
+    CourseResponse,
+    Course
+  >(apiService.getCourses.bind(apiService), 'courses', false);
 
   return (
     <>
@@ -67,7 +28,7 @@ export function ScrollMode() {
             <Spin size="large" />
           </Indicator>
         }
-        dataLength={courses.length}
+        dataLength={data.length}
         endMessage={<Indicator>No More Course!</Indicator>}
         scrollableTarget="contentLayout"
         style={{ overflow: 'hidden' }}
@@ -83,7 +44,7 @@ export function ScrollMode() {
             xl: 4,
             xxl: 4,
           }}
-          dataSource={courses}
+          dataSource={data}
           renderItem={(item) => (
             <List.Item key={item.id}>
               <CourseOverview {...item}>

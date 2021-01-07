@@ -17,7 +17,7 @@ import {
   UpdateStudentRequest,
   UpdateStudentResponse,
   UpdateTeacherRequest,
-  UpdateTeacherResponse
+  UpdateTeacherResponse,
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import { Country, Degree } from '../model/common';
@@ -32,14 +32,15 @@ import {
   Schedule,
   ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse
+  UpdateCourseResponse,
 } from '../model/course';
 import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from '../model/login';
+import { MessagesRequest, MessagesResponse, MessageStatisticResponse } from '../model/message';
 import {
   Statistic,
   StatisticsOverviewResponse,
   StatisticsResponse,
-  StatisticsType
+  StatisticsType,
 } from '../model/statistics';
 import { RootPath, SubPath } from './api-path';
 import storage from './storage';
@@ -48,6 +49,22 @@ const axiosInstance = axios.create({
   withCredentials: true,
   baseURL: 'http://localhost:3000/api',
   responseType: 'json',
+});
+
+axiosInstance.interceptors.request.use((config) => {
+  if (config.url.includes('message')) {
+    return {
+      ...config,
+      baseURL: 'http://localhost:3001/api',
+      headers: {
+        ...config.headers,
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAYWRtaW4uY29tIiwicm9sZSI6InN0dWRlbnQiLCJpZCI6MSwiaWF0IjoxNjA5NjgxNTU0LCJleHAiOjE2MTc0NTc1NTR9.hf-pARNrJLpBCCVjo4bYQ5A_NFQXk1UPku9UDal04CM',
+      },
+    };
+  }
+
+  return config;
 });
 
 type IPath = string[] | string;
@@ -86,6 +103,17 @@ class BaseApiService {
     return axiosInstance
       .delete(this.getPath(path), {
         params,
+        headers: {
+          Authorization: 'Bearer ' + storage?.token,
+        },
+      })
+      .then((res) => res.data)
+      .catch(this.errorHandler);
+  }
+
+  protected async put<T>(path: IPath, params: object): Promise<T> {
+    return axiosInstance
+      .put(this.getPath(path), params, {
         headers: {
           Authorization: 'Bearer ' + storage?.token,
         },
@@ -157,7 +185,9 @@ class ApiService extends BaseApiService {
   }
 
   signUp(req: SignUpRequest): Promise<IResponse<SignUpResponse>> {
-    return this.post<IResponse<SignUpResponse>>([RootPath.signUp], req).then(this.showMessage(true));
+    return this.post<IResponse<SignUpResponse>>([RootPath.signUp], req).then(
+      this.showMessage(true)
+    );
   }
 
   getStudents(req?: StudentsRequest): Promise<IResponse<StudentsResponse>> {
@@ -291,7 +321,24 @@ class ApiService extends BaseApiService {
     );
   }
 
-  /* Helper Function
+  getMessages(req: MessagesRequest): Promise<IResponse<MessagesResponse>> {
+    return this.get<IResponse<MessagesResponse>>([RootPath.message], { ...req }).then(
+      this.showMessage()
+    );
+  }
+
+  getMessageStatistic(userId?: number): Promise<IResponse<MessageStatisticResponse>> {
+    return this.get([RootPath.message, SubPath.statistics], userId ? { userId } : {}).then(
+      this.showMessage()
+    );
+  }
+
+  markAsRead(ids: number[]): Promise<IResponse<boolean>> {
+    return this.put([RootPath.message], { status: 1, ids }).then(this.showMessage());
+  }
+
+  /*
+   * Helper Function
    * To get the countries of a specific region
    * */
   getWorld = async () => {

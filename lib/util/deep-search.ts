@@ -40,7 +40,11 @@ export const deepSearchFactory = <T>(predicateFn: PredicateFn<T>, value: any, ke
   };
 };
 
-export const deepSearchRecordFactory = <T>(predicateFn: PredicateFn<T>, value: any, key: string) => {
+export const deepSearchRecordFactory = <T>(
+  predicateFn: PredicateFn<T>,
+  value: any,
+  key: string
+) => {
   return function search(data: T[], record = []): number[] {
     const headNode = data.slice(0, 1)[0];
     const restNodes = data.slice(1);

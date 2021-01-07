@@ -1,21 +1,21 @@
 import {
-    CalendarFilled,
+  CalendarFilled,
 
-    HeartFilled,
-    ReloadOutlined,
+  HeartFilled,
+  ReloadOutlined,
 
-    TeamOutlined
+  TeamOutlined
 } from '@ant-design/icons';
 import {
-    Card,
+  Card,
 
-    List,
-    message,
+  List,
+  message,
 
 
-    Space,
-    Statistic as StatisticComponent,
-    Tooltip
+  Space,
+  Statistic as StatisticComponent,
+  Tooltip
 } from 'antd';
 import { isFuture } from 'date-fns';
 import { groupBy } from 'lodash';
@@ -113,7 +113,7 @@ export default function Dashboard() {
 
       dispatch({ type: 'setRecommend', payload: courses });
     } catch (err) {
-      message.error('Server is business, please try again later!');
+      message.error('Server is busy, please try again later!');
     }
   };
 

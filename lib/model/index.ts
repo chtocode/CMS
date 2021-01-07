@@ -6,4 +6,4 @@ export * from './logout';
 export * from './role';
 export * from './student';
 export * from './teacher';
-
+export * from './user';

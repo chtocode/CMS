@@ -13,7 +13,7 @@ export default function Home() {
         <script src="/js/main.js" key="main"></script>
       </Head>
 
-      <Header></Header> 
+      <Header></Header>
 
       <div className="slider">
         <ul className="bxslider">

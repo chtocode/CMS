@@ -1,4 +1,4 @@
-import { Paginator } from './api';
+import { ListResponse, Paginator } from './api';
 
 export interface CourseShort {
   id: number;
@@ -38,11 +38,9 @@ export interface CourseRequest extends Paginator {
   userId?: number;
 }
 
-export interface CourseResponse {
-  total: number;
+export interface CourseResponse extends ListResponse {
   courses: Course[];
 }
-
 interface Sales {
   id: number;
   batches: number;
@@ -115,8 +113,7 @@ export interface StudentCourse {
   course: Course;
 }
 
-export interface StudentOwnCoursesResponse {
-  total: number;
+export interface StudentOwnCoursesResponse extends ListResponse {
   courses: StudentCourse[];
 }
 

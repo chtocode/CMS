@@ -5,15 +5,20 @@ import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useDebounceSearch } from '../../../../components/custom-hooks/debounce-search';
+import { useScrollLoad } from '../../../../components/custom-hooks/scroll-load';
 import AppLayout from '../../../../components/layout/layout';
 import { CourseStatusText, DurationUnit, gutter } from '../../../../lib/constant';
-import { Course } from '../../../../lib/model';
+import { Course, CourseRequest, CourseResponse } from '../../../../lib/model';
 import apiService from '../../../../lib/services/api-service';
 import storage from '../../../../lib/services/storage';
-import { ScrollMode, useCourses } from '../../manager/courses';
+import { ScrollMode } from '../../manager/courses';
 
 export function TableMode({ query }: { query?: string }) {
-  const { courses, setPaginator, paginator, setCourses, total, setTotal } = useCourses(query);
+  const { data, setPaginator, paginator, setData, total, setTotal } = useScrollLoad<
+    CourseRequest,
+    CourseResponse,
+    Course
+  >(apiService.getCourses.bind(apiService), 'courses', true, { name: query });
   const columns: ColumnType<Course>[] = [
     {
       title: 'No.',
@@ -70,11 +75,11 @@ export function TableMode({ query }: { query?: string }) {
                 const { data: isDeleted } = res;
 
                 if (isDeleted) {
-                  const index = courses.findIndex((item) => item.id === record.id);
-                  const updatedData = [...courses];
+                  const index = data.findIndex((item) => item.id === record.id);
+                  const updatedData = [...data];
 
                   updatedData.splice(index, 1);
-                  setCourses(updatedData);
+                  setData(updatedData);
                   setTotal(total - 1);
                 }
               });
@@ -95,7 +100,7 @@ export function TableMode({ query }: { query?: string }) {
 
       <Table
         rowKey="id"
-        dataSource={courses}
+        dataSource={data}
         columns={columns}
         onChange={({ pageSize, current }) => {
           setPaginator({ page: current, limit: pageSize });

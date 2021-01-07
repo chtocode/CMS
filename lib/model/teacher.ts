@@ -1,4 +1,4 @@
-import { Paginator, ResponseWithPaginator } from './api';
+import { ListResponse, Paginator } from './api';
 import { Course } from './course';
 
 export interface Teacher {
@@ -23,12 +23,9 @@ export interface TeachersRequest extends Partial<Paginator> {
   query?: string;
 }
 
-export interface TeachersResponse {
-  total: number;
+export interface TeachersResponse extends ListResponse {
   teachers: Teacher[];
-  paginator?: ResponseWithPaginator;
 }
-
 export interface TeacherProfile {
   id: number;
   address: string[];
