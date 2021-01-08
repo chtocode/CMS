@@ -17,7 +17,7 @@ import {
   UpdateStudentRequest,
   UpdateStudentResponse,
   UpdateTeacherRequest,
-  UpdateTeacherResponse,
+  UpdateTeacherResponse
 } from '../model';
 import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import { Country, Degree } from '../model/common';
@@ -32,7 +32,7 @@ import {
   Schedule,
   ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse,
+  UpdateCourseResponse
 } from '../model/course';
 import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from '../model/login';
 import { MessagesRequest, MessagesResponse, MessageStatisticResponse } from '../model/message';
@@ -40,7 +40,7 @@ import {
   Statistic,
   StatisticsOverviewResponse,
   StatisticsResponse,
-  StatisticsType,
+  StatisticsType
 } from '../model/statistics';
 import { RootPath, SubPath } from './api-path';
 import storage from './storage';
@@ -328,7 +328,7 @@ class ApiService extends BaseApiService {
   }
 
   getMessageStatistic(userId?: number): Promise<IResponse<MessageStatisticResponse>> {
-    return this.get([RootPath.message, SubPath.statistics], userId ? { userId } : {}).then(
+    return this.get([RootPath.message, SubPath.statistics], userId ? { userId } : null).then(
       this.showMessage()
     );
   }

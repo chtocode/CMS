@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { MessageProvider } from '../components/provider';
 import makeServer from '../mock';
 import '../styles/globals.less';
 
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps }) {
           src={`//webapi.amap.com/maps?v=1.4.15&key=${key}&plugin=Map3D,AMap.DistrictLayer `}
         ></script> */}
       </Head>
-      <Component {...pageProps} />
+      <MessageProvider>
+        <Component {...pageProps} />
+      </MessageProvider>
     </>
   );
 }

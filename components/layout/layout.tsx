@@ -3,7 +3,6 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-
   ProfileOutlined,
   UserOutlined
 } from '@ant-design/icons';
@@ -16,6 +15,8 @@ import {
   Layout,
   List,
   Menu,
+  message,
+  notification,
   Row,
   Space,
   Spin,
@@ -36,6 +37,7 @@ import { generateKey, getActiveKey } from '../../lib/util';
 import AppBreadcrumb from '../breadcrumb';
 import { useListEffect } from '../custom-hooks/list-effect';
 import { useUserRole } from '../custom-hooks/login-state';
+import { useMsgStatistic } from '../provider';
 
 const { Header, Content, Sider } = Layout;
 
@@ -202,6 +204,7 @@ interface MessagesProps {
   scrollTarget: string;
   clearAll: number;
   onRead?: (amount: number) => void;
+  message?: Message;
 }
 
 function Messages(props: MessagesProps): JSX.Element {
@@ -215,17 +218,27 @@ function Messages(props: MessagesProps): JSX.Element {
     if (props.clearAll && data && data.length) {
       const ids = data.filter((item) => item.status === 0).map((item) => item.id);
 
-      apiService.markAsRead(ids).then((res) => {
-        if (res.data) {
-          setData(data.map((item) => ({ ...item, status: 1 })));
-        }
+      if (ids.length) {
+        apiService.markAsRead(ids).then((res) => {
+          if (res.data) {
+            setData(data.map((item) => ({ ...item, status: 1 })));
+          }
 
-        if (props.onRead) {
-          props.onRead(ids.length);
-        }
-      });
+          if (props.onRead) {
+            props.onRead(ids.length);
+          }
+        });
+      } else {
+        message.warn(`All of these ${props.type}s has been marked as read!`);
+      }
     }
   }, [props.clearAll]);
+
+  useEffect(() => {
+    if (!!props.message && props.message.type === props.type) {
+      setData([props.message, ...data]);
+    }
+  }, [props.message]);
 
   return (
     <InfiniteScroll
@@ -284,11 +297,13 @@ function Messages(props: MessagesProps): JSX.Element {
 export function MessagePanel() {
   const types: MessageType[] = ['notification', 'message'];
   const [activeType, setActiveType] = useState<MessageType>('notification');
-  const [msgStatistic, setMsgStatistic] = useState({ total: 0, notification: 0, message: 0 });
+  const { msgStore, dispatch } = useMsgStatistic();
+  // 为了让子组件监听到父组件中的状态
   const [clean, setClean] = useState<{ [key in MessageType]: number }>({
     notification: 0,
     message: 0,
   });
+  const [message, setMessage] = useState<Message>(null);
 
   useEffect(() => {
     apiService.getMessageStatistic().then((res) => {
@@ -298,19 +313,50 @@ export function MessagePanel() {
         const {
           receive: { notification, message },
         } = data;
-        const total = notification.unread + message.unread;
 
-        setMsgStatistic({
-          total,
-          notification: notification.unread,
-          message: message.unread,
+        dispatch({ type: 'increment', payload: { type: 'message', count: message.unread } });
+        dispatch({
+          type: 'increment',
+          payload: { type: 'notification', count: notification.unread },
         });
       }
     });
+
+    const sse = new EventSource(
+      `http://localhost:3001/api/message/subscribe?userId=${storage.userId}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    sse.onmessage = (event) => {
+      let { data } = event;
+
+      data = JSON.parse(data || {});
+
+      if (data.type !== 'heartbeat') {
+        const content = data.content as Message;
+
+        if (content.type === 'message') {
+          notification.info({
+            message: `You have a message from ${content.from.nickname}`,
+            description: content.content,
+          });
+        }
+
+        setMessage(content);
+        dispatch({ type: 'increment', payload: { type: content.type, count: 1 } });
+      }
+    };
+
+    return () => {
+      sse.close();
+      dispatch({ type: 'reset' });
+    };
   }, []);
 
   return (
-    <Badge size="small" count={msgStatistic.total} offset={[10, 0]}>
+    <Badge size="small" count={msgStore.total} offset={[10, 0]}>
       <HeaderIcon>
         <Dropdown
           overlayStyle={{
@@ -338,19 +384,16 @@ export function MessagePanel() {
                 animated
               >
                 {types.map((type) => (
-                  <TabPane key={type} tab={`${type} (${msgStatistic[type]})`}>
+                  <TabPane key={type} tab={`${type} (${msgStore[type]})`}>
                     <MessageContainer id={type}>
                       <Messages
                         type={type}
                         scrollTarget={type}
                         clearAll={clean[type]}
-                        onRead={(amount) => {
-                          setMsgStatistic({
-                            ...msgStatistic,
-                            total: msgStatistic.total - amount,
-                            [type]: msgStatistic[type] - amount,
-                          });
+                        onRead={(count) => {
+                          dispatch({ type: 'decrement', payload: { type, count } });
                         }}
+                        message={message}
                       />
                     </MessageContainer>
                   </TabPane>
@@ -364,8 +407,9 @@ export function MessagePanel() {
                   </Button>
                 </Col>
                 <Col span={12}>
-                  {/* TODO: 历史消息列表 */}
-                  <Button>View history</Button>
+                  <Button>
+                    <Link href={`/dashboard/${storage.role}/message`}>View history</Link>
+                  </Button>
                 </Col>
               </Footer>
             </>

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useListEffect } from '../../../components/custom-hooks/list-effect';
 import AppLayout from '../../../components/layout/layout';
+import { useMsgStatistic } from '../../../components/provider';
 import {
   Message,
   MessagesRequest,
@@ -25,6 +26,7 @@ export default function Page() {
   >(apiService.getMessages.bind(apiService), 'messages', true, { type });
   const [source, setSource] = useState<{ [key: string]: Message[] }>({});
   const [dataSource, setDataSource] = useState<DataSource>([]);
+  const { dispatch } = useMsgStatistic();
 
   useEffect(() => {
     const result = data.reduce((acc, cur) => {
@@ -58,7 +60,7 @@ export default function Page() {
             defaultValue={null}
             onSelect={(value) => {
               setType(value);
-              setPaginator({...paginator, page: 1});
+              setPaginator({ ...paginator, page: 1 });
               setSource({});
             }}
             style={{ minWidth: 100 }}
@@ -125,6 +127,7 @@ export default function Page() {
 
                           target.status = 1;
                           setDataSource([...dataSource]);
+                          dispatch({ type: 'decrement', payload: { count: 1, type: item.type } });
                         }
                       });
                     }}
