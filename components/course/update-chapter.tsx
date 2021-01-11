@@ -190,7 +190,15 @@ export default function UpdateChapterForm({
                         fieldKey={[field.fieldKey, 'weekday']}
                         rules={[{ required: true }]}
                       >
-                        <Select size="large">
+                        <Select
+                          size="large"
+                          onChange={(value: string) =>
+                            /**
+                             * !FIXME
+                             */
+                            setSelectedWeekdays([...selectedWeekdays, value])
+                          }
+                        >
                           {weekDays.map((day) => (
                             <Option key={day} value={day} disabled={selectedWeekdays.includes(day)}>
                               {day}

@@ -42,6 +42,7 @@ import {
   StatisticsResponse,
   StatisticsType
 } from '../model/statistics';
+import { fieldMap } from '../util/api-field-remap';
 import { RootPath, SubPath } from './api-path';
 import storage from './storage';
 
@@ -190,6 +191,7 @@ class ApiService extends BaseApiService {
     );
   }
 
+  @fieldMap()
   getStudents(req?: StudentsRequest): Promise<IResponse<StudentsResponse>> {
     return this.get<IResponse<StudentsResponse>>(
       RootPath.students,
@@ -213,6 +215,7 @@ class ApiService extends BaseApiService {
     return this.get(RootPath.student, { id }).then(this.showMessage());
   }
 
+  @fieldMap()
   getCourses<T = CourseResponse>(req: Partial<CourseRequest>): Promise<IResponse<T>> {
     return this.get(RootPath.courses, { ...req }).then(this.showMessage());
   }
@@ -251,6 +254,7 @@ class ApiService extends BaseApiService {
     return this.get([RootPath.course, SubPath.type]).then(this.showMessage());
   }
 
+  @fieldMap()
   getTeachers(req?: TeachersRequest): Promise<IResponse<TeachersResponse>> {
     return this.get<IResponse<TeachersResponse>>(
       RootPath.teachers,

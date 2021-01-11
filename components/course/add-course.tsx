@@ -147,6 +147,9 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
     });
   };
   const onFinish = async (values: any) => {
+    /**
+     * !FIXME: isAdd state is wrong;
+     */
     if (!isAdd && !course) {
       message.error('You must select a course to update!');
       return;

@@ -23,7 +23,7 @@ export interface StudentsResponse extends ListResponse {
 }
 export interface AddStudentRequest {
   name: string;
-  address: string;
+  country: string;
   email: string;
   type: number;
 }

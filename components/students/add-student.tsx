@@ -2,7 +2,7 @@ import { Button, Form, Input, Select } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 import { businessAreas, validateMessages } from '../../lib/constant';
-import { Student } from '../../lib/model';
+import { AddStudentRequest, Student } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
 
 const ModalFormSubmit = styled(Form.Item)`
@@ -12,13 +12,7 @@ const ModalFormSubmit = styled(Form.Item)`
   margin-bottom: 10px;
 `;
 
-export interface AddStudentFormValues {
-  name: string;
-  country: string;
-  type: number;
-  email: string;
-}
-
+export type AddStudentFormValues = AddStudentRequest;
 export interface AddStudentFormProps {
   onFinish?: (value: Student) => void;
   student?: Student;
@@ -34,7 +28,7 @@ export default function AddStudentForm(props: AddStudentFormProps): JSX.Element 
       wrapperCol={{ offset: 1 }}
       form={form}
       validateMessages={validateMessages}
-      onFinish={(values) => {
+      onFinish={(values: AddStudentFormValues) => {
         const response = !student
           ? apiService.addStudent(values)
           : apiService.updateStudent({ ...values, id: student.id });
