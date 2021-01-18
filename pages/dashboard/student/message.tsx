@@ -14,6 +14,7 @@ import {
   MessageType
 } from '../../../lib/model/message';
 import apiService from '../../../lib/services/api-service';
+import storage from '../../../lib/services/storage';
 
 type DataSource = [string, Message[]][];
 
@@ -23,7 +24,7 @@ export default function Page() {
     MessagesRequest,
     MessagesResponse,
     Message
-  >(apiService.getMessages.bind(apiService), 'messages', true, { type });
+  >(apiService.getMessages.bind(apiService), 'messages', true, { type, userId: storage.userId });
   const [source, setSource] = useState<{ [key: string]: Message[] }>({});
   const [dataSource, setDataSource] = useState<DataSource>([]);
   const { dispatch } = useMsgStatistic();

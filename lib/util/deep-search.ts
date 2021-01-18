@@ -1,6 +1,7 @@
 export type PredicateFn<T> = (data: T, value: any) => boolean;
 
 /**
+ * ? unused just for recursion
  * 生成深度优先搜索函数
  * @param predicateFn - 节点判定函数
  * @param value - 搜索的值

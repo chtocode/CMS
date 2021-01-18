@@ -82,7 +82,7 @@ export default function Dashboard() {
           <Row gutter={gutter}>
             <Col span={12}>
               <Card title="Course Category">
-                <PieChart data={data?.typeName as Statistic[]} />
+                <PieChart data={data?.type as Statistic[]} />
               </Card>
             </Col>
             <Col span={12}>

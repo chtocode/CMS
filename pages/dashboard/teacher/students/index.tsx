@@ -15,7 +15,7 @@ export default function Page() {
     StudentsRequest,
     StudentsResponse,
     Student
-  >(apiService.getStudents, 'students');
+  >(apiService.getStudents.bind(apiService), 'students');
   const columns: ColumnsType<Student> = [
     { title: 'N.O', key: 'index', render: (_1, _2, index) => index + 1 },
     { title: 'name', dataIndex: 'name' },

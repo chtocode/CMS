@@ -18,7 +18,6 @@ import {
   StatisticsResponse
 } from '../../../lib/model/statistics';
 import apiService from '../../../lib/services/api-service';
-import storage from '../../../lib/services/storage';
 
 
 type StudentStatistics = StatisticsResponse<StudentWithProfile>;
@@ -81,19 +80,19 @@ export default function Page() {
       setOverview(data);
     });
 
-    apiService.getStatistics<StudentWithProfile>(Role.student, storage.userId).then((res) => {
+    apiService.getStatistics<StudentWithProfile>(Role.student).then((res) => {
       const { data } = res;
 
       setStudentStatistics(data);
     });
 
-    apiService.getStatistics<TeacherProfile & Teacher>(Role.teacher, storage.userId).then((res) => {
+    apiService.getStatistics<TeacherProfile & Teacher>(Role.teacher).then((res) => {
       const { data } = res;
 
       setTeacherStatistics(data);
     });
 
-    apiService.getStatistics<Course & Schedule, CourseClassTimeStatistic>('course', storage.userId).then((res) => {
+    apiService.getStatistics<Course & Schedule, CourseClassTimeStatistic>('course').then((res) => {
       const { data } = res;
 
       setCourseStatistics(data);
@@ -168,9 +167,9 @@ export default function Page() {
             }
           >
             {selectedType === 'studentType' ? (
-              <PieChart data={studentStatistics?.typeName as Statistic[]} title={selectedType} />
+              <PieChart data={studentStatistics?.type as Statistic[]} title={selectedType} />
             ) : selectedType === 'courseType' ? (
-              <PieChart data={courseStatistics?.typeName as Statistic[]} title={selectedType} />
+              <PieChart data={courseStatistics?.type as Statistic[]} title={selectedType} />
             ) : (
               <Row gutter={16}>
                 <Col span={12}>

@@ -1,11 +1,10 @@
 import Head from 'next/head';
 import { MessageProvider } from '../components/provider';
-import makeServer from '../mock';
 import '../styles/globals.less';
 
-if (process.env.NODE_ENV === 'development') {
-  makeServer({ environment: 'development' });
-}
+// if (process.env.NODE_ENV === 'development') {
+//   makeServer({ environment: 'development' });
+// }
 
 function MyApp({ Component, pageProps }) {
   return (

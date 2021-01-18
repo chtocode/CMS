@@ -1,7 +1,6 @@
 import { omitBy } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { IResponse, ListResponse, Paginator, RequestOmitPaginator } from '../../lib/model';
-import storage from '../../lib/services/storage';
 
 export function useListEffect<P, T extends ListResponse, U = any>(
   apiFn: (req: P) => Promise<IResponse<ListResponse>>,
@@ -19,7 +18,7 @@ export function useListEffect<P, T extends ListResponse, U = any>(
 
   useEffect(() => {
     const req = omitBy(
-      { ...paginator, ...(params || {}), userId: storage.userId },
+      { ...paginator, ...(params || {}) },
       (item: string | number | boolean | null) => item === '' || item === null
     ) as any;
 

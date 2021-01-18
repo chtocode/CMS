@@ -1,11 +1,11 @@
 import { message } from 'antd';
 import axios, { AxiosError } from 'axios';
+import { AES } from 'crypto-js';
 import {
   AddStudentRequest,
   AddStudentResponse,
   AddTeacherRequest,
   AddTeacherResponse,
-  LogoutRequest,
   LogoutResponse,
   Role,
   StudentResponse,
@@ -17,9 +17,9 @@ import {
   UpdateStudentRequest,
   UpdateStudentResponse,
   UpdateTeacherRequest,
-  UpdateTeacherResponse
+  UpdateTeacherResponse,
 } from '../model';
-import { DeleteRequest, DeleteResponse, IResponse, QueryParams } from '../model/api';
+import { BaseType, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import { Country, Degree } from '../model/common';
 import {
   AddCourseRequest,
@@ -32,7 +32,7 @@ import {
   Schedule,
   ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse
+  UpdateCourseResponse,
 } from '../model/course';
 import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from '../model/login';
 import { MessagesRequest, MessagesResponse, MessageStatisticResponse } from '../model/message';
@@ -40,7 +40,7 @@ import {
   Statistic,
   StatisticsOverviewResponse,
   StatisticsResponse,
-  StatisticsType
+  StatisticsType,
 } from '../model/statistics';
 import { fieldMap } from '../util/api-field-remap';
 import { RootPath, SubPath } from './api-path';
@@ -48,19 +48,17 @@ import storage from './storage';
 
 const axiosInstance = axios.create({
   withCredentials: true,
-  baseURL: 'http://localhost:3000/api',
+  baseURL: 'http://localhost:3001/api',
   responseType: 'json',
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  if (config.url.includes('message')) {
+  if (!config.url.includes('login')) {
     return {
       ...config,
-      baseURL: 'http://localhost:3001/api',
       headers: {
         ...config.headers,
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAYWRtaW4uY29tIiwicm9sZSI6InN0dWRlbnQiLCJpZCI6MSwiaWF0IjoxNjA5NjgxNTU0LCJleHAiOjE2MTc0NTc1NTR9.hf-pARNrJLpBCCVjo4bYQ5A_NFQXk1UPku9UDal04CM',
+        Authorization: 'Bearer ' + storage?.token,
       },
     };
   }
@@ -68,7 +66,7 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-type IPath = string[] | string;
+type IPath = (string | number)[] | string | number;
 
 class BaseApiService {
   protected async get<T>(path: IPath, params?: QueryParams): Promise<T> {
@@ -80,45 +78,28 @@ class BaseApiService {
       : path;
 
     return axiosInstance
-      .get(path, {
-        headers: {
-          Authorization: 'Bearer ' + storage?.token,
-        },
-      })
+      .get(path)
       .then((res) => res.data)
       .catch((err) => this.errorHandler(err));
   }
 
   protected async post<T>(path: IPath, params: object): Promise<T> {
     return axiosInstance
-      .post(this.getPath(path), params, {
-        headers: {
-          Authorization: 'Bearer ' + storage?.token,
-        },
-      })
+      .post(this.getPath(path), params)
       .then((res) => res.data)
       .catch(this.errorHandler);
   }
 
-  protected async delete<T>(path: IPath, params: object): Promise<T> {
+  protected async delete<T>(path: IPath): Promise<T> {
     return axiosInstance
-      .delete(this.getPath(path), {
-        params,
-        headers: {
-          Authorization: 'Bearer ' + storage?.token,
-        },
-      })
+      .delete(this.getPath(path))
       .then((res) => res.data)
       .catch(this.errorHandler);
   }
 
   protected async put<T>(path: IPath, params: object): Promise<T> {
     return axiosInstance
-      .put(this.getPath(path), params, {
-        headers: {
-          Authorization: 'Bearer ' + storage?.token,
-        },
-      })
+      .put(this.getPath(path), params)
       .then((res) => res.data)
       .catch(this.errorHandler);
   }
@@ -159,19 +140,17 @@ class BaseApiService {
     return { msg, code };
   }
 
-  private getPath(path: string | string[]): string {
-    return typeof path === 'string' ? path : path.join('/');
+  private getPath(path: IPath): string {
+    return !Array.isArray(path) ? String(path) : path.join('/');
   }
 }
 
 class ApiService extends BaseApiService {
-  /**
-   * !FIXME: 加密码用户信息
-   */
-  login(req: LoginRequest): Promise<IResponse<LoginResponse>> {
-    return this.get<IResponse<LoginResponse>>(RootPath.login, (req as unknown) as QueryParams).then(
-      this.showMessage()
-    );
+  login({ password, ...rest }: LoginRequest): Promise<IResponse<LoginResponse>> {
+    return this.post<IResponse<LoginResponse>>(RootPath.login, {
+      ...rest,
+      password: AES.encrypt(password, 'cms').toString(),
+    }).then(this.showMessage());
   }
 
   /**
@@ -181,8 +160,8 @@ class ApiService extends BaseApiService {
     return this.get<IResponse<string>>(RootPath.userRole, { token }).then(this.showMessage());
   }
 
-  logout(req: LogoutRequest): Promise<IResponse<LogoutResponse>> {
-    return this.post<IResponse<LogoutResponse>>(RootPath.logout, req).then(this.showMessage());
+  logout(): Promise<IResponse<LogoutResponse>> {
+    return this.post<IResponse<LogoutResponse>>(RootPath.logout, {}).then(this.showMessage());
   }
 
   signUp(req: SignUpRequest): Promise<IResponse<SignUpResponse>> {
@@ -200,58 +179,67 @@ class ApiService extends BaseApiService {
   }
 
   addStudent(req: AddStudentRequest): Promise<IResponse<AddStudentResponse>> {
-    return this.post([RootPath.students, SubPath.add], req).then(this.showMessage(true));
+    return this.post([RootPath.students], req).then(this.showMessage(true));
   }
 
+  @fieldMap()
   updateStudent(req: UpdateStudentRequest): Promise<IResponse<UpdateStudentResponse>> {
-    return this.post([RootPath.students, SubPath.update], req).then(this.showMessage(true));
+    return this.put([RootPath.students], req).then(this.showMessage(true));
   }
 
-  deleteStudent(req: DeleteRequest): Promise<IResponse<DeleteResponse>> {
-    return this.delete([RootPath.students, SubPath.delete], req).then(this.showMessage(true));
+  deleteStudent(id: number): Promise<IResponse<DeleteResponse>> {
+    return this.delete([RootPath.students, id]).then(this.showMessage(true));
   }
 
+  @fieldMap()
   getStudentById(id: number): Promise<IResponse<StudentResponse>> {
-    return this.get(RootPath.student, { id }).then(this.showMessage());
+    return this.get([RootPath.students, id]).then(this.showMessage());
   }
 
   @fieldMap()
   getCourses<T = CourseResponse>(req: Partial<CourseRequest>): Promise<IResponse<T>> {
-    return this.get(RootPath.courses, { ...req }).then(this.showMessage());
+    return this.get(RootPath.courses, req).then(this.showMessage());
   }
 
   getCourseById(id: number): Promise<IResponse<CourseDetailResponse>> {
-    return this.get(RootPath.course, { id }).then(this.showMessage());
+    return this.get([RootPath.courses, SubPath.detail], { id }).then(this.showMessage());
   }
 
   addCourse(req: AddCourseRequest): Promise<IResponse<AddCourseResponse>> {
-    return this.post([RootPath.courses, SubPath.add], req).then(this.showMessage(true));
+    return this.post([RootPath.courses], req).then(this.showMessage(true));
   }
 
   updateSchedule(req: ScheduleRequest): Promise<IResponse<boolean>> {
-    return this.post([RootPath.courses, SubPath.schedule], req).then(this.showMessage(true));
+    return this.put([RootPath.courses, SubPath.schedule], req).then(this.showMessage(true));
   }
 
   updateCourse(req: UpdateCourseRequest): Promise<IResponse<UpdateCourseResponse>> {
-    return this.post([RootPath.courses, SubPath.update], req).then(this.showMessage(true));
+    return this.put([RootPath.courses], req).then(this.showMessage(true));
   }
 
   deleteCourse(id: number): Promise<IResponse<boolean>> {
-    return this.delete([RootPath.course], { id }).then(this.showMessage(true));
+    return this.delete([RootPath.courses, id]).then(this.showMessage(true));
   }
 
-  getScheduleById(id: number): Promise<IResponse<Schedule>> {
-    return this.get<IResponse<Schedule>>([RootPath.courses, SubPath.schedule], { id }).then(
-      this.showMessage()
-    );
+  getScheduleById({
+    courseId,
+    scheduleId,
+  }: {
+    courseId?: number;
+    scheduleId?: number;
+  }): Promise<IResponse<Schedule>> {
+    return this.get<IResponse<Schedule>>([RootPath.courses, SubPath.schedule], {
+      courseId,
+      scheduleId,
+    }).then(this.showMessage());
   }
 
   createCourseCode(): Promise<IResponse<string>> {
-    return this.get([RootPath.course, SubPath.code]).then(this.showMessage());
+    return this.get([RootPath.courses, SubPath.code]).then(this.showMessage());
   }
 
   getCourseTypes(): Promise<IResponse<CourseType[]>> {
-    return this.get([RootPath.course, SubPath.type]).then(this.showMessage());
+    return this.get([RootPath.courses, SubPath.type]).then(this.showMessage());
   }
 
   @fieldMap()
@@ -262,22 +250,24 @@ class ApiService extends BaseApiService {
     ).then(this.showMessage());
   }
 
+  @fieldMap()
   getTeacherById(id: number): Promise<IResponse<TeacherResponse>> {
-    return this.get<IResponse<TeacherResponse>>(RootPath.teacher, { id }).then(this.showMessage());
+    return this.get<IResponse<TeacherResponse>>([RootPath.teachers, id]).then(this.showMessage());
   }
 
   addTeacher(req: AddTeacherRequest): Promise<IResponse<AddTeacherResponse>> {
-    return this.post([RootPath.teachers, SubPath.add], req).then(this.showMessage(true));
+    return this.post([RootPath.teachers], req).then(this.showMessage(true));
   }
 
   updateTeacher(req: UpdateTeacherRequest): Promise<IResponse<UpdateTeacherResponse>> {
-    return this.post([RootPath.teachers, SubPath.update], req).then(this.showMessage(true));
+    return this.put([RootPath.teachers], req).then(this.showMessage(true));
   }
 
-  deleteTeacher(req: DeleteRequest): Promise<IResponse<DeleteResponse>> {
-    return this.delete([RootPath.teacher], req).then(this.showMessage(true));
+  deleteTeacher(id: number): Promise<IResponse<DeleteResponse>> {
+    return this.delete([RootPath.teachers, id]).then(this.showMessage(true));
   }
 
+  @fieldMap()
   getStatisticsOverview(): Promise<IResponse<StatisticsOverviewResponse>> {
     return this.get<IResponse<StatisticsOverviewResponse>>([
       RootPath.statistics,
@@ -285,13 +275,15 @@ class ApiService extends BaseApiService {
     ]).then(this.showMessage());
   }
 
+  @fieldMap()
   getStatistics<T, U = Statistic>(
     type: StatisticsType,
-    userId: number
+    userId?: number
   ): Promise<IResponse<StatisticsResponse<T, U>>> {
-    return this.get<IResponse<StatisticsResponse<T, U>>>([RootPath.statistics, type], {
-      userId,
-    }).then(this.showMessage());
+    return this.get<IResponse<StatisticsResponse<T, U>>>(
+      [RootPath.statistics, type],
+      !!userId ? { userId } : null
+    ).then(this.showMessage());
   }
 
   getClassSchedule(userId: number): Promise<IResponse<ClassSchedule[]>> {
@@ -307,8 +299,8 @@ class ApiService extends BaseApiService {
     }).then(this.showMessage());
   }
 
-  getAllInterestLanguages(): Promise<IResponse<string[]>> {
-    return this.get([RootPath.student, SubPath.interest]).then(this.showMessage());
+  getAllInterestLanguages(): Promise<IResponse<BaseType[]>> {
+    return this.get([RootPath.courses, SubPath.type]).then(this.showMessage());
   }
 
   getDegrees(): Promise<IResponse<Degree[]>> {
@@ -320,7 +312,7 @@ class ApiService extends BaseApiService {
   }
 
   updateProfile<T>(req: Partial<T>): Promise<IResponse<T>> {
-    return this.post([RootPath.profile], { ...req, userId: storage.userId }).then(
+    return this.put([RootPath.profile, storage.role, storage.userId], { ...req }).then(
       this.showMessage(true)
     );
   }

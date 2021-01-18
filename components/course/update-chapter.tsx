@@ -64,7 +64,12 @@ export default function UpdateChapterForm({
 
     const { classTime: origin, chapters } = values;
     const classTime = origin.map(({ weekday, time }) => `${weekday} ${format(time, 'hh:mm:ss')}`);
-    const req: ScheduleRequest = { chapters, classTime, scheduleId, courseId };
+    const req: ScheduleRequest = {
+      chapters: chapters.map((item, index) => ({ ...item, order: index + 1 })),
+      classTime,
+      scheduleId,
+      courseId,
+    };
 
     apiService.updateSchedule(req).then((res) => {
       const { data } = res;
@@ -85,7 +90,7 @@ export default function UpdateChapterForm({
         return;
       }
 
-      const { data } = await apiService.getScheduleById(scheduleId);
+      const { data } = await apiService.getScheduleById({ scheduleId });
 
       if (!!data) {
         const classTimes = data.classTime.map((item) => {

@@ -8,9 +8,10 @@ import { UploadFile } from 'antd/lib/upload/interface';
 import { format, getTime } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { DurationUnit, gutter, validateMessages } from '../../lib/constant';
+import { DurationUnit, gutter, Role, validateMessages } from '../../lib/constant';
 import { AddCourseRequest, Course, CourseType, Teacher } from '../../lib/model';
 import apiService from '../../lib/services/api-service';
+import storage from '../../lib/services/storage';
 import { getBase64 } from '../../lib/util';
 import DatePicker from '../common/date-picker';
 import NumberWithUnit, { NumberWithUnitValue } from '../common/number-with-unit';
@@ -128,6 +129,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [isAdd, setIsAdd] = useState(course === undefined);
   const [preview, setPreview] = useState<{ previewImage: string; previewTitle: string }>(null);
+  const role = storage.role;
   const getCode = () => {
     apiService.createCourseCode().then((res) => {
       const { data: uid } = res;
@@ -158,7 +160,6 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
     const req: AddCourseRequest = {
       ...values,
       duration: +values.duration.number,
-      typeId: +values.typeId,
       startTime: values.startTime && format(values.startTime, 'yyy-MM-dd'),
       teacherId: +values.teacherId || +course.teacherId,
       durationUnit: +values.duration.unit,
@@ -182,6 +183,15 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
       getCode();
     }
 
+    if(role === Role.teacher) {
+      apiService.getTeacherById(storage.userId).then(res => {
+        const { data } = res;
+        
+        setTeachers([data]);
+        form.setFieldsValue({ teacherId: data.id });
+      });
+    }
+
     apiService.getCourseTypes().then((res) => {
       const { data } = res;
 
@@ -197,7 +207,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
        */
       const values = {
         ...course,
-        typeId: String(course.typeId),
+        type: course.type.map(item => item.id),
         teacherId: course.teacherName,
         startTime: new Date(course.startTime),
         duration: { number: course.duration, unit: course.durationUnit },
@@ -244,6 +254,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
                     notFoundContent={isTeacherSearching ? <Spin size="small" /> : null}
                     filterOption={false}
                     showSearch
+                    disabled={role !== Role.manager}
                     onSearch={(query: string) => {
                       setIsTeacherSearching(true);
 
@@ -267,8 +278,8 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
               </Col>
 
               <Col span={8}>
-                <Form.Item label="Type" name="typeId" rules={[{ required: true }]}>
-                  <Select>
+                <Form.Item label="Type" name="type" rules={[{ required: true }]}>
+                  <Select mode="multiple">
                     {courseTypes.map((type) => (
                       <Select.Option value={type.id} key={type.id}>
                         {type.name}

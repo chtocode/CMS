@@ -30,9 +30,8 @@ const getDuration = (data: Course): string => {
 export default function CourseOverview(
   props: React.PropsWithChildren<Course> & { cardProps?: CardProps }
 ) {
-
   return (
-    <Card cover={<img src={props.cover} />} {...props.cardProps}>
+    <Card cover={<img src={props.cover} style={{ height: 260 }} />} {...props.cardProps}>
       <Row gutter={gutter}>
         <h3>{props.name}</h3>
       </Row>

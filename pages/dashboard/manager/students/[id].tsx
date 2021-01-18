@@ -7,9 +7,10 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Layout from '../../../../components/layout/layout';
 import { programLanguageColors } from '../../../../lib/constant';
-import { StudentResponse } from '../../../../lib/model';
+import { BaseType, StudentResponse } from '../../../../lib/model';
 import { Course } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
+import storage from '../../../../lib/services/storage';
 
 export const H3 = styled.h3`
   color: #7356f1;
@@ -20,7 +21,7 @@ export const H3 = styled.h3`
 export async function getServerSideProps(context) {
   // todo get student profile here;
   const { id } = context.params;
-  
+
   return {
     props: { id: id },
   };
@@ -41,11 +42,14 @@ export default function Page(props: { id: number }) {
     {
       title: 'Name',
       dataIndex: 'name',
-      render: (value, record) => <Link href={`/dashboard/course/${record.id}`}>{value}</Link>,
+      render: (value, record) => (
+        <Link href={`/dashboard/${storage.role}/courses/${record.id}`}>{value}</Link>
+      ),
     },
     {
       title: 'Type',
       dataIndex: 'type',
+      render: (type: BaseType[]) => type.map((item) => item.name).join(','),
     },
     {
       title: 'Join Time',
@@ -68,7 +72,7 @@ export default function Page(props: { id: number }) {
         { label: 'Area', value: data.country },
         { label: 'Gender', value: data.gender === 1 ? 'Male' : 'Female' },
         { label: 'Member Period', value: data.memberStartAt + ' - ' + data.memberEndAt },
-        { label: 'Type', value: data.typeName },
+        { label: 'Type', value: data.type.name },
         { label: 'Create Time', value: data.ctime },
         { label: 'Update Time', value: data.updateAt },
       ];
@@ -131,7 +135,11 @@ export default function Page(props: { id: number }) {
                 <Row gutter={[6, 16]}>
                   <Col>
                     {data?.interest.map((item, index) => (
-                      <Tag color={programLanguageColors[index]} key={item} style={{ padding: '5px 10px' }}>
+                      <Tag
+                        color={programLanguageColors[index]}
+                        key={item}
+                        style={{ padding: '5px 10px' }}
+                      >
                         {item}
                       </Tag>
                     ))}

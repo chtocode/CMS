@@ -10,6 +10,11 @@ type DurationUnit = 1 | 2 | 3 | 4 | 5;
 
 type CourseStatus = 0 | 1 | 2;
 
+export interface CourseType {
+  id: number;
+  name: string;
+}
+
 export interface Course {
   id: number;
   name: string;
@@ -25,8 +30,7 @@ export interface Course {
   cover: string;
   teacherName: string;
   teacherId: number;
-  typeName: string;
-  typeId: number;
+  type: CourseType[];
   ctime: string;
   scheduleId: number;
 }
@@ -42,6 +46,7 @@ export interface CourseRequest extends Paginator {
 export interface CourseResponse extends ListResponse {
   courses: Course[];
 }
+
 interface Sales {
   id: number;
   batches: number;
@@ -64,6 +69,7 @@ export interface Chapter {
   name: string;
   id: number;
   content: string;
+  order: number;
 }
 
 export interface CourseDetail extends Course {
@@ -89,7 +95,7 @@ export type AddCourseRequest = Pick<
   | 'price'
   | 'startTime'
   | 'uid'
-> & { type: number; teacherId: number };
+> & { type: number | number[]; teacherId: number };
 
 export type AddCourseResponse = Course;
 
@@ -102,15 +108,17 @@ export type UpdateCourseResponse = Course;
 export interface ScheduleRequest {
   scheduleId?: number;
   courseId?: number;
-  chapters: Omit<Chapter, 'id'>[];
-  classTime: string[];
+  current?: number;
+  statue?: number;
+  chapters?: Omit<Chapter, 'id'>[];
+  classTime?: string[];
 }
 
 export interface StudentCourse {
   id: number;
   studentId: number;
   ctime: string;
-  course_date: string;
+  courseDate: string;
   course: Course;
 }
 

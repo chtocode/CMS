@@ -26,7 +26,7 @@ export class Storage {
   }
 
   get userId(): number {
-    return +this.userInfo.userId;
+    return +this.userInfo?.userId;
   }
 
   deleteUserInfo(): void {

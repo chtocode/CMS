@@ -43,6 +43,20 @@ const StyledRow = styled(Row)`
   margin: 0 0 0 -24px !important;
 `;
 
+const StepsRow = styled(Row)`
+  overflow-x: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  .ant-steps-item-title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 6em;
+  }
+`;
+
 export async function getServerSideProps(context) {
   // todo get student profile here;
   const { id } = context.params;
@@ -117,13 +131,13 @@ export default function Page(props: { id: number }) {
             <Badge status={CourseStatusBadge[data?.status] as any} offset={[5, 24]}>
               <H3>Status</H3>
             </Badge>
-            <Row>
-              <Steps size="small" current={activeChapterIndex}>
+            <StepsRow>
+              <Steps size="small" current={activeChapterIndex} style={{ width: 'auto' }}>
                 {data?.schedule.chapters.map((item) => (
                   <Steps.Step title={item.name} key={item.id}></Steps.Step>
                 ))}
               </Steps>
-            </Row>
+            </StepsRow>
 
             <H3>Course Code</H3>
             <Row>{data?.uid}</Row>
@@ -133,7 +147,11 @@ export default function Page(props: { id: number }) {
 
             <H3>Category</H3>
             <Row>
-              <Tag color={'geekblue'}>{data?.typeName}</Tag>
+              {data?.type.map((item) => (
+                <Tag color={'geekblue'} key={item.id}>
+                  {item.name}
+                </Tag>
+              ))}
             </Row>
 
             <H3>Description</H3>

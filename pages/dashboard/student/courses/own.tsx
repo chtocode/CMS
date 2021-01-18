@@ -15,6 +15,7 @@ import {
 } from '../../../../lib/constant';
 import { CourseRequest, StudentCourse, StudentOwnCoursesResponse } from '../../../../lib/model';
 import { apiService } from '../../../../lib/services/api-service';
+import storage from '../../../../lib/services/storage';
 import { genCommonTableProps } from '../../../../lib/util';
 
 export default function Page() {
@@ -73,7 +74,7 @@ export default function Page() {
     Partial<CourseRequest>,
     StudentOwnCoursesResponse,
     StudentCourse
-  >(apiService.getCourses.bind(apiService), 'courses', true, { [searchBy]: query, own: true });
+  >(apiService.getCourses.bind(apiService), 'courses', true, { [searchBy]: query, userId: storage.userId });
 
   return (
     <AppLayout>

@@ -70,7 +70,7 @@ export default function AddTeacherForm(props: AddTeacherFormProps): JSX.Element 
         <Input type="text" placeholder="teacher name" />
       </Form.Item>
 
-      <Form.Item label="Email" name="email" rules={[{ type: 'email' }]}>
+      <Form.Item label="Email" name="email" rules={[{ type: 'email' }, { required: true }]}>
         <Input type="email" placeholder="email" />
       </Form.Item>
 
@@ -84,11 +84,7 @@ export default function AddTeacherForm(props: AddTeacherFormProps): JSX.Element 
         </Select>
       </Form.Item>
 
-      <Form.Item
-        label="Phone"
-        name="phone"
-        rules={[{ required: true }, { pattern: phone }]}
-      >
+      <Form.Item label="Phone" name="phone" rules={[{ required: true }, { pattern: phone }]}>
         <Input addonBefore={prefixSelector} placeholder="mobile phone" />
       </Form.Item>
 

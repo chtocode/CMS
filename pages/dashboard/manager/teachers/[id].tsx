@@ -106,7 +106,7 @@ export default function Page(props: { id: number }) {
             <Row gutter={gutter}>
               <Col span={24} style={{ textAlign: 'center' }}>
                 <b>Address</b>
-                <p>{data?.profile.address.join(' ')}</p>
+                <p>{data?.profile?.address?.join(' ')}</p>
               </Col>
             </Row>
           </Card>
@@ -145,13 +145,13 @@ export default function Page(props: { id: number }) {
                 <H3>Description</H3>
 
                 <Row gutter={gutter}>
-                  <Col style={{ lineHeight: 2 }}>{data?.profile.description}</Col>
+                  <Col style={{ lineHeight: 2 }}>{data?.profile?.description}</Col>
                 </Row>
 
                 <H3>Education</H3>
 
                 <List>
-                  {data?.profile.education.map((item, index) => (
+                  {data?.profile?.education?.map((item, index) => (
                     <List.Item extra={item.degree} key={index}>
                       <List.Item.Meta
                         title={item.startEnd.replace(' ', ' To ')}
@@ -163,7 +163,7 @@ export default function Page(props: { id: number }) {
 
                 <H3>Work Experience</H3>
                 <List>
-                  {data?.profile.workExperience.map((item, index) => (
+                  {data?.profile?.workExperience?.map((item, index) => (
                     <List.Item key={index}>
                       <List.Item.Meta
                         title={item.startEnd.replace(' ', ' To ')}

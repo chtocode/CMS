@@ -103,7 +103,7 @@ export default function Page() {
           <Popconfirm
             title="Are you sure to delete?"
             onConfirm={() => {
-              apiService.deleteTeacher({ id: record.id }).then((res) => {
+              apiService.deleteTeacher(record.id).then((res) => {
                 const { data: isDeleted } = res;
 
                 if (isDeleted) {

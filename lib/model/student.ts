@@ -1,16 +1,15 @@
-import { ListResponse, Paginator } from './api';
+import { BaseType, ListResponse, Paginator } from './api';
 import { Course, CourseShort } from './course';
 
 export interface Student<T = CourseShort> {
   id: number;
   name: string;
-  typeId: number;
-  typeName: string;
   updateAt: string;
   country: string;
   ctime: string;
   email: string;
   courses: T[];
+  type: BaseType | null;
 }
 
 export interface StudentsRequest extends Paginator {
@@ -45,6 +44,7 @@ export type StudentResponse = StudentWithProfile;
 export interface StudentWithProfile extends Student<Course>, StudentProfile {}
 
 export interface StudentProfile {
+  id: number;
   name: string;
   country: string;
   email: string;

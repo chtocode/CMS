@@ -15,12 +15,14 @@ export interface Paginator {
 }
 
 export type RequestOmitPaginator<T> = Omit<T, 'page' | 'limit'>;
-export interface DeleteRequest {
-  id: number;
-}
 
 export type DeleteResponse = boolean;
 export interface ListResponse {
   total: number;
   paginator?: Paginator;
+}
+
+export interface BaseType {
+  id: number;
+  name: string;
 }

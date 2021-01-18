@@ -28,6 +28,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styled from 'styled-components';
+import { Role } from '../../lib/constant';
 import { routes, SideNav } from '../../lib/constant/routes';
 import { StudentProfile } from '../../lib/model';
 import { Message, MessagesRequest, MessagesResponse, MessageType } from '../../lib/model/message';
@@ -430,7 +431,7 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
   const userRole = useUserRole();
   const sideNave = routes.get(userRole);
   const onLogout = async () => {
-    const { data: isLogout } = await apiService.logout({ token: storage.token });
+    const { data: isLogout } = await apiService.logout();
 
     if (isLogout) {
       storage.deleteUserInfo();
@@ -444,11 +445,13 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
    * !!FIXME: Warning: React has detected a change in the order of Hooks called by AppLayout.
    */
   useEffect(() => {
-    apiService.getProfileByUserId<StudentProfile>(storage.userId).then((res) => {
-      const { data } = res;
+    if (storage.role === Role.student || storage.role === Role.teacher) {
+      apiService.getProfileByUserId<StudentProfile>(storage.userId).then((res) => {
+        const { data } = res;
 
-      setAvatar(data?.avatar);
-    });
+        setAvatar(data?.avatar);
+      });
+    }
   }, []);
 
   return (

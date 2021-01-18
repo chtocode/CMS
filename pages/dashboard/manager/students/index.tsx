@@ -12,7 +12,7 @@ import { useListEffect } from '../../../../components/custom-hooks/list-effect';
 import Layout from '../../../../components/layout/layout';
 import AddStudentForm from '../../../../components/students/add-student';
 import { businessAreas } from '../../../../lib/constant';
-import { Student, StudentsRequest, StudentsResponse } from '../../../../lib/model';
+import { BaseType, Student, StudentsRequest, StudentsResponse } from '../../../../lib/model';
 import { CourseShort } from '../../../../lib/model/course';
 import apiService from '../../../../lib/services/api-service';
 import { genCommonTableProps } from '../../../../lib/util';
@@ -77,13 +77,13 @@ export default function Dashboard() {
     },
     {
       title: 'Student Type',
-      dataIndex: 'typeName',
-      width: '15%',
+      dataIndex: 'type',
       filters: [
         { text: 'developer', value: 'developer' },
         { text: 'tester', value: 'tester' },
       ],
-      onFilter: (value: string, record: Student) => record.typeName === value,
+      onFilter: (value: string, record: Student) => record.type.name === value,
+      render: (type: BaseType) => type?.name,
     },
     {
       title: 'Join Time',
@@ -107,7 +107,7 @@ export default function Dashboard() {
           <Popconfirm
             title="Are you sure to delete?"
             onConfirm={() => {
-              apiService.deleteStudent({ id: record.id }).then((res) => {
+              apiService.deleteStudent(record.id).then((res) => {
                 const { data: isDeleted } = res;
 
                 if (isDeleted) {

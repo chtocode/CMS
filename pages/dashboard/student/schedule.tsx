@@ -1,16 +1,16 @@
 import { ClockCircleOutlined, NotificationFilled } from '@ant-design/icons';
 import { Card, Col, Descriptions, Modal, Row, Tooltip } from 'antd';
 import {
-    addDays,
-    addHours,
-    addMonths,
-    addWeeks,
-    addYears,
-    differenceInCalendarDays,
-    getDay,
-    getMonth,
-    getYear,
-    isSameDay
+  addDays,
+  addHours,
+  addMonths,
+  addWeeks,
+  addYears,
+  differenceInCalendarDays,
+  getDay,
+  getMonth,
+  getYear,
+  isSameDay
 } from 'date-fns';
 import { cloneDeep, omit, orderBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -63,6 +63,11 @@ function generateClassCalendar(course: ClassSchedule): ClassCalendar[] {
     duration,
     schedule: { classTime, chapters },
   } = course;
+  
+  if (!classTime) {
+    return [];
+  }
+
   const chaptersCopy = cloneDeep(chapters);
   const start = new Date(startTime);
   const addFns = [addYears, addMonths, addDays, addWeeks, addHours]; // !最小单位是天，暂不考虑是小时的情况
@@ -126,7 +131,7 @@ export default function Page() {
               {item.class.time}
             </Col>
 
-            <Col offset={1} style={{ color: courseTypeColors[item.typeId % 9] }}>
+            <Col offset={1} style={{ color: courseTypeColors[item.type[0]?.id % 9] }}>
               {item.name}
             </Col>
           </Row>
@@ -196,7 +201,7 @@ export default function Page() {
             ) + 1}
           </Descriptions.Item>
           <Descriptions.Item span={8} label="Course Type">
-            {notifyInfo?.typeName}
+            {notifyInfo?.type[0]?.name}
           </Descriptions.Item>
           <Descriptions.Item span={8} label="Teacher Name">
             {notifyInfo?.teacherName}

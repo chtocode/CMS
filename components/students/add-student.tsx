@@ -45,14 +45,14 @@ export default function AddStudentForm(props: AddStudentFormProps): JSX.Element 
         name: student?.name,
         email: student?.email,
         country: student?.country,
-        typeId: student?.typeId,
+        typeId: student?.type.id,
       }}
     >
       <Form.Item label="Name" name="name" rules={[{ required: true }]}>
         <Input type="text" placeholder="student name" />
       </Form.Item>
 
-      <Form.Item label="Email" name="email" rules={[{ type: 'email' }]}>
+      <Form.Item label="Email" name="email" rules={[{ type: 'email' }, { required: true }]}>
         <Input type="email" placeholder="email" />
       </Form.Item>
 

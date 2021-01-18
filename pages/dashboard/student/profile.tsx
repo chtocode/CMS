@@ -4,10 +4,8 @@ import {
   Cascader,
   Descriptions,
   Divider,
-
   Input,
   InputNumber,
-
   Radio,
   Select,
   Tag,
@@ -21,7 +19,7 @@ import EditableItem from '../../../components/common/editable-text';
 import { DescriptionsVerticalMiddle, FormItemNoMb } from '../../../components/common/styled';
 import AppLayout from '../../../components/layout/layout';
 import { Gender, programLanguageColors } from '../../../lib/constant';
-import { Country, Degree, StudentProfile } from '../../../lib/model';
+import { BaseType, Country, Degree, StudentProfile } from '../../../lib/model';
 import apiService from '../../../lib/services/api-service';
 import storage from '../../../lib/services/storage';
 import { beforeUploadAvatar } from '../../../lib/util';
@@ -29,18 +27,20 @@ import addressOptions from '../../../public/address.json';
 
 export default function Page() {
   const [data, setData] = useState<StudentProfile>(null);
-  const [existInterests, setExistInterests] = useState<string[]>([]);
+  const [existInterests, setExistInterests] = useState<BaseType[]>([]);
   const [degrees, setDegrees] = useState<Degree[]>([]);
   const [countries, setCountries] = useState<Country[]>([]);
   const [fileList, setFileList] = useState([]);
   const updateProfile = (value: Partial<StudentProfile>) => {
-    apiService.updateProfile<StudentProfile>(value).then((res) => {
-      const { data } = res;
+    apiService
+      .updateProfile<StudentProfile>({ id: data.id, ...value })
+      .then((res) => {
+        const { data } = res;
 
-      if (!!data) {
-        setData(data);
-      }
-    });
+        if (!!data) {
+          setData(data);
+        }
+      });
   };
 
   useEffect(() => {
@@ -142,7 +142,6 @@ export default function Page() {
                   <FormItemNoMb
                     name="phone"
                     initialValue={data?.phone}
-                    rules={[{ pattern: /^1[3-9]\d{9}$/, message: 'Phone number invalid' }]}
                   >
                     <Input />
                   </FormItemNoMb>
@@ -192,7 +191,7 @@ export default function Page() {
             <DescriptionsVerticalMiddle title="Other" column={6}>
               <Descriptions.Item label="Degree" span={2}>
                 <EditableItem textNode={data?.education} onSave={updateProfile}>
-                  <FormItemNoMb name="eduction" initialValue={data?.education}>
+                  <FormItemNoMb name="education" initialValue={data?.education}>
                     <Select defaultValue={data?.education} style={{ minWidth: 100 }}>
                       {degrees.map((item, index) => (
                         <Select.Option value={item.short} key={index}>
@@ -207,7 +206,11 @@ export default function Page() {
               <Descriptions.Item label="Interest" span={4}>
                 <EditableItem
                   textNode={data?.interest.map((item, index) => (
-                    <Tag color={programLanguageColors[index]} key={item} style={{ padding: '5px 10px' }}>
+                    <Tag
+                      color={programLanguageColors[index]}
+                      key={item}
+                      style={{ padding: '5px 10px' }}
+                    >
                       {item}
                     </Tag>
                   ))}
@@ -221,8 +224,8 @@ export default function Page() {
                       style={{ minWidth: '10em' }}
                     >
                       {existInterests.map((item, index) => (
-                        <Select.Option value={item} key={index}>
-                          {item}
+                        <Select.Option value={item.name} key={item.id}>
+                          {item.name}
                         </Select.Option>
                       ))}
                     </Select>

@@ -44,13 +44,15 @@ export default function Page() {
       value.birthday = format(new Date(value.birthday), 'yyyy-MM-dd');
     }
 
-    apiService.updateProfile<Profile>(value).then((res) => {
-      const { data } = res;
+    apiService
+      .updateProfile<Profile>({ id: data.id, ...value })
+      .then((res) => {
+        const { data } = res;
 
-      if (!!data) {
-        setData(data);
-      }
-    });
+        if (!!data) {
+          setData(data);
+        }
+      });
   };
 
   useEffect(() => {
@@ -74,6 +76,8 @@ export default function Page() {
       setCountries(data);
     });
   }, []);
+
+  // TODO: UPDATE work experience and education experience;
 
   return (
     <AppLayout>
@@ -141,7 +145,6 @@ export default function Page() {
                   <FormItemNoMb
                     name="phone"
                     initialValue={data?.phone}
-                    rules={[{ pattern: /^1[3-9]\d{9}$/, message: 'Phone number invalid' }]}
                   >
                     <Input />
                   </FormItemNoMb>
