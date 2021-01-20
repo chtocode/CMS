@@ -1,0 +1,17 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "plugin": [
+    "react-hooks"
+  ],
+  "rules": {
+    "jsdoc-format": false,
+    "no-shadowed-variable": false,
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error"
+  },
+  "rulesDirectory": []
+}

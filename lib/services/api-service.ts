@@ -1,3 +1,4 @@
+// tslint:disable:max-classes-per-file
 import { message } from 'antd';
 import axios, { AxiosError } from 'axios';
 import { AES } from 'crypto-js';
@@ -6,7 +7,6 @@ import {
   AddStudentResponse,
   AddTeacherRequest,
   AddTeacherResponse,
-  LogoutResponse,
   Role,
   StudentResponse,
   StudentsRequest,
@@ -17,7 +17,7 @@ import {
   UpdateStudentRequest,
   UpdateStudentResponse,
   UpdateTeacherRequest,
-  UpdateTeacherResponse,
+  UpdateTeacherResponse
 } from '../model';
 import { BaseType, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import { Country, Degree } from '../model/common';
@@ -32,23 +32,24 @@ import {
   Schedule,
   ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse,
+  UpdateCourseResponse
 } from '../model/course';
-import { LoginRequest, LoginResponse, SignUpRequest, SignUpResponse } from '../model/login';
+import { LoginRequest, LoginResponse, SignUpRequest } from '../model/login';
 import { MessagesRequest, MessagesResponse, MessageStatisticResponse } from '../model/message';
 import {
   Statistic,
   StatisticsOverviewResponse,
   StatisticsResponse,
-  StatisticsType,
+  StatisticsType
 } from '../model/statistics';
 import { fieldMap } from '../util/api-field-remap';
 import { RootPath, SubPath } from './api-path';
 import storage from './storage';
 
+const baseURL = process.env.NEXT_PUBLIC_API || 'http://localhost:3001/api';
 const axiosInstance = axios.create({
+  baseURL,
   withCredentials: true,
-  baseURL: 'http://localhost:3001/api',
   responseType: 'json',
 });
 
@@ -153,21 +154,12 @@ class ApiService extends BaseApiService {
     }).then(this.showMessage());
   }
 
-  /**
-   * ? unused get user type by token
-   */
-  getUserRole(token: string): Promise<IResponse<string>> {
-    return this.get<IResponse<string>>(RootPath.userRole, { token }).then(this.showMessage());
+  logout(): Promise<IResponse<boolean>> {
+    return this.post<IResponse<boolean>>(RootPath.logout, {}).then(this.showMessage());
   }
 
-  logout(): Promise<IResponse<LogoutResponse>> {
-    return this.post<IResponse<LogoutResponse>>(RootPath.logout, {}).then(this.showMessage());
-  }
-
-  signUp(req: SignUpRequest): Promise<IResponse<SignUpResponse>> {
-    return this.post<IResponse<SignUpResponse>>([RootPath.signUp], req).then(
-      this.showMessage(true)
-    );
+  signUp(req: SignUpRequest): Promise<IResponse<boolean>> {
+    return this.post<IResponse<boolean>>([RootPath.signUp], req).then(this.showMessage(true));
   }
 
   @fieldMap()
@@ -342,6 +334,12 @@ class ApiService extends BaseApiService {
       'https://code.highcharts.com/mapdata/custom/world-palestine-highres.geo.json'
     );
   };
+
+  messageEvent(): EventSource {
+    return new EventSource(`${baseURL}/message/subscribe?userId=${storage.userId}`, {
+      withCredentials: true,
+    });
+  }
 }
 
 export const apiService = new ApiService();

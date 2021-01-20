@@ -1,3 +1,4 @@
+// tslint:disable:object-literal-shorthand
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { uniq } from 'lodash';

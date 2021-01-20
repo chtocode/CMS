@@ -63,7 +63,7 @@ function generateClassCalendar(course: ClassSchedule): ClassCalendar[] {
     duration,
     schedule: { classTime, chapters },
   } = course;
-  
+
   if (!classTime) {
     return [];
   }
@@ -213,7 +213,7 @@ export default function Page() {
               <NotificationFilled
                 style={{ color: '#1890ff', marginLeft: 10, cursor: 'pointer' }}
                 onClick={() => {
-                  console.log(notifyInfo); // TODO: notify system;
+                  // TODO: notify system;
                   setNotifyInfo(null);
                 }}
               />

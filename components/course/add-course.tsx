@@ -186,7 +186,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
     if(role === Role.teacher) {
       apiService.getTeacherById(storage.userId).then(res => {
         const { data } = res;
-        
+
         setTeachers([data]);
         form.setFieldsValue({ teacherId: data.id });
       });

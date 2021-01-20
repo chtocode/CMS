@@ -40,17 +40,19 @@ export default function LineChart({ data }: LineChartProps) {
     },
     exporting: {
       enabled: false,
-    }
+    },
   });
   const charRef = useRef(null);
 
   useEffect(() => {
     const { chart } = charRef.current;
-
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       chart.reflow();
     }, 30);
-    return () => {};
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {

@@ -1,9 +1,7 @@
 import {
   BellOutlined,
-  LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  ProfileOutlined,
   UserOutlined
 } from '@ant-design/icons';
 import {
@@ -24,13 +22,10 @@ import {
 } from 'antd';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import styled from 'styled-components';
-import { Role } from '../../lib/constant';
 import { routes, SideNav } from '../../lib/constant/routes';
-import { StudentProfile } from '../../lib/model';
 import { Message, MessagesRequest, MessagesResponse, MessageType } from '../../lib/model/message';
 import apiService from '../../lib/services/api-service';
 import storage from '../../lib/services/storage';
@@ -39,6 +34,8 @@ import AppBreadcrumb from '../breadcrumb';
 import { useListEffect } from '../custom-hooks/list-effect';
 import { useUserRole } from '../custom-hooks/login-state';
 import { useMsgStatistic } from '../provider';
+import { HeaderIcon } from './style';
+import UserIcon from './user-icon';
 
 const { Header, Content, Sider } = Layout;
 
@@ -54,16 +51,6 @@ const Logo = styled.div`
   text-shadow: 5px 1px 5px;
   transform: rotateX(45deg);
   font-family: monospace;
-`;
-
-const HeaderIcon = styled.span`
-  font-size: 18px;
-  color: #fff;
-  cursor: pointer;
-  transition: color 0.3s;
-  &:hover {
-    color: #1890ff;
-  }
 `;
 
 const StyledLayoutHeader = styled(Header)`
@@ -323,12 +310,7 @@ export function MessagePanel() {
       }
     });
 
-    const sse = new EventSource(
-      `http://localhost:3001/api/message/subscribe?userId=${storage.userId}`,
-      {
-        withCredentials: true,
-      }
-    );
+    const sse = apiService.messageEvent();
 
     sse.onmessage = (event) => {
       let { data } = event;
@@ -426,33 +408,10 @@ export function MessagePanel() {
 export default function AppLayout(props: React.PropsWithChildren<any>) {
   const { children } = props;
   const [collapsed, toggleCollapse] = useState(false);
-  const [avatar, setAvatar] = useState('');
-  const router = useRouter();
   const userRole = useUserRole();
   const sideNave = routes.get(userRole);
-  const onLogout = async () => {
-    const { data: isLogout } = await apiService.logout();
-
-    if (isLogout) {
-      storage.deleteUserInfo();
-      router.push('/login');
-    }
-  };
   const menuItems = renderMenuItems(sideNave);
   const { defaultOpenKeys, defaultSelectedKeys } = getMenuConfig(sideNave);
-
-  /**
-   * !!FIXME: Warning: React has detected a change in the order of Hooks called by AppLayout.
-   */
-  useEffect(() => {
-    if (storage.role === Role.student || storage.role === Role.teacher) {
-      apiService.getProfileByUserId<StudentProfile>(storage.userId).then((res) => {
-        const { data } = res;
-
-        setAvatar(data?.avatar);
-      });
-    }
-  }, []);
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -481,29 +440,7 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
           <Row align="middle">
             <MessagePanel />
 
-            <HeaderIcon style={{ marginLeft: '2em' }}>
-              <Dropdown
-                overlay={
-                  <Menu>
-                    {userRole !== 'manager' && (
-                      <Menu.Item>
-                        <ProfileOutlined />
-                        <Link href={`/dashboard/${storage.role}/profile`}>
-                          <span>Profile</span>
-                        </Link>
-                      </Menu.Item>
-                    )}
-                    <Menu.Item onClick={onLogout}>
-                      <LogoutOutlined />
-                      <span>Logout</span>
-                    </Menu.Item>
-                  </Menu>
-                }
-                placement="bottomLeft"
-              >
-                {avatar ? <Avatar src={avatar} /> : <Avatar icon={<UserOutlined />} />}
-              </Dropdown>
-            </HeaderIcon>
+            <UserIcon />
           </Row>
         </StyledLayoutHeader>
 

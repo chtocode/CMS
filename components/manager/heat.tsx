@@ -1,3 +1,5 @@
+// tslint:disable:object-literal-shorthand
+// tslint:disable:no-var-requires
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { zip } from 'lodash';
@@ -32,7 +34,7 @@ export default function HeatChart({
     },
     accessibility: {
       point: {
-        descriptionFormatter: function (point) {
+        descriptionFormatter: (point) => {
           const ix = point.index + 1;
           const xName = getPointCategoryName(point, 'x');
           const yName = getPointCategoryName(point, 'y');
@@ -88,11 +90,13 @@ export default function HeatChart({
 
   useEffect(() => {
     const { chart } = charRef.current;
-
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       chart.reflow();
     }, 30);
-    return () => {};
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {

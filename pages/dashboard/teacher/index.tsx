@@ -55,8 +55,6 @@ export default function Dashboard() {
         total: (data as Statistic).total,
       });
     });
-
-    return () => {};
   }, []);
 
   return (

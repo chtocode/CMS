@@ -22,5 +22,3 @@ export interface LoginResponse {
 }
 
 export type SignUpRequest = RegisterFormValues;
-
-export type SignUpResponse = boolean;

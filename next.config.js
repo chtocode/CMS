@@ -1,6 +1,6 @@
 const withLess = require('@zeit/next-less');
 
-module.exports = withLess({
+const lessConfig = withLess({
   lessLoaderOptions: {
     javascriptEnabled: true,
   },
@@ -28,3 +28,10 @@ module.exports = withLess({
     return config;
   },
 });
+
+module.exports = {
+  ...lessConfig,
+  env: {
+    NEXT_PUBLIC_API: process.env['API']
+  },
+};
