@@ -46,7 +46,14 @@ import { fieldMap } from '../util/api-field-remap';
 import { RootPath, SubPath } from './api-path';
 import storage from './storage';
 
-const baseURL = process.env.NEXT_PUBLIC_API || 'http://localhost:3001/api';
+const getBaseUrl = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return process.env.NEXT_PUBLIC_API || 'http://localhost:3001/api';
+  } else {
+    return 'http://cms.chtoma.com/api';
+  }
+};
+const baseURL = getBaseUrl();
 const axiosInstance = axios.create({
   baseURL,
   withCredentials: true,
