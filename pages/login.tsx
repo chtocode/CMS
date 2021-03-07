@@ -3,7 +3,7 @@ import { Button, Checkbox, Col, Form, Input, Radio, Row, Space, Typography } fro
 import { RadioChangeEvent } from 'antd/lib/radio';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../components/home/header';
 import { Role, validateMessages } from '../lib/constant';
@@ -40,6 +40,12 @@ export default function Login() {
       router.push('dashboard');
     }
   };
+
+  useEffect(() => {
+    if (storage?.userInfo) {
+      router.push(`/dashboard/${storage.userInfo.role}`);
+    }
+  }, []);
 
   return (
     <>

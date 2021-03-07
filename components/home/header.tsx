@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
+import storage from '../../lib/services/storage';
 
 const SignIn = styled.li`
   @media screen and (min-width: 700px) {
@@ -94,7 +95,11 @@ export default function Header() {
                   <Link href="/gallery">Teachers</Link>
                 </li>
                 <SignIn className={isLogin ? 'current' : ''}>
-                  <Link href="/login">Sign in</Link>
+                  {!!storage?.userInfo ? (
+                    <Link href={`/dashboard/${storage?.userInfo.role}`}>Dashboard</Link>
+                  ) : (
+                    <Link href="/login">Sign in</Link>
+                  )}
                 </SignIn>
               </ul>
             </nav>
