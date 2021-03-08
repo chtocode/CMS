@@ -420,7 +420,13 @@ export default function AppLayout(props: React.PropsWithChildren<any>) {
         collapsed={collapsed}
         onCollapse={(isCollapsed) => toggleCollapse(isCollapsed)}
       >
-        {<Logo>CMS</Logo>}
+        {
+          <Logo>
+            <Link href="/">
+              <span style={{ color: '#fff', cursor: 'pointer' }}>CMS</span>
+            </Link>
+          </Logo>
+        }
         <Menu
           theme="dark"
           mode="inline"
