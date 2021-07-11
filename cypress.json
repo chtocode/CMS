@@ -1,1 +1,8 @@
-{}
+{
+  "baseUrl": "http://localhost:3000",
+  "env": {
+    "dev": "http://localhost:3001/api",
+    "prod": "https://cms.chtoma.com/api"
+  },
+  "ignoreTestFiles": "*/example/**"
+}
