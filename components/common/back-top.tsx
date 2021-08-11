@@ -22,7 +22,7 @@ export default function BackTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const element = document.getElementById('contentLayout');
+    const element = document.getElementById('contentLayout'); // issue -> 服务端渲染
     const listener = (event) => {
       const visible = event.target.scrollTop > 600;
 
