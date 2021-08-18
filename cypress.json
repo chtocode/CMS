@@ -4,5 +4,7 @@
     "dev": "http://localhost:3001/api",
     "prod": "https://cms.chtoma.com/api"
   },
+  "viewportHeight": 1080,
+  "viewportWidth": 1920,
   "ignoreTestFiles": "*/examples/**"
 }

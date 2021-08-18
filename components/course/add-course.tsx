@@ -6,6 +6,7 @@ import { useForm } from 'antd/lib/form/Form';
 import TextArea from 'antd/lib/input/TextArea';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { format, getTime } from 'date-fns';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { DurationUnit, gutter, Role, validateMessages } from '../../lib/constant';
@@ -15,6 +16,7 @@ import storage from '../../lib/services/storage';
 import { getBase64 } from '../../lib/util';
 import DatePicker from '../common/date-picker';
 import NumberWithUnit, { NumberWithUnitValue } from '../common/number-with-unit';
+import { useUserRole } from '../custom-hooks/login-state';
 
 export interface AddCourseFormProps {
   course?: Course;
@@ -129,7 +131,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [isAdd, setIsAdd] = useState(course === undefined);
   const [preview, setPreview] = useState<{ previewImage: string; previewTitle: string }>(null);
-  const role = storage.role;
+  const role = useUserRole();
   const getCode = () => {
     apiService.createCourseCode().then((res) => {
       const { data: uid } = res;
