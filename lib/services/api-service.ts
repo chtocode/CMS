@@ -17,7 +17,7 @@ import {
   UpdateStudentRequest,
   UpdateStudentResponse,
   UpdateTeacherRequest,
-  UpdateTeacherResponse
+  UpdateTeacherResponse,
 } from '../model';
 import { BaseType, DeleteResponse, IResponse, QueryParams } from '../model/api';
 import { Country, Degree } from '../model/common';
@@ -32,7 +32,7 @@ import {
   Schedule,
   ScheduleRequest,
   UpdateCourseRequest,
-  UpdateCourseResponse
+  UpdateCourseResponse,
 } from '../model/course';
 import { LoginRequest, LoginResponse, SignUpRequest } from '../model/login';
 import { MessagesRequest, MessagesResponse, MessageStatisticResponse } from '../model/message';
@@ -40,7 +40,7 @@ import {
   Statistic,
   StatisticsOverviewResponse,
   StatisticsResponse,
-  StatisticsType
+  StatisticsType,
 } from '../model/statistics';
 import { fieldMap } from '../util/api-field-remap';
 import { RootPath, SubPath } from './api-path';
@@ -142,8 +142,12 @@ class BaseApiService {
    * 注意：此处返回的code是HTTP的状态码，并非后台自定义的code
    */
   private errorHandler(err: AxiosError<IResponse>): IResponse {
-    const msg = err.response.data.msg;
-    const code = err.response.status;
+    const msg = err.response?.data.msg ?? 'unknown error';
+    const code = err.response?.status ?? -1;
+
+    if (!err.response) {
+      console.error('%c [ err ]-149', 'font-size:13px; background:pink; color:#bf2c9f;', err);
+    }
 
     return { msg, code };
   }
