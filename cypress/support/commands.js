@@ -23,6 +23,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+import 'cypress-file-upload';
 
 Cypress.Commands.add('getInputByType', (type, ...rest) => {
   return cy.get(`input[type=${type}]`);

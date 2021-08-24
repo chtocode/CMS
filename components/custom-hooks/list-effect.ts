@@ -2,13 +2,13 @@ import { omitBy } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { IResponse, ListResponse, Paginator, RequestOmitPaginator } from '../../lib/model';
 
-export function useListEffect<P, T extends ListResponse, U = any>(
-  apiFn: (req: P) => Promise<IResponse<ListResponse>>,
-  sourceKey: keyof T,
+export function useListEffect<Req, Res extends ListResponse, Data = any>(
+  apiFn: (req: Req) => Promise<IResponse<ListResponse>>,
+  sourceKey: keyof Res,
   onlyFresh = true,
-  params: Partial<RequestOmitPaginator<P>> = null
+  params: Partial<RequestOmitPaginator<Req>> = null
 ) {
-  const [data, setData] = useState<U[]>([]);
+  const [data, setData] = useState<Data[]>([]);
   const [paginator, setPaginator] = useState<Paginator>({ limit: 20, page: 1 });
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [total, setTotal] = useState<number>(0);
@@ -26,7 +26,7 @@ export function useListEffect<P, T extends ListResponse, U = any>(
 
     request(req).then((res) => {
       const { data: newData } = res;
-      const fresh = (newData[sourceKey as string] as unknown) as U[];
+      const fresh = (newData[sourceKey as string] as unknown) as Data[];
       const source = onlyFresh ? fresh : [...data, ...fresh];
 
       setData(source);
