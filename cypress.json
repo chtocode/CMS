@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:3000",
+  "baseUrl": "https://cms-lyart.vercel.app",
   "env": {
     "dev": "http://localhost:3001/api",
     "prod": "https://cms.chtoma.com/api"

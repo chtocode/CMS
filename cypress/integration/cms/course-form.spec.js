@@ -2,13 +2,13 @@
 import { addDays, format } from 'date-fns';
 
 describe('Add course', () => {
-  before(() => {
+  beforeEach(() => {
     cy.login('manager@admin.com', '111111').then(() => {
       cy.visit('/dashboard/manager/courses/add-course');
     });
   });
 
-  it('can add course', () => {
+  it.only('can add course', () => {
     cy.get('#name').type('abcdef');
     cy.get('#teacherId').type('ee');
     cy.intercept('GET', '/api/teachers?query=ee').as('teachersRes');
