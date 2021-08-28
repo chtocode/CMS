@@ -321,9 +321,10 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
             </Form.Item>
 
             <Form.Item label="Price" name="price" rules={[{ required: true }]}>
-              <InputNumber<number>
+              <InputNumber
                 formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={(value) => +value.replace(/\$\s?|(,*)/g, '')}
+                // @ts-ignore
+                parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
                 min={0}
                 style={{ width: '100%' }}
               />
