@@ -15,6 +15,7 @@ import storage from '../../lib/services/storage';
 import { getBase64 } from '../../lib/util';
 import DatePicker from '../common/date-picker';
 import NumberWithUnit, { NumberWithUnitValue } from '../common/number-with-unit';
+import { useUserRole } from '../custom-hooks/login-state';
 
 export interface AddCourseFormProps {
   course?: Course;
@@ -129,7 +130,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [isAdd, setIsAdd] = useState(course === undefined);
   const [preview, setPreview] = useState<{ previewImage: string; previewTitle: string }>(null);
-  const role = storage.role;
+  const role = useUserRole();
   const getCode = () => {
     apiService.createCourseCode().then((res) => {
       const { data: uid } = res;
@@ -320,9 +321,9 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
             </Form.Item>
 
             <Form.Item label="Price" name="price" rules={[{ required: true }]}>
-              <InputNumber
+              <InputNumber<number>
                 formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                parser={(value) => +value.replace(/\$\s?|(,*)/g, '')}
                 min={0}
                 style={{ width: '100%' }}
               />
