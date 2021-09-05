@@ -57,6 +57,7 @@ Cypress.Commands.add('login', (email, password) => {
   cy.wait('@loginUser').then((res) => {
     const user = res.response.body.data;
 
+    Cypress.env('token', user.token);
     log.set({
       consoleProps() {
         return {

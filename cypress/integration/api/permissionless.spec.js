@@ -12,13 +12,13 @@ describe('Api without authorization', () => {
     });
   });
 
-  context('GET /countries', () => { 
-    it('get country list', () => { 
-      cy.request('GET', `${Cypress.env().prod}/countries`).then(res => { 
+  context('GET /countries', () => {
+    it('get country list', () => {
+      cy.request('GET', `${Cypress.env().prod}/countries`).then((res) => {
         const data = res.body.data;
         expect(res.status).to.eq(200);
         expect(data.length).to.eq(230);
-      })
-    })
-  })
+      });
+    });
+  });
 });
