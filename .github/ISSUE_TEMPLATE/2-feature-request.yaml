@@ -1,0 +1,35 @@
+name: Feature Request
+description: We need a feature that ...
+
+body:
+  - type: dropdown
+    id: importance
+    attributes:
+      label: Importance
+      options:
+        - Fatal
+        - Serious
+        - General
+        - Tips
+        - Suggestions
+      multiple: false
+    validations:
+      required: true
+
+  - type: dropdown
+    id: Priority
+    attributes:
+      label: Priority
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
