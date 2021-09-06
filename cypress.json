@@ -6,5 +6,7 @@
   },
   "viewportHeight": 1080,
   "viewportWidth": 1920,
-  "ignoreTestFiles": "*/examples/**"
+  "ignoreTestFiles": "*/examples/**",
+  "videoCompression": 15,
+  "video": true
 }
