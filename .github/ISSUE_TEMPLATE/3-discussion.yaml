@@ -1,0 +1,23 @@
+name: Discussion
+description: I have an idea about ...
+
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Topic
+      options:
+        - Function Implementation
+        - User Experience
+        - UI Design
+        - Code
+      multiple: true
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
