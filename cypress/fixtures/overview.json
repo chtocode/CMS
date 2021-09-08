@@ -1,0 +1,28 @@
+{
+  "data": {
+    "course": {
+      "lastMonthAdded": 201,
+      "total": 1187
+    },
+    "student": {
+      "lastMonthAdded": 0,
+      "total": 309,
+      "gender": {
+        "unknown": 0,
+        "male": 144,
+        "female": 129
+      }
+    },
+    "teacher": {
+      "lastMonthAdded": 0,
+      "total": 301,
+      "gender": {
+        "unknown": 0,
+        "male": 151,
+        "female": 148
+      }
+    }
+  },
+  "code": 200,
+  "msg": "success"
+}

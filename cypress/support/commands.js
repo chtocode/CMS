@@ -24,6 +24,14 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-file-upload';
+import 'cypress-plugin-snapshots/commands';
+import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
+addMatchImageSnapshotCommand({
+  failureThreshold: 0.0,
+  failureThresholdType: 'percent',
+  customDiffConfig: { threshold: 0.0 },
+  capture: 'viewport',
+});
 
 Cypress.Commands.add('getInputByType', (type, ...rest) => {
   return cy.get(`input[type=${type}]`);
@@ -71,4 +79,12 @@ Cypress.Commands.add('login', (email, password) => {
 
   log.snapshot('after');
   log.end();
+});
+
+Cypress.Commands.add('setResolution', (size) => {
+  if (Cypress._.isArray(size)) {
+    cy.viewport(size[0], size[1]);
+  } else {
+    cy.viewport(size);
+  }
 });

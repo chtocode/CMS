@@ -43,6 +43,8 @@
     "babel-plugin-import": "^1.13.3",
     "cypress": "^7.7.0",
     "cypress-file-upload": "^5.0.8",
+    "cypress-image-snapshot": "^4.0.1",
+    "cypress-plugin-snapshots": "^1.4.4",
     "eslint-plugin-react-hooks": "^4.2.0",
     "miragejs": "^0.1.41",
     "prettier": "^2.2.0",

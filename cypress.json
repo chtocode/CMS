@@ -6,7 +6,11 @@
   },
   "viewportHeight": 1080,
   "viewportWidth": 1920,
-  "ignoreTestFiles": "*/examples/**",
+  "ignoreTestFiles": [
+    "*/examples/**",
+    "**/__snapshots__/*",
+    "**/__image_snapshots__/*"
+  ],
   "videoCompression": 15,
   "video": true
 }

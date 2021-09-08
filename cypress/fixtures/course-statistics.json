@@ -1,0 +1,3163 @@
+{
+	"data": {
+	    "type": [
+		{
+		    "name": "C#",
+		    "amount": 28
+		},
+		{
+		    "name": "R",
+		    "amount": 52
+		},
+		{
+		    "name": "PHP",
+		    "amount": 68
+		},
+		{
+		    "name": "Groovy",
+		    "amount": 18
+		},
+		{
+		    "name": "Perl",
+		    "amount": 3
+		},
+		{
+		    "name": "Julia",
+		    "amount": 3
+		},
+		{
+		    "name": "Visual Basic",
+		    "amount": 46
+		},
+		{
+		    "name": "Objective-C",
+		    "amount": 10
+		},
+		{
+		    "name": "C++",
+		    "amount": 67
+		},
+		{
+		    "name": "Python",
+		    "amount": 91
+		},
+		{
+		    "name": "C",
+		    "amount": 27
+		},
+		{
+		    "name": "Assembly Language",
+		    "amount": 10
+		},
+		{
+		    "name": "Java",
+		    "amount": 1
+		},
+		{
+		    "name": "SQL",
+		    "amount": 1
+		},
+		{
+		    "name": "Swift",
+		    "amount": 1
+		}
+	    ],
+	    "createdAt": [
+		{
+		    "name": "2015-10",
+		    "amount": 1
+		},
+		{
+		    "name": "2019-06",
+		    "amount": 2
+		},
+		{
+		    "name": "2020-02",
+		    "amount": 3
+		},
+		{
+		    "name": "2015-07",
+		    "amount": 1
+		},
+		{
+		    "name": "2020-09",
+		    "amount": 1
+		},
+		{
+		    "name": "2013-07",
+		    "amount": 2
+		},
+		{
+		    "name": "2017-02",
+		    "amount": 2
+		},
+		{
+		    "name": "2013-05",
+		    "amount": 4
+		},
+		{
+		    "name": "2016-09",
+		    "amount": 1
+		},
+		{
+		    "name": "2019-11",
+		    "amount": 2
+		},
+		{
+		    "name": "2011-09",
+		    "amount": 1
+		},
+		{
+		    "name": "2020-08",
+		    "amount": 2
+		},
+		{
+		    "name": "2011-12",
+		    "amount": 8
+		},
+		{
+		    "name": "2018-12",
+		    "amount": 1
+		},
+		{
+		    "name": "2013-03",
+		    "amount": 2
+		},
+		{
+		    "name": "2017-07",
+		    "amount": 5
+		},
+		{
+		    "name": "2015-03",
+		    "amount": 1
+		},
+		{
+		    "name": "2020-07",
+		    "amount": 1
+		},
+		{
+		    "name": "2014-12",
+		    "amount": 1
+		},
+		{
+		    "name": "2016-08",
+		    "amount": 4
+		},
+		{
+		    "name": "2017-10",
+		    "amount": 2
+		},
+		{
+		    "name": "2015-01",
+		    "amount": 7
+		},
+		{
+		    "name": "2019-12",
+		    "amount": 2
+		},
+		{
+		    "name": "2020-12",
+		    "amount": 1
+		},
+		{
+		    "name": "2019-01",
+		    "amount": 1
+		},
+		{
+		    "name": "2011-10",
+		    "amount": 2
+		},
+		{
+		    "name": "2016-07",
+		    "amount": 2
+		},
+		{
+		    "name": "2018-11",
+		    "amount": 1
+		},
+		{
+		    "name": "2014-06",
+		    "amount": 1
+		},
+		{
+		    "name": "2011-11",
+		    "amount": 1
+		},
+		{
+		    "name": "2013-12",
+		    "amount": 4
+		},
+		{
+		    "name": "2014-03",
+		    "amount": 1
+		},
+		{
+		    "name": "2016-05",
+		    "amount": 2
+		},
+		{
+		    "name": "2012-06",
+		    "amount": 1
+		},
+		{
+		    "name": "2013-06",
+		    "amount": 2
+		},
+		{
+		    "name": "2013-11",
+		    "amount": 2
+		},
+		{
+		    "name": "2019-09",
+		    "amount": 1
+		},
+		{
+		    "name": "2017-08",
+		    "amount": 1
+		},
+		{
+		    "name": "2018-03",
+		    "amount": 1
+		},
+		{
+		    "name": "2014-07",
+		    "amount": 1
+		},
+		{
+		    "name": "2018-06",
+		    "amount": 1
+		},
+		{
+		    "name": "2015-08",
+		    "amount": 1
+		},
+		{
+		    "name": "2013-08",
+		    "amount": 2
+		},
+		{
+		    "name": "2018-07",
+		    "amount": 1
+		},
+		{
+		    "name": "2011-07",
+		    "amount": 1
+		},
+		{
+		    "name": "2019-07",
+		    "amount": 1
+		},
+		{
+		    "name": "2020-10",
+		    "amount": 1
+		},
+		{
+		    "name": "2018-10",
+		    "amount": 1
+		},
+		{
+		    "name": "2014-10",
+		    "amount": 2
+		},
+		{
+		    "name": "2015-12",
+		    "amount": 1
+		},
+		{
+		    "name": "2012-11",
+		    "amount": 1
+		},
+		{
+		    "name": "2020-06",
+		    "amount": 1
+		},
+		{
+		    "name": "2021-02",
+		    "amount": 51
+		},
+		{
+		    "name": "2021-03",
+		    "amount": 36
+		},
+		{
+		    "name": "2021-04",
+		    "amount": 48
+		},
+		{
+		    "name": "2021-07",
+		    "amount": 1
+		},
+		{
+		    "name": "2021-08",
+		    "amount": 183
+		},
+		{
+		    "name": "2021-09",
+		    "amount": 12
+		}
+	    ],
+	    "classTime": [
+		{
+		    "name": "C#",
+		    "amount": 28,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00",
+				"Sunday 12:05:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Alessandra Schiller"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Cristina Romaguera"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Ms. Annetta Feil"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Ms. Felicia Lueilwitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Skylar Reichel"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Monserrat Watsica"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Miss Chloe Orn PhD"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Raegan Abshire"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "MIKE"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Deion Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Prof. Coralie Lynch"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Deion Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "a brand new course"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Saturday 07:00:00",
+				"Thursday 10:00:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C#",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C#",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C#",
+			    "name": "bbbbbbbbbbbbb"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C#",
+			    "name": "tttttt"
+			},
+			{
+			    "classTime": [
+				"Monday 10:00:00",
+				"Wednesday 07:00:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "test"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C#",
+			    "name": "course222"
+			},
+			{
+			    "classTime": [
+				"Monday 10:00:00"
+			    ],
+			    "typeName": "C#",
+			    "name": "adgag"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C#",
+			    "name": "1111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C#",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C#",
+			    "name": "Add course test"
+			}
+		    ]
+		},
+		{
+		    "name": "R",
+		    "amount": 52,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "Cristina Romaguera"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "Kenya Lubowitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "Silas Lehner III"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "Mr. Felton Batz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "Camron Dicki"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "Miss Carmela Witting IV"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "R",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Thursday 08:00:00"
+			    ],
+			    "typeName": "R",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Sunday 09:00:00",
+				"Tuesday 06:00:00"
+			    ],
+			    "typeName": "R",
+			    "name": "tttt"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "1111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "luyin zhang"
+			},
+			{
+			    "classTime": [
+				"Saturday 02:31:38",
+				"Wednesday 02:31:42"
+			    ],
+			    "typeName": "R",
+			    "name": "asdasdasdas"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "Add without chapters"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:00:00"
+			    ],
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:00:00"
+			    ],
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:00:00"
+			    ],
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:00:00"
+			    ],
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:07:30"
+			    ],
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:07:30"
+			    ],
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "R",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:07:30"
+			    ],
+			    "typeName": "R",
+			    "name": "test course"
+			}
+		    ]
+		},
+		{
+		    "name": "PHP",
+		    "amount": 68,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Stacy Hickle"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Julio Ondricka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Kenya Lubowitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Roosevelt Halvorson"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Ms. Felicia Lueilwitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Silas Lehner III"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Leora Dickinson"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Skylar Reichel"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Bulah Greenfelder"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Prof. Annamae Bailey IV"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Camron Dicki"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Destinee Ritchie"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "eewe sdaf "
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Deion Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Prof. Coralie Lynch"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Monday 05:00:00",
+				"Tuesday 11:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Tuesday 04:00:00",
+				"Friday 12:06:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test2333"
+			},
+			{
+			    "classTime": [
+				"Sunday 09:00:00",
+				"Tuesday 06:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "tttt"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Monday 06:00:00",
+				"Thursday 07:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "1312321"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "1111"
+			},
+			{
+			    "classTime": [
+				"Tuesday 04:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test2333"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "testcousre5"
+			},
+			{
+			    "classTime": [
+				"Saturday 11:13:59",
+				"Thursday 07:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "course111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "course111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:00:00"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:07:30"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:07:30"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "PHP",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Sunday 10:07:30"
+			    ],
+			    "typeName": "PHP",
+			    "name": "test course"
+			}
+		    ]
+		},
+		{
+		    "name": "Groovy",
+		    "amount": 18,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "Stacy Hickle"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "Flavio Kuvalis DDS"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "Noemy Lueilwitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "Ms. Felicia Lueilwitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "Al Streich"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "Frederick Bernhard"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "Austen Wiza Sr."
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "Brody Keebler V"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Groovy",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Groovy",
+			    "name": "qweqw"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Groovy",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Groovy",
+			    "name": "11111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Groovy",
+			    "name": "testcousre3"
+			},
+			{
+			    "classTime": [
+				"Thursday 06:00:00",
+				"Wednesday 06:00:00",
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "Groovy",
+			    "name": "AddEdit"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Groovy",
+			    "name": "course111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Groovy",
+			    "name": "testcousre5"
+			}
+		    ]
+		},
+		{
+		    "name": "Perl",
+		    "amount": 3,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Perl",
+			    "name": "Stacy Hickle"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Perl",
+			    "name": "Prof. Jena Kautzer"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Perl",
+			    "name": "Mr. Felton Batz"
+			}
+		    ]
+		},
+		{
+		    "name": "Julia",
+		    "amount": 3,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Julia",
+			    "name": "Carissa Prosacco"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Julia",
+			    "name": "Camron Dicki"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Julia",
+			    "name": "Shanna Gaylord"
+			}
+		    ]
+		},
+		{
+		    "name": "Visual Basic",
+		    "amount": 46,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Julio Ondricka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Consuelo Carter"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Emery Lockman"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Kenya Lubowitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Rafael Luettgen"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Mortimer Waelchi"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Miss Aleen Harber"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Winnifred Kling"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Destinee Ritchie"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Test"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "kkkkkk"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "aaabbccd"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "aaabbccdaaa"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Prof. Coralie Lynch"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Deion Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Tuesday 04:00:00",
+				"Friday 12:06:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "test2333"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "111"
+			},
+			{
+			    "classTime": [
+				"Sunday 09:00:00",
+				"Tuesday 06:00:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "tttt"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": [
+				"Monday 06:00:00",
+				"Thursday 07:00:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": [
+				"Wednesday 04:04:04"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "ack"
+			},
+			{
+			    "classTime": [
+				"Monday 10:00:00",
+				"Wednesday 07:00:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "test"
+			},
+			{
+			    "classTime": [
+				"Monday 10:35:28"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "1111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "1312321"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "luyin zhang"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "1111"
+			},
+			{
+			    "classTime": [
+				"Saturday 02:31:38",
+				"Wednesday 02:31:42"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "asdasdasdas"
+			},
+			{
+			    "classTime": [
+				"Saturday 02:46:19",
+				"Wednesday 02:46:21",
+				"Friday 02:48:21"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "12312312"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Thursday 06:00:00",
+				"Wednesday 06:00:00",
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "AddEdit"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "Add without chapters"
+			},
+			{
+			    "classTime": [
+				"Thursday 06:00:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "Add course"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Visual Basic",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": [
+				"Friday 23:00:00",
+				"Sunday 11:00:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "adgag12"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Monday 01:00:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00",
+				"Wednesday 12:03:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00",
+				"Wednesday 12:03:00"
+			    ],
+			    "typeName": "Visual Basic",
+			    "name": "course111"
+			}
+		    ]
+		},
+		{
+		    "name": "Objective-C",
+		    "amount": 10,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Raven Sauer"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Stephanie Lehner"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Prof. Jena Kautzer"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Crawford Mueller"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Roosevelt Halvorson"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Mr. Felton Batz"
+			},
+			{
+			    "classTime": [
+				"Monday 08:10:57"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Prof. Gino Abbott"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Dr. Maeve Vandervort"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Melany Brakus V"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Objective-C",
+			    "name": "Miss Dorris Williamson"
+			}
+		    ]
+		},
+		{
+		    "name": "C++",
+		    "amount": 67,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Marianne King"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Kenya Lubowitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Mrs. Annette Dare III"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Ms. Felicia Lueilwitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Ova Lesch V"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Bernhard Rowe"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Melany Brakus V"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Liam Tremblay"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Alexandrine Buckridge"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Mike"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "fafe"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "eewe sdaf "
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Mike"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "French"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "English"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Test1"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Test02"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "MIKE"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "sss"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "aaabbccd"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "aaabbccdaaa"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Prof. Coralie Lynch"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Deion Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Prof. Coralie Lynch"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Thursday 08:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Monday 05:00:00",
+				"Tuesday 11:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "2222"
+			},
+			{
+			    "classTime": [
+				"Tuesday 04:00:00",
+				"Friday 12:06:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "test2333"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "bbbbbbbbbbbbb"
+			},
+			{
+			    "classTime": [
+				"Saturday 07:00:00",
+				"Sunday 06:05:00",
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "tttttt"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "tttttt"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "ack"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": [
+				"Sunday 12:59:10"
+			    ],
+			    "typeName": "C++",
+			    "name": "131"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "Kevin333"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "course111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "cdadasd"
+			},
+			{
+			    "classTime": [
+				"Wednesday 12:50:39"
+			    ],
+			    "typeName": "C++",
+			    "name": "213123"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "ack"
+			},
+			{
+			    "classTime": [
+				"Monday 06:00:00",
+				"Thursday 07:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": [
+				"Monday 10:00:00",
+				"Wednesday 07:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "test"
+			},
+			{
+			    "classTime": [
+				"Monday 10:35:28"
+			    ],
+			    "typeName": "C++",
+			    "name": "1111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "1312321"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "luyin zhang"
+			},
+			{
+			    "classTime": [
+				"Saturday 02:46:19",
+				"Wednesday 02:46:21",
+				"Friday 02:48:21"
+			    ],
+			    "typeName": "C++",
+			    "name": "12312312"
+			},
+			{
+			    "classTime": [
+				"Tuesday 04:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "test2333"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "Add without chapters"
+			},
+			{
+			    "classTime": [
+				"Thursday 06:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "Add course"
+			},
+			{
+			    "classTime": [
+				"Monday 01:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00",
+				"Wednesday 12:03:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00",
+				"Wednesday 12:03:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "C++",
+			    "name": "aaaa"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C++",
+			    "name": "dfdfd"
+			}
+		    ]
+		},
+		{
+		    "name": "Python",
+		    "amount": 91,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Stephanie Lehner"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Gunnar Effertz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Crawford Mueller"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Al Streich"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Frederick Bernhard"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Mrs. Maxie Shields DDS"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Maximus Jerde"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Madalyn Medhurst Sr."
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Laurie Hilpert"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "MIKE"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "MIKE"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Mike"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Mike"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Mike"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "fafe"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "CHine"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "MATH"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "JOOE"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "joea"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "feaf"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "hioeo"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "JOJO"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Mike"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "erqer"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Mike"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "French"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "English"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Chinese"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Test"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Test1"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Test02"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "apple"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Pol"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Pol"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Deion Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "a brand new course"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Deioan Spinka"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Thursday 08:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Saturday 07:00:00",
+				"Thursday 10:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Monday 05:00:00",
+				"Tuesday 11:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Monday 12:01:05",
+				"Tuesday 05:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "ack"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "BCDAO"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "188DAO"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "188DAO"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "5555"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "bbbbbbbbbbbbb"
+			},
+			{
+			    "classTime": [
+				"Saturday 07:00:00",
+				"Sunday 06:05:00",
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "tttttt"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "tttttt"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "adgag"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "ack"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "lalala"
+			},
+			{
+			    "classTime": [
+				"Sunday 12:59:10"
+			    ],
+			    "typeName": "Python",
+			    "name": "131"
+			},
+			{
+			    "classTime": [
+				"Tuesday 17:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "course111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "cdadasd"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "sda"
+			},
+			{
+			    "classTime": [
+				"Monday 02:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "course111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "adgag"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "1111"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "testcousre2"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "testcousre4"
+			},
+			{
+			    "classTime": [
+				"Thursday 06:00:00",
+				"Wednesday 06:00:00",
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "AddEdit"
+			},
+			{
+			    "classTime": [
+				"Thursday 06:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Add course"
+			},
+			{
+			    "classTime": [
+				"Tuesday 22:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Add course test"
+			},
+			{
+			    "classTime": [
+				"Sunday 14:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "adgag1"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "adgag123"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Wednesday 07:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Tuesday 04:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Tuesday 03:00:00",
+				"Thursday 06:00:00",
+				"Sunday 02:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "dddeeee"
+			},
+			{
+			    "classTime": [
+				"Monday 12:03:00",
+				"Wednesday 05:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "Mr. Chet Bradtke MD"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "Python",
+			    "name": "aaaa"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "Python",
+			    "name": "dfff"
+			}
+		    ]
+		},
+		{
+		    "name": "C",
+		    "amount": 27,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "Prof. Jena Kautzer"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "Koby Waters"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "Roosevelt Halvorson"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "Dr. Ross Swift"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "Raegan Abshire"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "mike"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "Math"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "JOJO"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "MIKE"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "C Advance"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "test course"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "C",
+			    "name": "testing"
+			},
+			{
+			    "classTime": [
+				"Saturday 07:00:00",
+				"Thursday 10:00:00"
+			    ],
+			    "typeName": "C",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C",
+			    "name": "testing"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C",
+			    "name": "Claudia Ma"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00",
+				"Tuesday 08:00:00"
+			    ],
+			    "typeName": "C",
+			    "name": "asaa"
+			},
+			{
+			    "classTime": [
+				"Sunday 07:14:07"
+			    ],
+			    "typeName": "C",
+			    "name": "BCDAO"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C",
+			    "name": "BCDAO"
+			},
+			{
+			    "classTime": [
+				"Saturday 07:00:00",
+				"Sunday 06:05:00",
+				"Monday 07:00:00"
+			    ],
+			    "typeName": "C",
+			    "name": "tttttt"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C",
+			    "name": "lalala"
+			},
+			{
+			    "classTime": [
+				"Wednesday 12:50:39"
+			    ],
+			    "typeName": "C",
+			    "name": "213123"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C",
+			    "name": "1312321"
+			},
+			{
+			    "classTime": null,
+			    "typeName": "C",
+			    "name": "testcousre1"
+			},
+			{
+			    "classTime": [
+				"Saturday 02:46:19",
+				"Wednesday 02:46:21",
+				"Friday 02:48:21"
+			    ],
+			    "typeName": "C",
+			    "name": "12312312"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00",
+				"Wednesday 12:03:00"
+			    ],
+			    "typeName": "C",
+			    "name": "course111"
+			},
+			{
+			    "classTime": [
+				"Monday 07:00:00",
+				"Wednesday 12:03:00"
+			    ],
+			    "typeName": "C",
+			    "name": "course111"
+			}
+		    ]
+		},
+		{
+		    "name": "Assembly Language",
+		    "amount": 10,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Jonathon Schmeler"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Ms. Felicia Lueilwitz"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Aleen Howell"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Lysanne Connelly"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Mr. Kristian Little II"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Prof. Annamae Bailey IV"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Ardella Schulist"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Dr. Ross Swift"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Miss Chloe Orn PhD"
+			},
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Assembly Language",
+			    "name": "Destinee Ritchie"
+			}
+		    ]
+		},
+		{
+		    "name": "Java",
+		    "amount": 1,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00",
+				"Tuesday 03:00:00"
+			    ],
+			    "typeName": "Java",
+			    "name": "Fausto Wintheiser"
+			}
+		    ]
+		},
+		{
+		    "name": "SQL",
+		    "amount": 1,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "SQL",
+			    "name": "Randi Renner"
+			}
+		    ]
+		},
+		{
+		    "name": "Swift",
+		    "amount": 1,
+		    "courses": [
+			{
+			    "classTime": [
+				"Friday 07:07:00"
+			    ],
+			    "typeName": "Swift",
+			    "name": "Sydnee Schmitt"
+			}
+		    ]
+		}
+	    ]
+	},
+	"code": 200,
+	"msg": "success"
+    }
