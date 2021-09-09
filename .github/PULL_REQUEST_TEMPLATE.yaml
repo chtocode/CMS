@@ -1,0 +1,32 @@
+name: Pull Request
+description: pr
+
+body:
+  - type: dropdown
+    id: Priority
+    attributes:
+      label: Priority
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: dropdown
+    id: AllowMerge
+    attributes:
+      label: Should I merge it if all check passed or review approved?
+      options:
+        - YES - Merge it immediately
+        - No - Please let me merge
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: fix issue, feature or any other words to describe why should we need this pr.
+    validations:
+      required: true
