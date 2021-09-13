@@ -23,4 +23,16 @@ describe('home page', () => {
     cy.scrollTo('bottom');
     cy.get('#header').should('be.visible');
   });
+
+  /* ==== Test Created with Cypress Studio ==== */
+  it('navigate between pages', function() {
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get('#menu > :nth-child(2) > :nth-child(1) > a').click();
+    cy.get('.widget > ul > :nth-child(4) > a').click();
+    cy.get('#menu > :nth-child(1) > :nth-child(2) > a').click();
+    cy.get('#menu > :nth-child(2) > :nth-child(2) > a').click();
+    cy.get('#logo').click();
+    cy.get('.header__SignIn-sc-19law7x-0 > a').click();
+    /* ==== End Cypress Studio ==== */
+  });
 });

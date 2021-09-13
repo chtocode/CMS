@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "tslint",
+    "test:e2e": "cypress open",
     "format": "prettier ./pages/**tsx ./components/**.tsx ./lib/**/*.ts --write"
   },
   "dependencies": {
