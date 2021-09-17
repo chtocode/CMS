@@ -51,6 +51,16 @@ describe('Login page', () => {
     cy.get('input[type=email]').type(manager.email).should('have.value', manager.email);
     cy.get('input[type=password]').type(manager.password).should('have.value', manager.password);
 
+    cy.intercept('POST', '/api/login', {
+      code: 200,
+      msg: 'success',
+      data: {
+        userId: 3,
+        token: Cypress.env().managerToken,
+        role: 'manager',
+      },
+    });
+
     cy.get('button[type=submit]')
       .click()
       .then(() => {

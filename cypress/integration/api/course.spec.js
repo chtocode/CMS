@@ -1,13 +1,9 @@
 /// <reference types="cypress" />
 
 describe('Course Api', () => {
-  beforeEach(() => {
-    cy.login('manager@admin.com', '111111');
-  });
-
   context('GET /courses', () => {
     it('get a list of course', () => {
-      const token = Cypress.env('token');
+      const token = Cypress.env().managerToken;
       const authorization = `bearer ${token}`;
       const options = {
         method: 'GET',
@@ -27,8 +23,8 @@ describe('Course Api', () => {
     });
   });
 
-  context.only('GET /course/detail', () => {
-    const token = Cypress.env('token');
+  context('GET /course/detail', () => {
+    const token = Cypress.env().managerToken;
     const authorization = `bearer ${token}`;
     const options = {
       method: 'GET',

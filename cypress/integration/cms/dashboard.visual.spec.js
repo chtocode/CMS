@@ -1,7 +1,9 @@
 /// <reference types="cypress" />
 
 describe('Dashboard Visual Testing', () => {
-  beforeEach(() => {
+  before(() => {
+    cy.login('manager@admin.com', '111111');
+
     cy.intercept('GET', '/api/statistics/overview', { fixture: 'overview.json' }).as('overviewRes');
     cy.intercept('GET', '/api/statistics/student', { fixture: 'student-statistics.json' }).as(
       'studentRes'
@@ -13,26 +15,25 @@ describe('Dashboard Visual Testing', () => {
       'courseRes'
     );
 
-    cy.login('manager@admin.com', '111111');
+    cy.wait(['@overviewRes', '@studentRes', '@teacherRes', '@courseRes'], { timeout: 10000 });
   });
 
   it('Overview', () => {
-    cy.wait(['@overviewRes', '@studentRes', '@teacherRes', '@courseRes'], { timeout: 10000 }).then(
-      () => {
-        // wait for the first overview panel display
-        cy.get('.ant-card').first().should('be.visible');
+    cy.get('.ant-card').first().should('be.visible');
 
-        cy.get('.ant-card').first().toMatchImageSnapshot({
-          threshold: 0.1,
-          thresholdType: 'pixels',
-        });
-        
-        // wait for svg render
-        cy.wait(10000);
+    cy.get('.ant-card').first().toMatchImageSnapshot({
+      threshold: 0.1,
+      thresholdType: 'pixels',
+    });
+  });
+  
+  it('Distribution', () => {
+    cy.get('.ant-card').eq(3).should('be.visible');
+    cy.get('.ant-card').eq(3).matchImageSnapshot();
+  });
 
-        cy.get('.ant-card').eq(4).should('be.visible');
-        cy.get('.ant-card').eq(4).matchImageSnapshot();
-      }
-    );
+  it('Types', () => {
+    cy.get('.ant-card').eq(4).should('be.visible');
+    cy.get('.ant-card').eq(4).matchImageSnapshot();
   });
 });

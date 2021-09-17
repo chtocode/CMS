@@ -3,13 +3,9 @@
 let id;
 
 describe('Student Api', () => {
-  before(() => {
-    cy.login('manager@admin.com', '111111');
-  });
-
-  context.skip('GET /students', () => {
+  context('GET /students', () => {
     it('get a list of students', () => {
-      const token = Cypress.env('token');
+      const token = Cypress.env().managerToken;
       const authorization = `bearer ${token}`;
       const options = {
         method: 'GET',
@@ -29,7 +25,7 @@ describe('Student Api', () => {
 
   context('POST /students', () => {
     it('can create a student', () => {
-      const token = Cypress.env('token');
+      const token = Cypress.env().managerToken;
       const authorization = `bearer ${token}`;
       const options = {
         method: 'POST',
@@ -56,7 +52,7 @@ describe('Student Api', () => {
 
   context('PUT /students', () => {
     it('update student', () => {
-      const token = Cypress.env('token');
+      const token = Cypress.env().managerToken;
       const authorization = `bearer ${token}`;
       const options = {
         method: 'PUT',
@@ -81,7 +77,7 @@ describe('Student Api', () => {
 
   context('DELETE /students', () => {
     it('can delete student', () => {
-      const token = Cypress.env('token');
+      const token = Cypress.env().managerToken;
       const authorization = `bearer ${token}`;
       const options = {
         method: 'DELETE',

@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "tslint",
     "test:e2e": "cypress open",
+    "test:ci": "cypress run",
     "format": "prettier ./pages/**tsx ./components/**.tsx ./lib/**/*.ts --write"
   },
   "dependencies": {

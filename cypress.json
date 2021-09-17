@@ -1,8 +1,9 @@
 {
-  "baseUrl": "https://cms-lyart.vercel.app",
+  "baseUrl": "http://localhost:3000",
   "env": {
     "dev": "http://localhost:3001/api",
-    "prod": "https://cms.chtoma.com/api"
+    "prod": "https://cms.chtoma.com/api",
+    "managerToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAYWRtaW4uY29tIiwicm9sZSI6Im1hbmFnZXIiLCJpZCI6MywiaWF0IjoxNjMwODE2NjM1LCJleHAiOjE2Mzg1OTI2MzV9.umcEqvEsbfg9H1yup_zdLOqg8coGsWBGGKhdqkw5Cvg"
   },
   "viewportHeight": 1080,
   "viewportWidth": 1920,
@@ -13,5 +14,6 @@
   ],
   "videoCompression": 15,
   "video": true,
+  "projectId": "haqizt",
   "experimentalStudio": true
 }

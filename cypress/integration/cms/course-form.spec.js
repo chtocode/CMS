@@ -8,7 +8,7 @@ describe('Add course', () => {
     });
   });
 
-  it.only('can add course', () => {
+  it('can add course', () => {
     cy.get('#name').type('abcdef');
     cy.get('#teacherId').type('ee');
     cy.intercept('GET', '/api/teachers?query=ee').as('teachersRes');

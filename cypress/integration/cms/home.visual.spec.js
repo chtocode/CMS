@@ -5,7 +5,7 @@ describe('Visual Testing', () => {
     cy.visit(Cypress.config().baseUrl);
   });
 
-  it.only('logo testing', () => {
+  it('logo testing', () => {
     cy.get('#logo').toMatchImageSnapshot();
   });
 

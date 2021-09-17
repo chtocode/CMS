@@ -52,7 +52,15 @@ Cypress.Commands.add('login', (email, password) => {
       cy.visit(loginPath);
     }
   });
-  cy.intercept('POST', `/api/login`).as('loginUser');
+  cy.intercept('POST', `/api/login`, {
+    code: 200,
+    msg: 'success',
+    data: {
+      userId: 3,
+      token: Cypress.env().managerToken,
+      role: 'manager',
+    },
+  }).as('loginUser');
 
   log.snapshot('before');
 
