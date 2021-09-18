@@ -6,6 +6,7 @@ describe('Visual Testing', () => {
   });
 
   it('logo testing', () => {
+    cy.get('#logo').should('be.visible');
     cy.get('#logo').toMatchImageSnapshot();
   });
 
