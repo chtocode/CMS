@@ -53,7 +53,8 @@ const getBaseUrl = () => {
     return 'https://cms.chtoma.com/api';
   }
 };
-const baseURL = getBaseUrl();
+// const baseURL = getBaseUrl();
+const baseURL = 'http://cms.chtoma.com/api';
 const axiosInstance = axios.create({
   baseURL,
   withCredentials: true,
