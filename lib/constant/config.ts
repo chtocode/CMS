@@ -50,7 +50,7 @@ export const validateMessages = {
   },
 };
 
-export const gutter: [Gutter, Gutter] = [6, 16];
+export const gutter: [Gutter, Gutter] = [8, 16];
 
 export const weekDays = [
   'Sunday',
