@@ -1,0 +1,83 @@
+name: Bug Report
+description: Report a bug
+
+body:
+  - type: checkboxes
+    id: Prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: Can you reproduce the problem in safe mode?
+          required: false
+        - label: Are you running the latest version?
+          required: true
+
+  - type: dropdown
+    id: importance
+    attributes:
+      label: Importance
+      options:
+        - Fatal
+        - Serious
+        - General
+        - Tips
+        - Suggestions
+      multiple: false
+    validations:
+      required: true
+
+  - type: dropdown
+    id: Priority
+    attributes:
+      label: Priority
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce this issue
+      placeholder: |
+        1. xxxxx
+        2. xxxxx
+        3. xxxxx
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+        
+  - type: textarea
+    id: environment
+    attributes:
+      label: Please provide the environment you discovered this bug in
+      placeholder: |
+        OS: linux x64
+        Browser: Chrome 92.0.4515.159
+
+  - type: textarea
+    id: other
+    attributes:
+      label: Anything else?
