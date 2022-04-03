@@ -1,0 +1,43 @@
+name: E2E Tests
+
+on: 
+  pull_request:
+    branches: [master]
+
+jobs:
+  test-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run test
+          wait-on-timeout: 300
+          command: npm run test:ci
+          record: true
+          parallel: true
+          browser: chrome
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: e2e-screenshots
+          path: cypress/screenshots
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: e2e-videos
+          path: cypress/videos
+
+      - id: output-ok
+        run: echo "::set-output name=STATUS::ok"
+      - id: output-err
+        if: failure()
+        run: echo "::set-output name=STATUS::err"
