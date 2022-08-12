@@ -45,7 +45,7 @@ describe('Login page', () => {
     cy.get('#login .ant-row').find('[role=alert]').should('be.visible').and('have.length', 2);
   });
 
-  it('should can login in with manager account', function () {
+  it.only('should can login in with manager account', function () {
     const manager = this.users.find((user) => user.role === 'manager');
     cy.get('label').contains('Manager').click();
     cy.get('input[type=email]').type(manager.email).should('have.value', manager.email);

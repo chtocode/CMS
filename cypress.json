@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:3000",
+  "baseUrl": "https://cms-lyart.vercel.app/",
   "env": {
     "dev": "http://localhost:3001/api",
     "prod": "http://cms.chtoma.com/api",
@@ -15,5 +15,6 @@
   "videoCompression": 15,
   "video": true,
   "projectId": "haqizt",
+  "chromeWebSecurity": false,
   "experimentalStudio": true
 }
