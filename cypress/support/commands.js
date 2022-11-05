@@ -52,6 +52,7 @@ Cypress.Commands.add('login', (email, password) => {
       cy.visit(loginPath);
     }
   });
+
   cy.intercept('POST', `/api/login`, {
     code: 200,
     msg: 'success',
