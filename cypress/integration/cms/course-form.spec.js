@@ -3,18 +3,27 @@ import { addDays, format } from 'date-fns';
 
 describe('Add course', () => {
   beforeEach(() => {
-    cy.login('manager@admin.com', '111111').then(() => {
-      cy.visit('/dashboard/manager/courses/add-course');
-    });
+    cy.login('manager@admin.com', '111111');
+
+    // make sure the intercept run before test;
+    cy.intercept('GET', '/api/teachers?query=ee').as('teachersRes');
+    cy.intercept('GET', '/api/courses/type').as('types');
+    cy.intercept('POST', '/api/courses', { fixture: 'course-add.json' }).as('addCourseRes');
+    cy.intercept('PUT', '/api/courses/schedule', { code: 200, data: true, msg: 'success' }).as(
+      'schedule'
+    );
+
+    // 线上被重定向到成了https
+    cy.visit('https://cms-lyart.vercel.app/dashboard/manager/courses/add-course');
   });
 
   it('can add course', () => {
     cy.get('#name').type('abcdef');
     cy.get('#teacherId').type('ee');
-    cy.intercept('GET', '/api/teachers?query=ee').as('teachersRes');
-    cy.intercept('GET', '/api/courses/type').as('types');
 
-    cy.get('.ant-select-item-option-content').first().click();
+    // async portal UI
+    cy.wait(1000);
+    cy.get('.ant-select-item').first().click();
 
     cy.get('#type').click();
 
@@ -48,7 +57,7 @@ describe('Add course', () => {
     );
 
     cy.get('button[type=submit]').contains('Create Course').click();
-    cy.intercept('POST', '/api/courses', { fixture: 'course-add.json' }).as('addCourseRes');
+
     cy.wait('@addCourseRes').then((res) => {
       const data = res.response.body.data;
 
@@ -114,9 +123,6 @@ describe('Add course', () => {
     cy.get('.ant-picker-dropdown:not(.ant-picker-dropdown-hidden) button').contains('Ok').click();
 
     cy.get('#schedule button[type="submit"]').click();
-    cy.intercept('PUT', '/api/courses/schedule', { code: 200, data: true, msg: 'success' }).as(
-      'schedule'
-    );
     cy.wait('@schedule', { timeout: 10 * 1000 }).then((res) => {
       const data = res.response.body.data;
 
