@@ -105,6 +105,7 @@ export default function HeatChart({
     }
 
     const yCategories = data.map((item) => item.name).concat('<b>TOTAL</b>');
+
     const rowData = data.map((item) => {
       const ary = new Array(7).fill(0);
       const courses = item.courses
@@ -120,6 +121,7 @@ export default function HeatChart({
 
       return ary.concat(ary.reduce((acc, cur) => acc + cur));
     });
+
     const sourceData = zip(...rowData)
       .map((columnAry, index) => {
         const len = columnAry.length;
@@ -135,6 +137,7 @@ export default function HeatChart({
         return result;
       })
       .flat();
+
 
     setOptions({
       title: {

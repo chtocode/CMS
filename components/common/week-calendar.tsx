@@ -12,6 +12,7 @@ export default function WeekCalendar({ data }: WeekCalendarProps) {
   }
 
   const headers = [...weekDays];
+  
   const columns: ColumnType<{ title: string; time: string }>[] = headers.map((title, index) => {
     const target =
       data.find((item) => item.toLocaleLowerCase().includes(title.toLocaleLowerCase())) || '';
@@ -19,6 +20,7 @@ export default function WeekCalendar({ data }: WeekCalendarProps) {
 
     return { title, key: index, align: 'center', render: () => time };
   });
+
   const dataSource = new Array(1).fill({ id: 0 });
 
   return (

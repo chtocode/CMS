@@ -16,23 +16,23 @@ export interface CourseType {
 }
 
 export interface Course {
-  id: number;
-  name: string;
-  uid: string; //code
+  cover: string;
+  ctime: string;
   detail: string;
-  startTime: string;
-  price: number;
-  maxStudents: number;
-  star: number;
-  status: CourseStatus;
   duration: number;
   durationUnit: DurationUnit;
-  cover: string;
-  teacherName: string;
-  teacherId: number;
-  type: CourseType[];
-  ctime: string;
+  id: number;
+  maxStudents: number;
+  name: string;
+  price: number;
   scheduleId: number;
+  star: number;
+  startTime: string;
+  status: CourseStatus;
+  teacherId: number;
+  teacherName: string;
+  type: CourseType[];
+  uid: string; //code
 }
 
 export interface CourseRequest extends Paginator {

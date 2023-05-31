@@ -7,7 +7,7 @@ export type PredicateFn<T> = (data: T, value: any) => boolean;
  * @param value - 搜索的值
  * @param key - 向下递归的key
  */
-export const deepSearchFactory = <T>(predicateFn: PredicateFn<T>, value: any, key: string) => {
+export function deepSearchFactory<T>(predicateFn: PredicateFn<T>, value: any, key: string) {
   return function deepSearch(data: T[]): T {
     const headNode = data.slice(0, 1)[0]; // 一个更小的范围
     const restNodes = data.slice(1); // 缩减搜索条件
@@ -39,13 +39,9 @@ export const deepSearchFactory = <T>(predicateFn: PredicateFn<T>, value: any, ke
 
     return null; // 遍历完成后没有找到返回null
   };
-};
+}
 
-export const deepSearchRecordFactory = <T>(
-  predicateFn: PredicateFn<T>,
-  value: any,
-  key: string
-) => {
+export function deepSearchRecordFactory<T>(predicateFn: PredicateFn<T>, value: any, key: string) {
   return function search(data: T[], record = []): number[] {
     const headNode = data.slice(0, 1)[0];
     const restNodes = data.slice(1);
@@ -78,4 +74,4 @@ export const deepSearchRecordFactory = <T>(
 
     return null;
   };
-};
+}

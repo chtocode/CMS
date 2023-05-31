@@ -31,6 +31,7 @@ export default function AppBreadcrumb() {
           name,
           'subNav'
         )(sideNav);
+
         const { navs }: { source: SideNav[]; navs: SideNav[] } = record.reduce(
           (acc, cur) => {
             const item = acc.source[acc.source.length + cur];
@@ -39,6 +40,7 @@ export default function AppBreadcrumb() {
           },
           { source: sideNav, navs: [] }
         );
+
         const isText =
           index === names.length - 1 || navs.every((item) => item.hideLinkInBreadcrumb);
         const subPath = navs

@@ -36,6 +36,9 @@ yarn-error.log*
 # chapter
 /chapter
 
-# cypress
-/cypress/videos
-/cypress/screenshots
+# cypress videos
+/cypress/screenshots/
+/cypress/videos/
+/cypress/snapshots/
+/cypress/**/__image_snapshots__/
+

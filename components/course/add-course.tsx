@@ -6,6 +6,7 @@ import { useForm } from 'antd/lib/form/Form';
 import TextArea from 'antd/lib/input/TextArea';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { format, getTime } from 'date-fns';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { DurationUnit, gutter, Role, validateMessages } from '../../lib/constant';
@@ -323,8 +324,7 @@ export default function AddCourseForm({ course, onSuccess }: AddCourseFormProps)
             <Form.Item label="Price" name="price" rules={[{ required: true }]}>
               <InputNumber
                 formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                // @ts-ignore
-                parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                parser={(value) => +value.replace(/\$\s?|(,*)/g, '')}
                 min={0}
                 style={{ width: '100%' }}
               />

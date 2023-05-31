@@ -1,0 +1,28 @@
+{
+  "data": {
+    "id": 1,
+    "status": 0,
+    "current": 101,
+    "classTime": ["Monday 14:00:00", "Friday 16:15:00"],
+    "chapters": [
+      {
+        "name": "overview",
+        "id": 100,
+        "content": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      { "name": "chapter-1", "id": 101, "content": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" },
+      {
+        "name": "chapter-2",
+        "id": 102,
+        "content": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      {
+        "name": "chapter-3",
+        "id": 103,
+        "content": "aanmefosdif  dasfd dsaanmefosdif  dasfd dsaanmefosdif  dasfd dsaanmefosdif  dasfd dsanmefosdif  dasfd dsa"
+      }
+    ]
+  },
+  "code": 200,
+  "msg": "success"
+}
